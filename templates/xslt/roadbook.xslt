@@ -127,9 +127,12 @@
 
             <p class="infos_position">
                 <span class="coordinates"><strong><xsl:value-of select="$lat"/>&#160;<xsl:value-of select="$lon"/></strong></span>
-                <span class="owner"><xsl:value-of select="$locale/text[@id='by']" />&#160;<strong><xsl:value-of select="grdspk:cache/grdspk:placed_by" /></strong>, 
-                <xsl:value-of select="$locale/text[@id='hidden']" />&#160;
-                <strong><xsl:value-of select="$hidden_date" /></strong></span>
+                <span class="owner">
+                  <xsl:if test="string(normalize-space(grdspk:cache/grdspk:placed_by))">
+                    <xsl:value-of select="$locale/text[@id='by']" />&#160;<strong><xsl:value-of select="grdspk:cache/grdspk:placed_by" /></strong>, 
+                  </xsl:if>
+                  <xsl:value-of select="$locale/text[@id='hidden']" />&#160;
+                  <strong><xsl:value-of select="$hidden_date" /></strong></span>
             </p>
 
             <div class="infos">
@@ -227,13 +230,18 @@
                         </xsl:choose>
                         &#160;(<xsl:value-of select="grdspk:cache/grdspk:container" />)
                     <br />
+                    <xsl:if test="string(normalize-space(grdspk:cache/grdspk:state))">
                     <xsl:value-of select="$locale/text[@id='location']" />&#160;<xsl:value-of select="grdspk:cache/grdspk:state" />, <xsl:value-of select="grdspk:cache/grdspk:country" />
+                    </xsl:if>
                     </p>
                 </div>
             </div>
+            
+            <xsl:if test='grdspk:cache/grdspk:attributes/grdspk:attribute'>
             <ul class="attributes">
                 <xsl:apply-templates select="grdspk:cache/grdspk:attributes/grdspk:attribute" />
             </ul>
+            </xsl:if>
 
             <div class="short_description">
                 <xsl:choose>
@@ -264,7 +272,7 @@
             <xsl:apply-templates select="grdspk:cache/grdspk:encoded_hints" />
 
             <!-- Logs -->
-            <xsl:if test='$display_logs'>
+            <xsl:if test='$display_logs and grdspk:cache/grdspk:logs/grdspk:log'>
                 <h3><xsl:value-of select="$locale/text[@id='logs']" /></h3>
                 <div class="logs">
                     <xsl:apply-templates select="grdspk:cache/grdspk:logs/grdspk:log" />
