@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<i18n>
+    <text id="zip_archive">Click here to download your roadbook</text>
+    <text id="difficulty">Difficulty:</text>
+    <text id="terrain">Terrain:</text>
+    <text id="size">Size:</text>
+    <text id="location">Location:</text>
+    <text id="hint">Hint</text>
+    <text id="logs">Logs</text>
+    <text id="by">By</text>
+    <text id="hidden">hidden on</text>
+    <text id="micro">ddd</text>
+    <format id="date">%Y/%m/%d</format>
+</i18n>
