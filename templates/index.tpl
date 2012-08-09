@@ -7,7 +7,6 @@
         <link rel="stylesheet" href="css/design.css" media="screen, projection" />
     </head>
     <body>
-        <div id="container">
         <h1>GeoRoadBook</h1>
         <form action="index.php" method="post" enctype="multipart/form-data">
             <fieldset>
@@ -25,18 +24,20 @@
                     </ul>
                 </div>
                 {/if}
-                <p><label for="gpx">GPX File: (Max {$max_filesize})<br /><input type="file" name="gpx" id="gpx" /></p>
-                <p><label for="locale">Language: <br />
+                <p><label for="gpx">GPX File: (Max {$max_filesize})</label><br /><input type="file" name="gpx" id="gpx" /></p>
+                <p><label for="locale">Language:</label><br />
                     <select name="locale" id="locale" size="2">
                         <option value="en">English</option>
                         <option value="fr">Français</option>
                     </select>
                 </p>
-                <p><label for="logs">Display logs: <input type="checkbox" name="logs" id="logs" /></p>
+                <p><label for="logs">Display logs:</label><input type="checkbox" name="logs" id="logs" /></p>
                 <input type="submit" name="send" />
             </fieldset>
         </form>
-        </div id="container">
-    
+        <div id="footer">
+            <p><a href="https://github.com/Surfoo/georoadbook/issues?direction=desc&amp;sort=created&amp;state=open">Report Bug / issue</a><br />
+            <a href="https://github.com/Surfoo/georoadbook">Source available on github.com</a></p>
+        </div>
     </body>
 </html>
