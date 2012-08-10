@@ -5,8 +5,6 @@ require LIB_DIR . 'smarty/Smarty.class.php';
 
 $smarty = new Smarty();
 
-header('Content-type: text/html; charset=utf-8');
-
 if(!empty($_POST))
 {
     $errors = array();
@@ -14,51 +12,86 @@ if(!empty($_POST))
     {
         $errors[] = 'MISSING_FILE';
     }
-    if(!isset($_POST['locale']) || !in_array($_POST['locale'], $locales))
+    if(isset($_POST['locale']) && !in_array($_POST['locale'], $locales))
     {
         $errors[] = 'INVALID_LOCALE';
     }
 
-    if(!empty($errors))
+    if($_FILES['gpx']['error'] == UPLOAD_ERR_OK)
     {
-        $smarty->assign('errors', $errors);
+        $finfo = new finfo(FILEINFO_MIME);
+        $type = $finfo->file($_FILES['gpx']['tmp_name']);
 
-    }
-    else {
-        if(!empty($_FILES['gpx']) && $_FILES['gpx']['error'] == UPLOAD_ERR_OK)
+        $mime = substr($type, 0, strpos($type, ';'));
+        if(!in_array($mime, $mimes))
         {
-            $finfo = new finfo(FILEINFO_MIME);
-            $type = $finfo->file($_FILES['gpx']['tmp_name']);
+            @unlink($_FILES['gpx']['tmp_name']);
+            exit();
+        }
 
-            $mime = substr($type, 0, strpos($type, ';'));
-            if(!in_array($mime, $mimes))
+        //detect shema of geocaching gpx
+        $xml = new DOMDocument();
+        $xml->load($_FILES['gpx']['tmp_name']);
+        $searchNode = $xml->getElementsByTagName('gpx');
+        $schemas = null;
+        foreach($searchNode as $searchNode)
+        {
+            $schemas = explode(' ', $searchNode->getAttribute('xsi:schemaLocation'));
+        }
+        if(!is_array($schemas))
+        {
+            $errors[] = 'INVALID_SCHEMA';
+        }
+        else 
+        {
+            foreach ($schemas as $schema) 
             {
-                @unlink($_FILES['gpx']['tmp_name']);
-                exit();
+                if(preg_match('!^http://www.groundspeak.com/cache/([0-9/]*)$!i', $schema, $matche))
+                {
+                    break;
+                }
             }
-            $uniqid = uniqid();
-            $gpx_filename = sprintf(FILE_FORMAT, $uniqid, 'gpx');
 
-            if(!move_uploaded_file($_FILES['gpx']['tmp_name'], UPLOAD_DIR . $gpx_filename))
+            if(!array_key_exists(1, $matche))
             {
-               exit(); 
+                $errors[] = 'INVALID_SCHEMA';
             }
-
+            else {
+                $schema_version = $matche[1];
+            }
         }
 
         $current_locale  = isset($_POST['locale'])    ? $_POST['locale']  : $locales[0];
         $display_logs    = isset($_POST['logs'])      ? true : false;
         $zipArchiveClass = class_exists('ZipArchive') ? true : false;
-        
-        $file_mtime = @filemtime(UPLOAD_DIR . $gpx_filename);
-        if(!$file_mtime)
+    }
+
+    if(!empty($errors))
+    {
+        $smarty->assign('errors', $errors);
+    }
+    else {
+
+        $uniqid = uniqid();
+        $gpx_filename = sprintf(FILE_FORMAT, $uniqid, 'gpx');
+
+        if(!move_uploaded_file($_FILES['gpx']['tmp_name'], UPLOAD_DIR . $gpx_filename))
         {
-            exit("This file doesn't exist.");
+           exit(); 
         }
 
         $xsl = new XSLTProcessor();
         $xsldoc = new DOMDocument();
-        $xsldoc->load('templates/xslt/roadbook.xslt');
+
+        if($schema_version == '1/0/1') 
+        {
+            $xsldoc->load('templates/xslt/roadbook101.xslt'); // schema 1/0/1/cache.xsd
+        }
+        else
+        {
+            $xsldoc->load('templates/xslt/roadbook1.xslt'); // schema 1/0/cache.xsd
+        }
+
         $xsl->importStyleSheet($xsldoc);
 
         $xmldoc = new DOMDocument();
@@ -69,9 +102,10 @@ if(!empty($_POST))
         $xsl->setParameter('', 'locale_filename', '../../locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
         $xsl->setParameter('', 'display_logs', $display_logs);
         $xsl->setParameter('', 'zip_archive', $zipArchiveClass);
-        if($zipArchiveClass)
+        if($zipArchiveClass) 
+        {
             $xsl->setParameter('', 'zip_filename', $zip_filename);
-
+        }
         $html = $xsl->transformToXML($xmldoc);
 
         $html_filename = sprintf(FILE_FORMAT, $uniqid, 'html');
@@ -82,7 +116,8 @@ if(!empty($_POST))
         if($zipArchiveClass)
         {
             $zip = new ZipArchive();
-            if ($zip->open(ROADBOOKS_DIR . $zip_filename, ZIPARCHIVE::CREATE) !== true) {
+            if ($zip->open(ROADBOOKS_DIR . $zip_filename, ZIPARCHIVE::CREATE) !== true) 
+            {
                 exit('Unable to open ' . $zip_filename);
             }
 
@@ -101,6 +136,9 @@ if(!empty($_POST))
         exit();
     }
 }
+
+
+header('Content-type: text/html; charset=utf-8');
 
 $smarty->assign('max_filesize', ini_get('upload_max_filesize'));
 $smarty->display('templates/index.tpl');

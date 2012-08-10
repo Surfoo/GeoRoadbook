@@ -2,12 +2,13 @@
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:gpx="http://www.topografix.com/GPX/1/0"
-    xmlns:grdspk="http://www.groundspeak.com/cache/1/0/1">
+    xmlns:grdspk="http://www.groundspeak.com/cache/1/0">
 
+<!--<xsl:import href="main.xslt" />-->
 <xsl:import href="functions.xslt" />
-<xsl:import href="_attributes.xslt" />
+<xsl:import href="_attributes1.xslt" />
 <xsl:import href="_hint.xslt" />
-<xsl:import href="_logs.xslt" />
+<xsl:import href="_logs1.xslt" />
 
 <xsl:output 
   method="html"

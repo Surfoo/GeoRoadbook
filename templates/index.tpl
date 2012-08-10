@@ -17,6 +17,9 @@
                     {if $error == "MISSING_FILE"}
                         <li>GPX file is missing.</li>
                     {/if}
+                    {if $error == "INVALID_SCHEMA"}
+                        <li>GPX file is invalid.</li>
+                    {/if}
                     {if $error == "INVALID_LOCALE"}
                         <li>Language is invalid.</li>
                     {/if}
