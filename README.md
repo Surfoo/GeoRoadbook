@@ -1,5 +1,8 @@
 GeoRoadbook is a web app to get your geocaching roadbook ready-to-print from your gpx file (pocket query, gsak).
 
+Depends on:
+* ttf-mscorefonts-installer
+* wkhtmltopdf 0.11-rc1 - https://code.google.com/p/wkhtmltopdf/
 
 Get the source
 --------------

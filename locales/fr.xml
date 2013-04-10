@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <i18n>
-    <text id="zip_archive">Cliquez ici pour télécharger votre roadbook</text>
+    <text id="zip_archive">Roadbook au format HTML (archive zip)</text>
     <text id="difficulty">Difficulté :</text>
     <text id="terrain">Terrain :</text>
     <text id="size">Taille :</text>

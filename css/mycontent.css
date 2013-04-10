@@ -1,0 +1,62 @@
+body, td, pre {
+    color: #000;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    margin: 8px;
+}
+
+h2, .cacheTitle {
+    font-size: 12pt;
+    margin: 0;
+}
+.cacheInfos {
+    margin-bottom: 1mm;
+}
+.cacheTitle img, .finder_name img {
+    vertical-align: middle;
+}
+.attributes {
+    margin: 1mm 0 0mm 0;
+    padding: 0;
+    height: 30px;
+}
+.attributes li {
+    list-style-type: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0 1mm 0 0;
+    height: 30px;
+    widows: 30px;
+}
+.cacheHint {
+    margin-bottom: 2mm;
+}
+.cacheHint h2, .cacheLogs h2 {
+    border-bottom: 1px solid #000;
+    margin-bottom: 1mm;
+}
+.cacheHint p {
+    margin: 0;
+}
+
+.cacheLogs img {
+    margin: 1mm;
+}
+.cacheLogs tr:nth-child(odd) {
+    background: #eee;
+    font-weight: bold;
+}
+.cacheLogs tr:nth-child(even) {
+    background: #fff;
+}
+
+.pagebreak {
+    display: block;
+    clear: both;
+    page-break-after: always;
+}
+
+.short_description img, .long_description img {
+    max-width: 15cm;
+    height: auto;
+}

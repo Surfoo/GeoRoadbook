@@ -27,7 +27,7 @@
                     </ul>
                 </div>
                 {/if}
-                <p><label for="gpx">GPX File: (Max {$max_filesize})</label><br /><input type="file" name="gpx" id="gpx" /></p>
+                <p><label for="gpx">GPX File: (Max {$max_filesize|escape})</label><br /><input type="file" name="gpx" id="gpx" /></p>
                 <p><label for="locale">Language:</label><br />
                     <select name="locale" id="locale" size="2">
                         <option value="en">English</option>
@@ -39,7 +39,7 @@
             </fieldset>
         </form>
         <div id="footer">
-            <p><a href="https://github.com/Surfoo/georoadbook/issues?direction=desc&amp;sort=created&amp;state=open">Report Bug / issue</a><br />
+            <p><a href="https://github.com/Surfoo/georoadbook/issues?direction=desc&amp;sort=created&amp;state=open">Report Bugs / issues</a><br />
             <a href="https://github.com/Surfoo/georoadbook">Source available on github.com</a></p>
         </div>
     </body>
