@@ -1,0 +1,3 @@
+RewriteEngine on
+RewriteRule roadbook/(.*).html edit.php?roadbook=$1 [PT,QSA] 
+RewriteRule roadbook/pdf/(.*).pdf download.php?roadbook=$1 [PT,QSA] 

@@ -1,2 +1,6 @@
 *~
 *.swp
+templates_c/*
+upload/*
+roadbook/*.html
+roadbook/pdf/*.pdf
