@@ -6,7 +6,6 @@
 
 <!-- attributes -->
 <xsl:template match="grdspk:cache/grdspk:attributes/grdspk:attribute">
-  	<li>
     <xsl:choose>
         <xsl:when test="(. = 'Dogs' or . = 'Dogs allowed')">
             <img src="../img/attributes/dogs-yes.gif" alt="" />
@@ -330,7 +329,6 @@
             <xsl:value-of select="." />  
         </xsl:otherwise>
     </xsl:choose> 
-  	</li>
 </xsl:template>
 
 </xsl:stylesheet>
