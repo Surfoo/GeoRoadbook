@@ -90,8 +90,8 @@ if (!empty($_POST)) {
         $html = $xsl->transformToXML($xmldoc);
         $html = htmlspecialchars_decode($html);
 
-        $html = str_replace("../css/", "css/", $html);
-        die(str_replace("../img/", "img/", $html));
+        //$html = str_replace("../css/", "css/", $html);
+        //die(str_replace("../img/", "img/", $html));
 
         $html_filename = sprintf(FILE_FORMAT, $uniqid, 'html');
 

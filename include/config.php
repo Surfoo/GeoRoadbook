@@ -22,6 +22,6 @@ $user_language = false;
 if (array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {
     $user_language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 }
-$language = !in_array($user_language, $available_languages) ? $user_language : 'en';
+$language = in_array($user_language, $available_languages) ? $user_language : 'en';
 
 require ROOT . '/include/helpers.php';
