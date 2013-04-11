@@ -56,7 +56,7 @@ if (!empty($_POST)) {
     if (!empty($errors)) {
         $smarty->assign('errors', $errors);
     } else {
-        $uniqid = uniqid();
+        $uniqid = substr(md5(uniqid(rand(), true)), 0, 12);
         $gpx_filename = sprintf(FILE_FORMAT, $uniqid, 'gpx');
 
         if (!move_uploaded_file($_FILES['gpx']['tmp_name'], UPLOAD_DIR . $gpx_filename)) {
@@ -80,6 +80,8 @@ if (!empty($_POST)) {
         $zip_filename = sprintf(FILE_FORMAT, $uniqid, 'zip');
 
         $xsl->setParameter('', 'locale_filename', '../../locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
+        $xsl->setParameter('', 'icon_cache_dir', ICON_CACHE_DIR);
+        $xsl->setParameter('', 'suffix_css', SUFFIX_CSS);
         $xsl->setParameter('', 'display_logs', $display_logs);
         $xsl->setParameter('', 'zip_archive', $zipArchiveClass);
         if ($zipArchiveClass) {
@@ -88,8 +90,8 @@ if (!empty($_POST)) {
         $html = $xsl->transformToXML($xmldoc);
         $html = htmlspecialchars_decode($html);
 
-        //$html = str_replace("../css/", "css/", $html);
-        //die(str_replace("../img/", "img/", $html));
+        $html = str_replace("../css/", "css/", $html);
+        die(str_replace("../img/", "img/", $html));
 
         $html_filename = sprintf(FILE_FORMAT, $uniqid, 'html');
 

@@ -7,8 +7,13 @@
     <text id="location">Lieu :</text>
     <text id="hint">Indice</text>
     <text id="logs">Journaux</text>
-    <text id="by">par</text>
+    <text id="by">Par</text>
     <text id="hidden">cachée le</text>
-    <text id="micro">ddd</text>
+    <text id="micro">Micro</text>
+    <text id="small">Petite</text>
+    <text id="regular">Normale</text>
+    <text id="large">Large</text>
+    <text id="other">Autre</text>
+    <text id="not_chosen">Non choisie</text>
     <format id="date">%d/%m/%Y</format>
 </i18n>

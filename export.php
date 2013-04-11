@@ -16,11 +16,25 @@ if (!file_exists($filename) || !is_readable($filename)) {
 $options = array('bin' => '/usr/local/bin/wkhtmltopdf',
                  'enableEscaping' => false,
                  'tmp' => ROADBOOKS_DIR . 'pdf/',
-                 'page-size' => 'A4',
-                 //'footer-center' => 'Yahooooooooo',
-                 //'footer-line' => '',
-                 //'footer-spacing' => 3,
-                 );
+                 'page-size' => 'A4');
+
+foreach($_POST as $key => $value) {
+    if(!in_array($key, $available_options_pdf))
+        continue;
+    if(!empty($value)) {
+        $value = utf8_decode($value);
+        if($value == 'false')
+            continue;
+        if($value == 'true') {
+            $value = '';
+        }
+        if(!is_numeric($value) && !empty($value)) {
+            $value = '"' . $value . '"';
+        }
+        $options[$key] =  $value;
+    }
+}
+
 $pdf = new WkHtmlToPdf($options);
 
 // Add a cover (same sources as above are possible)

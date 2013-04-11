@@ -1,5 +1,7 @@
 *~
 *.swp
+*.sublime-project
+*.sublime-workspace
 templates_c/*
 upload/*
 roadbook/*.html
