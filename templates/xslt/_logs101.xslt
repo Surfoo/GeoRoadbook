@@ -59,6 +59,9 @@
                     <xsl:when test="grdspk:type = 'Write note'">
                         <img src="../img/log/icon_note.png" alt="" />
                     </xsl:when>
+                    <xsl:when test="grdspk:type = 'Post Reviewer Note'">
+                        <img src="../img/log/reviewer_note.png" alt="" />
+                    </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="grdspk:type" />
                     </xsl:otherwise>
