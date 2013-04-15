@@ -1,6 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
     <title>{#exportpdf_dlg.title}</title>
     <script type="text/javascript" src="../../../jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../../tiny_mce_popup.js"></script>
@@ -14,18 +15,94 @@
     <form onsubmit="ExportPdf.exportpdf();return false;" action="#">
         <div class="tabs">
             <ul>
-                <li id="header_tab" class="current" aria-controls="header_panel">
-                    <span><a href="javascript:mcTabs.displayTab('header_tab','header_panel');" onmousedown="return false;">{#exportpdf_dlg.tab_header}</a></span>
+                <li id="options_tab" class="current">
+                    <span><a href="javascript:mcTabs.displayTab('options_tab','options');" onmousedown="return false;">{#exportpdf_dlg.tab_options}</a></span>
                 </li>
-                <li id="footer_tab" aria-controls="footer_panel">
-                    <span><a href="javascript:mcTabs.displayTab('footer_tab','footer_panel');" onmousedown="return false;">{#exportpdf_dlg.tab_footer}</a></span>
+                <li id="header_tab">
+                    <span><a href="javascript:mcTabs.displayTab('header_tab','header');" onmousedown="return false;">{#exportpdf_dlg.tab_header}</a></span>
+                </li>
+                <li id="footer_tab">
+                    <span><a href="javascript:mcTabs.displayTab('footer_tab','footer');" onmousedown="return false;">{#exportpdf_dlg.tab_footer}</a></span>
                 </li>
             </ul>
         </div>
 
         <div class="panel_wrapper">
-            <div id="header_panel" class="panel current">
-                <table role="presentation" class="properties">
+            <div id="options" class="panel current">
+                <table class="properties">
+                    <tr>
+                        <td class="column1">
+                            <label for="page_size">{#exportpdf_dlg.page_size}</label>
+                        </td>
+                        <td>
+                            <select name="page_size" id="page_size">
+                                <option value="A3">A3</option>
+                                <option value="A4" selected="selected">A4</option>
+                                <option value="A5">A5</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column1">
+                            <label for="orientation">{#exportpdf_dlg.orientation}</label>
+                        </td>
+                        <td>
+                            <select name="orientation" id="orientation">
+                                <option value="portrait">{#exportpdf_dlg.portrait}</option>
+                                <option value="landscape">{#exportpdf_dlg.landscape}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column1">
+                            <label for="grayscale">{#exportpdf_dlg.grayscale}</label>
+                        </td>
+                        <td>
+                            <input name="grayscale" type="checkbox" id="grayscale" value="1" />
+                        </td>
+                    </tr>
+                </table>
+                <fieldset>
+                    <legend>{#exportpdf_dlg.margins}</legend>
+                    <table class="properties">
+                        <tr>
+                            <td class="column1">
+                                <label for="margin_left">{#exportpdf_dlg.margin_left}</label>
+                            </td>
+                            <td>
+                                <input name="margin_left" type="number" size="2" maxlength="2" id="margin_left" value="10" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="margin_right">{#exportpdf_dlg.margin_right}</label>
+                            </td>
+                            <td>
+                                <input name="margin_right" type="number" size="2" maxlength="2" id="margin_right" value="10" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="margin_top">{#exportpdf_dlg.margin_top}</label>
+                            </td>
+                            <td>
+                                <input name="margin_top" type="number" size="2" maxlength="2" id="margin_top" value="10" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="margin_bottom">{#exportpdf_dlg.margin_bottom}</label>
+                            </td>
+                            <td>
+                                <input name="margin_bottom" type="number" size="2" maxlength="2" id="margin_bottom" value="10" />
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+
+            <div id="header" class="panel">
+                <table class="properties">
                     <tr>
                         <td class="column1">
                             <label for="header_left">{#exportpdf_dlg.header_left}</label>
@@ -61,8 +138,8 @@
                 </table>
             </div>
 
-            <div id="footer_panel" class="panel">
-                <table role="presentation" class="properties">
+            <div id="footer" class="panel">
+                <table class="properties">
                     <tr>
                         <td class="column1">
                             <label for="footer_left">{#exportpdf_dlg.footer_left}</label>
@@ -97,6 +174,7 @@
                     </tr>
                 </table>
             </div>
+        </div>
 
         <div class="mceActionPanel">
             <input type="submit" id="insert" name="export" value="{#exportpdf_dlg.exportaspdf}" />

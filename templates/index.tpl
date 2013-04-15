@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <title>GeoRoadBook</title>
         <link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection" />
         <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->

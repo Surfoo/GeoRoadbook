@@ -13,10 +13,10 @@ if (!file_exists($filename) || !is_readable($filename)) {
     die('error roadbookeee');
 }
 
-$options = array('bin' => '/usr/local/bin/wkhtmltopdf',
-                 'enableEscaping' => false,
-                 'tmp' => ROADBOOKS_DIR . 'pdf/',
-                 'page-size' => 'A4');
+$globalOptions = array('bin' => '/usr/local/bin/wkhtmltopdf',
+                       'tmp' => ROADBOOKS_DIR . 'pdf/',
+                       'no-outline',
+                       'output-format' => 'pdf');
 
 foreach($_POST as $key => $value) {
     if(!in_array($key, $available_options_pdf))
@@ -26,16 +26,15 @@ foreach($_POST as $key => $value) {
         if($value == 'false')
             continue;
         if($value == 'true') {
-            $value = '';
+            $globalOptions[] = $key;
         }
-        if(!is_numeric($value) && !empty($value)) {
-            $value = '"' . $value . '"';
+        else {
+            $globalOptions[$key] = $value;
         }
-        $options[$key] =  $value;
     }
 }
 
-$pdf = new WkHtmlToPdf($options);
+$pdf = new WkHtmlToPdf($globalOptions);
 
 // Add a cover (same sources as above are possible)
 //$pdf->addCover($filename);
@@ -52,7 +51,7 @@ $filename_pdf = sprintf(FILE_FORMAT, (string) $_POST['id'], 'pdf');
 $path_pdf     = ROADBOOKS_DIR . 'pdf/' . $filename_pdf;
 
 if (!$pdf->saveAs($path_pdf)) {
-    renderAjax(array('success' => false, 'error' => $pdf->getError()));
+    renderAjax(array('success' => false, 'error' => ini_get('display_errors') > 0 ? $pdf->getError() : ''));
 }
 $size = round(filesize($path_pdf) / 1024 / 1024, 2);
 

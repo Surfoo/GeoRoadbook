@@ -81,7 +81,6 @@ if (!empty($_POST)) {
 
         $xsl->setParameter('', 'locale_filename', '../../locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
         $xsl->setParameter('', 'icon_cache_dir', ICON_CACHE_DIR);
-        $xsl->setParameter('', 'suffix_css', SUFFIX_CSS);
         $xsl->setParameter('', 'display_logs', $display_logs);
         $xsl->setParameter('', 'zip_archive', $zipArchiveClass);
         if ($zipArchiveClass) {

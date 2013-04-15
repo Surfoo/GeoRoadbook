@@ -1,3 +1,12 @@
 RewriteEngine on
 RewriteRule roadbook/(.*).html edit.php?roadbook=$1 [PT,QSA]
 RewriteRule roadbook/pdf/(.*).pdf download.php?roadbook=$1 [PT,QSA]
+
+#gzip
+AddOutputFilterByType DEFLATE text/javascript application/javascript text/css application/xhtml+xml text/html
+
+<FilesMatch "mycontent.css">
+ExpiresActive Off
+Header set Cache-Control "max-age=0, private, no-store, no-cache, must-revalidate"
+Header set Pragma "no-cache"
+</FilesMatch>

@@ -5,9 +5,26 @@ body, td, pre {
     margin: 8px;
 }
 
+.container1 {
+    float: left;
+}
+.container2 {
+    text-align: right;
+}
+.clear {
+    clear: both;
+    height: 0;
+}
+.container1 p, .container2 p {
+    margin: 0.5mm 0;
+}
 h2, .cacheTitle {
     font-size: 12pt;
     margin: 0;
+}
+.cacheTitle img {
+    width: 20px;
+    height: auto;
 }
 .cacheInfos {
     margin-bottom: 1mm;
@@ -15,18 +32,18 @@ h2, .cacheTitle {
 .cacheTitle img, .finder_name img {
     vertical-align: middle;
 }
-.attributes {
+.cacheAttributes {
     margin: 1mm 0 0mm 0;
     padding: 0;
     height: 30px;
 }
-.attributes li {
+.cacheAttributes li {
     list-style-type: none;
     display: inline-block;
     margin: 0;
     padding: 0 1mm 0 0;
     height: 30px;
-    widows: 30px;
+    width: 30px;
 }
 .cacheHint {
     margin-bottom: 2mm;
