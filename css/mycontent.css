@@ -1,3 +1,6 @@
+html {
+    -weasy-hyphens: auto;
+}
 body, td, pre {
     color: #000;
     font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -7,6 +10,7 @@ body, td, pre {
 
 .container1 {
     float: left;
+    width: 50%; /* Bug in weasyPrint, fixed width temporarily, WIP */
 }
 .container2 {
     text-align: right;
@@ -18,19 +22,23 @@ body, td, pre {
 .container1 p, .container2 p {
     margin: 0.5mm 0;
 }
-h2, .cacheTitle {
+h1 {
     font-size: 12pt;
     margin: 0;
 }
-.cacheTitle img {
+h1 img {
     width: 20px;
     height: auto;
 }
 .cacheInfos {
     margin-bottom: 1mm;
 }
-.cacheTitle img, .finder_name img {
+h1 img, .finder_name img {
     vertical-align: middle;
+}
+.cacheGCode {
+    font-size: 12pt;
+    font-weight: bold;
 }
 .cacheAttributes {
     margin: 1mm 0 0mm 0;
@@ -45,19 +53,38 @@ h2, .cacheTitle {
     height: 30px;
     width: 30px;
 }
+.cacheNote {
+    height: 3cm;
+    border: 1px solid #ddd;
+    margin-top: 1mm;
+}
+.cacheNote p {
+    margin: 0;
+    background-color: #ddd;
+}
 .cacheHint {
     margin-bottom: 2mm;
 }
-.cacheHint h2, .cacheLogs h2 {
-    border-bottom: 1px solid #000;
-    margin-bottom: 1mm;
-}
+
 .cacheHint p {
     margin: 0;
 }
 
 .cacheLogs img {
     margin: 1mm;
+}
+.cacheLogs table {
+    border-spacing: 0px;
+    border-collapse: collapse;
+    width: 100%;
+}
+.cacheLogDate {
+    width: 30mm;
+    text-align: right;
+}
+.cacheLogText {
+    overflow: hidden;
+    /*text-overflow: ellipsis;*/
 }
 .cacheLogs tr:nth-child(odd) {
     background: #eee;
@@ -67,6 +94,12 @@ h2, .cacheTitle {
     background: #fff;
 }
 
+.cacheHint p:first-child, .cacheLogs p:first-child {
+    font-size: 12pt;
+    font-weight: bold;
+    border-bottom: 1pt solid black;
+    margin: 0 0 1pt 0;
+}
 .pagebreak {
     display: block;
     clear: both;

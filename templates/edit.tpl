@@ -4,7 +4,7 @@
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <title>Create your geocaching roadbook</title>
         <link rel="stylesheet" href="../css/blueprint/screen.css" type="text/css" media="screen, projection" />
-        <script language="javascript" type="text/javascript" src="../lib/jquery-1.9.1.min.js"></script>
+        <script language="javascript" type="text/javascript" src="../lib/jquery-2.0.0.min.js"></script>
         <script language="javascript" type="text/javascript" src="../lib/tinymce/tiny_mce.js"></script>
         <script language="javascript" type="text/javascript">
             var roabook_id = '{$roabook_id|escape:js}', language = '{$language|escape:js}';

@@ -1,10 +1,10 @@
 <?php
 
 if(!array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
-	die('not an ajax request.');
+    die('not an ajax request.');
 }
 
-require 'include/config.php';
+require __DIR__ . '/include/config.php';
 
 $filename = ROADBOOKS_DIR . sprintf(FILE_FORMAT, (string) $_POST['id'], 'html');
 

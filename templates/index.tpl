@@ -18,6 +18,9 @@
                     {if $error == "MISSING_FILE"}
                         <li>GPX file is missing.</li>
                     {/if}
+                    {if $error == "INVALID_FILE"}
+                        <li>GPX file is invalid.</li>
+                    {/if}
                     {if $error == "INVALID_SCHEMA"}
                         <li>GPX file is invalid.</li>
                     {/if}
@@ -35,7 +38,12 @@
                         <option value="fr">Français</option>
                     </select>
                 </p>
-                <p><label for="logs">Display logs:</label><input type="checkbox" name="logs" id="logs" /></p>
+                <p>
+                <input type="checkbox" name="note" id="note" /> <label for="note">Display a cache note area</label><br />
+                <input type="checkbox" name="short_desc" id="short_desc" /> <label for="short_desc">Display short description</label><br />
+                <input type="checkbox" name="logs" id="logs" /> <label for="logs">Display logs</label>
+                </p>
+                <!--<p><label for="typog­ra­phy">Improve web typog­ra­phy (experimental):</label><input type="checkbox" name="typog­ra­phy" id="typog­ra­phy" /></p>-->
                 <input type="submit" name="send" />
             </fieldset>
         </form>

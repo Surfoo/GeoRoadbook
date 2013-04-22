@@ -3,26 +3,34 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
     <title>{#exportpdf_dlg.title}</title>
-    <script type="text/javascript" src="../../../jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../jquery-2.0.0.min.js"></script>
     <script type="text/javascript" src="../../tiny_mce_popup.js"></script>
     <script type="text/javascript" src="js/exportpdf.js"></script>
     <script type="text/javascript" src="../../utils/mctabs.js"></script>
     <!--<script type="text/javascript" src="../../utils/form_utils.js"></script>
     <script type="text/javascript" src="../../utils/validate.js"></script>
     <script type="text/javascript" src="../../utils/editable_selects.js"></script>-->
+    
+    <style type="text/css">
+    #variables {
+        margin: 0;
+        padding: 5px 0 0 0;
+    }
+    #variables li {
+        list-style-type: none;
+        display: inline;
+    }
+    </style>
 </head>
 <body>
     <form onsubmit="ExportPdf.exportpdf();return false;" action="#">
         <div class="tabs">
             <ul>
-                <li id="options_tab" class="current">
-                    <span><a href="javascript:mcTabs.displayTab('options_tab','options');" onmousedown="return false;">{#exportpdf_dlg.tab_options}</a></span>
+                <li id="options_tab" class="current"><span>
+                    <a href="javascript:mcTabs.displayTab('options_tab','options');" onmousedown="return false;">{#exportpdf_dlg.tab_options}</a></span>
                 </li>
-                <li id="header_tab">
-                    <span><a href="javascript:mcTabs.displayTab('header_tab','header');" onmousedown="return false;">{#exportpdf_dlg.tab_header}</a></span>
-                </li>
-                <li id="footer_tab">
-                    <span><a href="javascript:mcTabs.displayTab('footer_tab','footer');" onmousedown="return false;">{#exportpdf_dlg.tab_footer}</a></span>
+                <li id="header_tab"><span>
+                    <a href="javascript:mcTabs.displayTab('header_tab','header');" onmousedown="return false;">{#exportpdf_dlg.tab_header}</a></span>
                 </li>
             </ul>
         </div>
@@ -36,7 +44,6 @@
                         </td>
                         <td>
                             <select name="page_size" id="page_size">
-                                <option value="A3">A3</option>
                                 <option value="A4" selected="selected">A4</option>
                                 <option value="A5">A5</option>
                             </select>
@@ -53,14 +60,6 @@
                             </select>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="column1">
-                            <label for="grayscale">{#exportpdf_dlg.grayscale}</label>
-                        </td>
-                        <td>
-                            <input name="grayscale" type="checkbox" id="grayscale" value="1" />
-                        </td>
-                    </tr>
                 </table>
                 <fieldset>
                     <legend>{#exportpdf_dlg.margins}</legend>
@@ -70,7 +69,7 @@
                                 <label for="margin_left">{#exportpdf_dlg.margin_left}</label>
                             </td>
                             <td>
-                                <input name="margin_left" type="number" size="2" maxlength="2" id="margin_left" value="10" />
+                                <input name="margin_left" type="number" size="2" maxlength="2" id="margin_left" value="10" /> mm
                             </td>
                         </tr>
                         <tr>
@@ -78,7 +77,7 @@
                                 <label for="margin_right">{#exportpdf_dlg.margin_right}</label>
                             </td>
                             <td>
-                                <input name="margin_right" type="number" size="2" maxlength="2" id="margin_right" value="10" />
+                                <input name="margin_right" type="number" size="2" maxlength="2" id="margin_right" value="10" /> mm
                             </td>
                         </tr>
                         <tr>
@@ -86,7 +85,7 @@
                                 <label for="margin_top">{#exportpdf_dlg.margin_top}</label>
                             </td>
                             <td>
-                                <input name="margin_top" type="number" size="2" maxlength="2" id="margin_top" value="10" />
+                                <input name="margin_top" type="number" size="2" maxlength="2" id="margin_top" value="10" /> mm
                             </td>
                         </tr>
                         <tr>
@@ -94,7 +93,7 @@
                                 <label for="margin_bottom">{#exportpdf_dlg.margin_bottom}</label>
                             </td>
                             <td>
-                                <input name="margin_bottom" type="number" size="2" maxlength="2" id="margin_bottom" value="10" />
+                                <input name="margin_bottom" type="number" size="2" maxlength="2" id="margin_bottom" value="10" /> mm
                             </td>
                         </tr>
                     </table>
@@ -102,77 +101,103 @@
             </div>
 
             <div id="header" class="panel">
-                <table class="properties">
-                    <tr>
-                        <td class="column1">
-                            <label for="header_left">{#exportpdf_dlg.header_left}</label>
-                        </td>
-                        <td>
-                            <input name="header_left" type="text" id="header_left" value="" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="column1">
-                            <label for="header_center">{#exportpdf_dlg.header_center}</label>
-                        </td>
-                        <td>
-                            <input name="header_center" type="text" id="header_center" value=""/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="column1">
-                            <label for="header_right">{#exportpdf_dlg.header_right}</label>
-                        </td>
-                        <td>
-                            <input name="header_right" type="text" id="header_right" value="" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="column1">
-                            <label for="header_line">{#exportpdf_dlg.header_line}</label>
-                        </td>
-                        <td>
-                            <input name="header_line" type="checkbox" id="header_line" value="1" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div id="footer" class="panel">
-                <table class="properties">
-                    <tr>
-                        <td class="column1">
-                            <label for="footer_left">{#exportpdf_dlg.footer_left}</label>
-                        </td>
-                        <td>
-                            <input name="footer_left" type="text" id="footer_left" value="" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="column1">
-                            <label for="footer_center">{#exportpdf_dlg.footer_center}</label>
-                        </td>
-                        <td>
-                            <input name="footer_center" type="text" id="footer_center" value="" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="column1">
-                            <label for="footer_right">{#exportpdf_dlg.footer_right}</label>
-                        </td>
-                        <td>
-                            <input name="footer_right" type="text" id="footer_right" value="" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="column1">
-                            <label for="footer_line">{#exportpdf_dlg.footer_line}</label>
-                        </td>
-                        <td>
-                            <input name="footer_line" type="checkbox" id="footer_line" value="1" />
-                        </td>
-                    </tr>
-                </table>
+                <fieldset>
+                    <legend>{#exportpdf_dlg.header_title}</legend>
+                    <table class="properties">
+                        <tr>
+                            <td class="column1">
+                                <label for="header_left">{#exportpdf_dlg.header_left}</label>
+                            </td>
+                            <td>
+                                <input name="header_left" type="text" id="header_left" value="" placeholder="{#exportpdf_dlg.head_foot_placeholder}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="header_center">{#exportpdf_dlg.header_center}</label>
+                            </td>
+                            <td>
+                                <input name="header_center" type="text" id="header_center" value="" placeholder="{#exportpdf_dlg.head_foot_placeholder}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="header_right">{#exportpdf_dlg.header_right}</label>
+                            </td>
+                            <td>
+                                <input name="header_right" type="text" id="header_right" value="" placeholder="{#exportpdf_dlg.head_foot_placeholder}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="header_line">{#exportpdf_dlg.header_line}</label>
+                            </td>
+                            <td>
+                                <input name="header_line" type="checkbox" id="header_line" value="1" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="header_spacing">{#exportpdf_dlg.header_spacing}</label>
+                            </td>
+                            <td>
+                                <input name="header_spacing" type="number" size="2" maxlength="2" id="header_spacing" value="0" /> mm
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <fieldset>
+                    <legend>{#exportpdf_dlg.footer_title}</legend>
+                    <table class="properties">
+                        <tr>
+                            <td class="column1">
+                                <label for="footer_left">{#exportpdf_dlg.footer_left}</label>
+                            </td>
+                            <td>
+                                <input name="footer_left" type="text" id="footer_left" value="" placeholder="{#exportpdf_dlg.head_foot_placeholder}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="footer_center">{#exportpdf_dlg.footer_center}</label>
+                            </td>
+                            <td>
+                                <input name="footer_center" type="text" id="footer_center" value="" placeholder="{#exportpdf_dlg.head_foot_placeholder}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="footer_right">{#exportpdf_dlg.footer_right}</label>
+                            </td>
+                            <td>
+                                <input name="footer_right" type="text" id="footer_right" value="" placeholder="{#exportpdf_dlg.head_foot_placeholder}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="footer_line">{#exportpdf_dlg.footer_line}</label>
+                            </td>
+                            <td>
+                                <input name="footer_line" type="checkbox" id="footer_line" value="1" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column1">
+                                <label for="footer_spacing">{#exportpdf_dlg.footer_spacing}</label>
+                            </td>
+                            <td>
+                                <input name="footer_spacing" type="number" size="2" maxlength="2" id="footer_spacing" value="0" /> mm
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <strong>{#exportpdf_dlg.variables}</strong>
+                <ul id="variables">
+                    <li title="{#exportpdf_dlg.current_page}">[page],</li>
+                    <li title="{#exportpdf_dlg.last_page}">[topage],</li>
+                    <li title="{#exportpdf_dlg.current_title}">[title],</li>
+                    <li title="{#exportpdf_dlg.doctitle}">[doctitle]</li>
+                </ul>
             </div>
         </div>
 

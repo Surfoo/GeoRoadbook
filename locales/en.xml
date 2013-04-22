@@ -1,6 +1,5 @@
 <?xml version='1.0'?>
 <i18n>
-    <text id="zip_archive">Roadbook in HTML format (zip archive)</text>
     <text id="difficulty">Difficulty:</text>
     <text id="terrain">Terrain:</text>
     <text id="size">Size:</text>
@@ -15,5 +14,6 @@
     <text id="large">Large</text>
     <text id="other">Other</text>
     <text id="not_chosen">Not chosen</text>
+    <text id="note">Personal Cache Note</text>
     <format id="date">%Y/%m/%d</format>
 </i18n>

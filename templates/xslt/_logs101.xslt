@@ -12,7 +12,7 @@
         <xsl:variable name="day-temp" select="substring-after($month-temp,'-')" />
         <xsl:variable name="day" select="substring($day-temp,1,2)" />
         <tr>
-            <td class="finder_name" valign="middle">
+            <td class="finder_name">
                 <xsl:choose>
                     <xsl:when test="grdspk:type = 'Found it'">
                         <img src="../img/log/icon_smile.png" alt="" />
@@ -68,12 +68,12 @@
                 </xsl:choose>
                 <xsl:value-of select="grdspk:finder" />
             </td>
-            <td width="50mm" align="right">
+            <td class="cacheLogDate">
                 <xsl:value-of select="concat($day, '/', $month, '/', $year)" />
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td class="cacheLogText" colspan="2">
                 <xsl:call-template name="PreserveLineBreaks">
                     <xsl:with-param name="text" select="grdspk:text"/>
                 </xsl:call-template>

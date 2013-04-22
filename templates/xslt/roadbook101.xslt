@@ -8,27 +8,31 @@
   <xsl:import href="_attributes101.xslt" />
   <xsl:import href="_hint.xslt" />
   <xsl:import href="_logs101.xslt" />
+  <xsl:strip-space elements="*" />
 
-  <xsl:output method="html"
+  <xsl:variable name="locale" select="document($locale_filename)/i18n" />
+
+  <!--<xsl:output method="html"
     indent="yes"
     omit-xml-declaration="yes"
     encoding="utf-8"
     doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
+    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />-->
 
-    <xsl:variable name="locale" select="document($locale_filename)/i18n" />
+  <xsl:output
+     method="xml"
+     doctype-system="about:legacy-compat"
+     encoding="UTF-8"
+     indent="yes" />
 
     <xsl:template match="/">
       <html>
         <head>
-          <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+          <meta charset="utf-8" />
+          <title>My roadbook</title>
           <link type="text/css" rel="stylesheet" href="../css/mycontent.css" media="all" />
-      </head>
+        </head>
       <body>
-          <xsl:if test="$zip_archive">
-            <p id="zip_archive"><a href="{$zip_filename}"><xsl:value-of select="$locale/text[@id='zip_archive']" /></a></p>
-        </xsl:if>
-
 
         <xsl:for-each select="gpx:gpx/gpx:wpt">
             <xsl:if test="grdspk:cache">
@@ -82,7 +86,7 @@
                 <!-- End variables -->
 
                 <div class="container1">
-                    <h2 class="cacheTitle">
+                    <h1>
                         <xsl:choose>
                             <xsl:when test="grdspk:cache/grdspk:type = 'Traditional Cache'">
                                 <img src="../img/caches/{$icon_cache_dir}/traditional.gif" alt="" />
@@ -121,7 +125,7 @@
                                 <img src="../img/not_chosen.gif" alt="" />
                             </xsl:otherwise>
                         </xsl:choose>
-                    <xsl:value-of select="grdspk:cache/grdspk:name"/></h2>
+                    <xsl:value-of select="grdspk:cache/grdspk:name"/></h1>
 
                     <p><strong><xsl:value-of select="$lat"/>&#160;<xsl:value-of select="$lon"/></strong></p>
 
@@ -194,7 +198,7 @@
 
 
               <div class="container2">
-                <h2><xsl:value-of select="gpx:name"/></h2>
+                <p class="cacheGCode"><xsl:value-of select="gpx:name"/></p>
                 <p>
                     <xsl:if test="string(normalize-space(grdspk:cache/grdspk:placed_by))">
                         <xsl:value-of select="$locale/text[@id='by']" />&#160;<strong><xsl:value-of select="grdspk:cache/grdspk:placed_by" /></strong>,
@@ -224,7 +228,7 @@
                   </xsl:when>
                 </xsl:choose>
                 </p>
-                <div class="clear"></div>
+                <div class="clear"><xsl:text disable-output-escaping="yes"><![CDATA[]]></xsl:text></div>
               </div>
 
             <!--<p>
@@ -239,32 +243,39 @@
             </ul>
         </xsl:if>
 
+        <xsl:if test='$display_note'>
+          <div class="cacheNote">
+            <p><xsl:value-of select="$locale/text[@id='note']" /></p>
+          </div>
+        </xsl:if>
         <!-- short_description -->
-        <div class="short_description">
-          <xsl:choose>
-            <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'True'">
-              <xsl:value-of select="grdspk:cache/grdspk:short_description" disable-output-escaping="yes" />
-          </xsl:when>
-          <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'False'">
-              <xsl:call-template name="PreserveLineBreaks">
-                <xsl:with-param name="text" select="grdspk:cache/grdspk:short_description"/>
-            </xsl:call-template>
-        </xsl:when>
-    </xsl:choose>
-</div>
+        <xsl:if test='$display_short_desc and normalize-space(grdspk:cache/grdspk:short_description)'>
+          <div class="short_description">
+            <xsl:choose>
+              <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'True'">
+                <xsl:value-of select="grdspk:cache/grdspk:short_description" disable-output-escaping="yes" />
+              </xsl:when>
+              <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'False'">
+                <xsl:call-template name="PreserveLineBreaks">
+                  <xsl:with-param name="text" select="grdspk:cache/grdspk:short_description"/>
+                </xsl:call-template>
+              </xsl:when>
+            </xsl:choose>
+          </div>
+        </xsl:if>
 
 <!-- long_description -->
 <div class="long_description">
   <xsl:choose>
     <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'True'">
       <xsl:value-of select="grdspk:cache/grdspk:long_description" disable-output-escaping="yes" />
-  </xsl:when>
-  <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'False'">
+    </xsl:when>
+    <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'False'">
       <xsl:call-template name="PreserveLineBreaks">
         <xsl:with-param name="text" select="grdspk:cache/grdspk:long_description"/>
-    </xsl:call-template>
-</xsl:when>
-</xsl:choose>
+      </xsl:call-template>
+    </xsl:when>
+  </xsl:choose>
 </div>
 
 <xsl:apply-templates select="grdspk:cache/grdspk:encoded_hints" />
@@ -272,11 +283,11 @@
 <!-- Logs -->
 <xsl:if test='$display_logs and grdspk:cache/grdspk:logs/grdspk:log'>
   <div class="cacheLogs">
-    <h2><xsl:value-of select="$locale/text[@id='logs']" /></h2>
-    <table cellspacing="0" cellpadding="0" width="100%">
+    <p><xsl:value-of select="$locale/text[@id='logs']" /></p>
+    <table>
       <xsl:apply-templates select="grdspk:cache/grdspk:logs/grdspk:log" />
-  </table>
-</div>
+    </table>
+  </div>
 </xsl:if>
 </div>
 <p class="pagebreak"><xsl:text disable-output-escaping="yes"><![CDATA[<!-- pagebreak -->]]></xsl:text></p>

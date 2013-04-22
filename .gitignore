@@ -4,5 +4,5 @@
 *.sublime-workspace
 templates_c/*
 upload/*
-roadbook/*.html
-roadbook/pdf/*.pdf
+roadbook/*.*
+roadbook/pdf/*
