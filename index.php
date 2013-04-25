@@ -15,7 +15,7 @@ if (!empty($_POST)) {
         $errors[] = 'INVALID_LOCALE';
     }
 
-    if ($_FILES['gpx']['error'] == UPLOAD_ERR_OK) {
+    if (empty($errors) && $_FILES['gpx']['error'] == UPLOAD_ERR_OK) {
 
         $finfo = new finfo(FILEINFO_MIME);
         $type = $finfo->file($_FILES['gpx']['tmp_name']);
@@ -60,10 +60,11 @@ if (!empty($_POST)) {
         }
         $display_note       = isset($_POST['note'])      ? true : false;
         $display_short_desc = isset($_POST['short_desc'])? true : false;
+        $display_hint       = isset($_POST['hint'])      ? true : false;
         $display_logs       = isset($_POST['logs'])      ? true : false;
-        // $zipArchiveClass    = ZIP_ARCHIVE && class_exists('ZipArchive') ? true : false;
+        $hint_encrypted     = (bool) (isset($_POST['hint_encrypted'] ) ? (int) $_POST['hint_encrypted'] : 0);
 
-        $uniqid = substr(md5(uniqid(rand(), true)), 0, 12);
+        $uniqid = substr(md5(uniqid(rand(), true)), 0, 16);
         $filename_gpx = sprintf(FILE_FORMAT, $uniqid, 'gpx');
 
         if (!move_uploaded_file($_FILES['gpx']['tmp_name'], UPLOAD_DIR . $filename_gpx)) {
@@ -84,18 +85,28 @@ if (!empty($_POST)) {
         $xmldoc = new DOMDocument();
         $xmldoc->load(UPLOAD_DIR . $filename_gpx);
 
-        // $zip_filename = sprintf(FILE_FORMAT, $uniqid, 'zip');
-
         $xsl->setParameter('', 'locale_filename', '../../locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
         $xsl->setParameter('', 'icon_cache_dir', ICON_CACHE_DIR);
         $xsl->setParameter('', 'display_note', $display_note);
         $xsl->setParameter('', 'display_short_desc', $display_short_desc);
+        $xsl->setParameter('', 'display_hint', $display_hint);
         $xsl->setParameter('', 'display_logs', $display_logs);
-        // $xsl->setParameter('', 'zip_archive', $zipArchiveClass);
-        // if ($zipArchiveClass) {
-        //     $xsl->setParameter('', 'zip_filename', $zip_filename);
-        // }
+
         $html = $xsl->transformToXML($xmldoc);
+
+        if($hint_encrypted) {
+            $dom = new DomDocument();
+            $dom->loadHTML($html);
+            $finder = new DomXPath($dom);
+            $classname="cacheHintContent";
+            $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+            foreach($nodes as $node) {
+                $encoded_hint = str_rot13($node->textContent);
+                $node->nodeValue = $encoded_hint;
+            }
+            $html = $dom->saveHtml();
+        }
+
 
         $html = preg_replace('/<\?xml[^>]*\?>/i', '', $html);
         $html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<html lang="' . $current_locale. '">', trim($html));
@@ -116,19 +127,6 @@ if (!empty($_POST)) {
         fclose($hd);
         touch(ROADBOOKS_DIR . $filename_json);
 
-        // if ($zipArchiveClass) {
-        //     $zip = new ZipArchive();
-        //     if ($zip->open(ROADBOOKS_DIR . $zip_filename, ZIPARCHIVE::CREATE) !== true) {
-        //         exit('Unable to open ' . $zip_filename);
-        //     }
-
-        //     $xsl->setParameter('', 'zip_archive', false); //disable zip link for zip archive
-        //     $zip->addFromString('roadbook/' . $filename_html, $xsl->transformToDoc($xmldoc));
-        //     $zip->addFile('css/mycontent.css');
-        //     recurse_zip('img', $zip);
-        //     $zip->close();
-        // }
-
         header('Location: roadbook/' . $filename_html);
         exit(0);
     }
@@ -136,5 +134,8 @@ if (!empty($_POST)) {
 
 header('Content-type: text/html; charset=utf-8');
 
+if(array_key_exists('deleted', $_GET)) {
+    $smarty->assign('deleted', true);
+}
 $smarty->assign('max_filesize', ini_get('upload_max_filesize'));
 $smarty->display('templates/index.tpl');

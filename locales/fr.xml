@@ -4,7 +4,7 @@
     <text id="terrain">Terrain :</text>
     <text id="size">Taille :</text>
     <text id="location">Lieu :</text>
-    <text id="hint">Indice</text>
+    <text id="hint">Indices</text>
     <text id="logs">Journaux</text>
     <text id="by">Par</text>
     <text id="hidden">cachée le</text>

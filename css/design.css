@@ -1,6 +1,45 @@
-body {
+/*body {
 	margin: 1em 1em 0 1em;
 }
 ul {
 	margin-bottom: 0;
+}*/
+
+.container {
+    margin-top: 1em;
+}
+header {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1em;
+}
+.hero-unit {
+    padding: 40px 40px;
+}
+#options legend {
+    margin: 0;
+}
+#options .control-group {
+    margin-top:0;
+    margin-left: 20px;
+}
+#hint_options {
+    margin-left: 20px;
+}
+
+#download {
+    margin: 0;
+}
+#download li {
+    display: inline;
+}
+#tinymce {
+    margin: 1em auto 0 auto;
+    display: block !important;
+    width: 210mm;
+    height:100%;
+}
+footer {
+    background-color: #eee;
+    border-top: 1px solid #ddd;
+    padding: 1em 0;
 }

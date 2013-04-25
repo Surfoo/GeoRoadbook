@@ -11,7 +11,7 @@ define('ICON_CACHE_DIR', '32x32');
 
 define('FILE_FORMAT', '%s.%s');
 define('MAX_RETENTION', 3600*24*30);
-// define('ZIP_ARCHIVE', false);
+define('ZIP_ARCHIVE', true);
 
 //Locales for the roadbook
 $locales = array('en', 'fr');

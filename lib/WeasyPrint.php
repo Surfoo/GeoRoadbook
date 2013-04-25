@@ -43,10 +43,12 @@ class WeasyPrint {
 
     protected function createPdf($filename, $user_stylesheet)
     {
-        $cmd_user_stylesheet = '';
+        $cmd_user_stylesheet = file_get_contents(dirname(__DIR__) . '/css/mycontent.css');
         if(!empty($user_stylesheet)) {
-            $cmd_user_stylesheet = "-s " . escapeshellarg('data:text/css;base64,' . base64_encode($user_stylesheet));
+            $cmd_user_stylesheet.= $user_stylesheet;
         }
+        $cmd_user_stylesheet = "-s " . escapeshellarg('data:text/css;base64,' . base64_encode($cmd_user_stylesheet));
+
         $this->command = escapeshellarg($this->bin) . ' '. escapeshellarg($this->input).' ' . escapeshellarg($filename) . ' '. $cmd_user_stylesheet;
         // die($this->command);
         // we use proc_open with pipes to fetch error output

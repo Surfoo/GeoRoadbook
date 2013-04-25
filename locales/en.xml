@@ -4,7 +4,7 @@
     <text id="terrain">Terrain:</text>
     <text id="size">Size:</text>
     <text id="location">Location:</text>
-    <text id="hint">Hint</text>
+    <text id="hint">Additional Hints</text>
     <text id="logs">Logs</text>
     <text id="by">By</text>
     <text id="hidden">hidden on</text>

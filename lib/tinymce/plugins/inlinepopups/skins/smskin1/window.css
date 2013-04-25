@@ -1,0 +1,102 @@
+/*
+
+SMSkin1
+COPYRIGHT © 2009 SYNASYS MEDIA, Jens Stolinski
+www.synasys.de
+
+*/
+
+/* Reset */
+.smskin1, .smskin1 div, .smskin1 span, .smskin1 a {vertical-align:baseline; text-align:left; position:absolute; border:0; padding:0; margin:0; background:transparent; font-family:arial,helvetica,sans-serif; font-size:13px; color:#3d4242; text-decoration:none; font-weight:normal; width:auto; height:auto; overflow:hidden; display:block}
+
+/* General */
+.smskin1 {position:absolute; direction:ltr}
+.smskin1 .mceWrapper {position:static}
+.mceEventBlocker {position:fixed; left:0; top:0; background:url(img/horizontal.png) no-repeat 0 -75px; width:100%; height:100%}
+.smskin1 .mcePlaceHolder {border:1px solid #000; background:#888; top:0; left:0; opacity:0.5; -ms-filter:'alpha(opacity=50)'; filter:alpha(opacity=50)}
+.smskin1_modalBlocker {position:fixed; left:0; top:0; width:100%; height:100%; background:#616a74; opacity:0.1; -ms-filter:'alpha(opacity=10)'; filter:alpha(opacity=10); display:none}
+
+/* Top */
+.smskin1 .mceTop, .smskin1 .mceTop div {top:0; width:100%; height:25px}
+.smskin1 .mceTop .mceLeft {width:5px; background:url(img/corners.png) -10px 0}
+.smskin1 .mceTop .mceCenter {right:5px; width:100%; height:25px; background:url(img/horizontal.png) 0 31px; clip:rect(auto auto auto 10px)}
+.smskin1 .mceTop .mceRight {right:0; width:5px; height:25px; background:url(img/corners.png) -15px 0}
+.smskin1 .mceTop span {width:100%; text-align:center; vertical-align:middle; line-height:25px; font-weight:bold}
+.smskin1 .mceFocus .mceTop .mceLeft {background:url(img/corners.png)}
+.smskin1 .mceFocus .mceTop .mceCenter {background:url(img/horizontal.png)}
+.smskin1 .mceFocus .mceTop .mceRight {background:url(img/corners.png) -5px 0}
+.smskin1 .mceFocus .mceTop span {color:#3d4242}
+
+/* Middle */
+.smskin1 .mceMiddle, .smskin1 .mceMiddle div {top:0}
+.smskin1 .mceMiddle {width:100%; height:100%; clip:rect(25px auto auto auto)}
+.smskin1 .mceMiddle .mceLeft {left:0; width:6px; height:100%; background:url(img/vertical.png) -18px 0}
+.smskin1 .mceMiddle span {top:25px; left:6px; width:100%; height:100%; background:#FFF}
+.smskin1 .mceMiddle .mceRight {right:0; width:6px; height:100%; background:url(img/vertical.png) -12px 0}
+.smskin1 .mceFocus .mceMiddle .mceLeft {background:url(img/vertical.png) -6px 0}
+.smskin1 .mceFocus .mceMiddle .mceRight {background:url(img/vertical.png)}
+
+/* Bottom */
+.smskin1 .mceBottom, .smskin1 .mceBottom div {height:6px}
+.smskin1 .mceBottom {left:0; bottom:0; width:100%}
+.smskin1 .mceBottom div {top:0}
+.smskin1 .mceBottom .mceLeft {left:0; width:5px; background:url(img/corners.png) -37px -6px}
+.smskin1 .mceBottom .mceCenter {left:5px; width:100%; background:url(img/horizontal.png) 0 -56px}
+.smskin1 .mceBottom .mceRight {right:0; width:5px; background: url(img/corners.png) -37px 0}
+.smskin1 .mceBottom span {display:none}
+.smskin1 .mceFocus .mceBottom .mceLeft {background:url(img/corners.png) -32px -6px}
+.smskin1 .mceFocus .mceBottom .mceCenter {background:url(img/horizontal.png) 0 -25px}
+.smskin1 .mceFocus .mceBottom .mceRight {background: url(img/corners.png) -32px 0}
+.smskin1 .mceStatusbar .mceBottom, .smskin1 .mceStatusbar .mceBottom div {height:25px}
+.smskin1 .mceStatusbar .mceBottom .mceLeft {background:url(img/corners.png) -29px 0}
+.smskin1 .mceStatusbar .mceBottom .mceCenter {background:url(img/horizontal.png) 0 -52px}
+.smskin1 .mceStatusbar .mceBottom .mceRight {background:url(img/corners.png) -24px 0}
+.smskin1 .mceStatusbar .mceBottom span {display:block; left:7px; font-family:Arial, Verdana; font-size:11px; line-height:25px}
+
+/* Actions */
+.smskin1 a {width:28px; height:15px; top:5px;}
+.smskin1 .mceClose {right:6px; background:url(img/buttons.png) -84px 0}
+.smskin1 .mceMin {display:none; right:68px; background:url(img/buttons.png) 0 0}
+.smskin1 .mceMed {display:none; right:37px; background:url(img/buttons.png) -28px 0}
+.smskin1 .mceMax {display:none; right:37px; background:url(img/buttons.png) -56px 0}
+.smskin1 .mceMove {display:none;width:100%;cursor:move;background:url(img/corners.png) no-repeat -100px -100px}
+.smskin1 .mceMovable .mceMove {display:block}
+.smskin1 .mceFocus .mceClose {right:6px; background:url(img/buttons.png) -84px -15px}
+.smskin1 .mceFocus .mceMin {right:68px; background:url(img/buttons.png) 0 -15px}
+.smskin1 .mceFocus .mceMed {right:37px; background:url(img/buttons.png) -28px -15px}
+.smskin1 .mceFocus .mceMax {right:37px; background:url(img/buttons.png) -56px -15px}
+.smskin1 .mceFocus .mceClose:hover {right:6px; background:url(img/buttons.png) -84px -30px}
+.smskin1 .mceFocus .mceClose:hover {right:6px; background:url(img/buttons.png) -84px -30px}
+.smskin1 .mceFocus .mceMin:hover {right:68px; background:url(img/buttons.png) 0 -30px}
+.smskin1 .mceFocus .mceMed:hover {right:37px; background:url(img/buttons.png) -28px -30px}
+.smskin1 .mceFocus .mceMax:hover {right:37px; background:url(img/buttons.png) -56px -30px}
+
+/* Resize */
+.smskin1 .mceResize {top:auto; left:auto; display:none; width:5px; height:5px; background:url(img/horizontal.png) no-repeat 0 -75px}
+.smskin1 .mceResizable .mceResize {display:block}
+.smskin1 .mceResizable .mceMin, .smskin1 .mceMax {display:none}
+.smskin1 .mceMinimizable .mceMin {display:block}
+.smskin1 .mceMaximizable .mceMax {display:block}
+.smskin1 .mceMaximized .mceMed {display:block}
+.smskin1 .mceMaximized .mceMax {display:none}
+.smskin1 a.mceResizeN {top:0; left:0; width:100%; cursor:n-resize}
+.smskin1 a.mceResizeNW {top:0; left:0; cursor:nw-resize}
+.smskin1 a.mceResizeNE {top:0; right:0; cursor:ne-resize}
+.smskin1 a.mceResizeW {top:0; left:0; height:100%; cursor:w-resize;}
+.smskin1 a.mceResizeE {top:0; right:0; height:100%; cursor:e-resize}
+.smskin1 a.mceResizeS {bottom:0; left:0; width:100%; cursor:s-resize}
+.smskin1 a.mceResizeSW {bottom:0; left:0; cursor:sw-resize}
+.smskin1 a.mceResizeSE {bottom:0; right:0; cursor:se-resize}
+
+/* Alert/Confirm */
+.smskin1 .mceButton {font-weight:bold; bottom:16px; width:104px; height:30px; background:url(img/button.png); line-height:30px; vertical-align:middle; text-align:center; outline:0}
+.smskin1 .mceButton:hover {background:url(img/button_active.png)}
+.smskin1 .mceMiddle .mceIcon {left:15px; top:35px; width:32px; height:32px}
+.smskin1 .mceAlert .mceMiddle span, .smskin1 .mceConfirm .mceMiddle span {background:transparent; line-height:18px; left:60px; top:40px; width:320px; height:40px; font-weight:bold; overflow:auto; white-space:normal}
+.smskin1 a:hover {font-weight:bold;}
+.smskin1 .mceAlert .mceMiddle, .smskin1 .mceConfirm .mceMiddle {background:#EBEBEB}
+.smskin1 .mceAlert .mceOk {left:50%; top:auto; margin-left: -52px}
+.smskin1 .mceAlert .mceIcon {background:url(img/icon_warning_32x32.png)}
+.smskin1 .mceConfirm .mceOk {left:52%; top:auto;}
+.smskin1 .mceConfirm .mceCancel {right:52%; top:auto}
+.smskin1 .mceConfirm .mceIcon {background:url(img/icon_important_32x32.png)} 

@@ -9,7 +9,7 @@
         <xsl:if test="string(normalize-space(.))">
             <div class="cacheHint">
                 <p><xsl:value-of select="$locale/text[@id='hint']" /></p>
-                <p>
+                <p class="cacheHintContent">
                     <xsl:call-template name="PreserveLineBreaks">
                         <xsl:with-param name="text" select="."/>
                     </xsl:call-template>

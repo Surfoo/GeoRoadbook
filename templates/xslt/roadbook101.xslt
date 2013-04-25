@@ -278,7 +278,10 @@
   </xsl:choose>
 </div>
 
-<xsl:apply-templates select="grdspk:cache/grdspk:encoded_hints" />
+<!-- Additional Hints -->
+<xsl:if test='$display_hint'>
+  <xsl:apply-templates select="grdspk:cache/grdspk:encoded_hints" />
+</xsl:if>
 
 <!-- Logs -->
 <xsl:if test='$display_logs and grdspk:cache/grdspk:logs/grdspk:log'>
