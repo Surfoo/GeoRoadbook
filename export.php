@@ -40,10 +40,16 @@ $customHeaderFooter = '@%s {%s: "%s"}';
 $pageOptions = '';
 
 $globalOptions['size'] = sprintf('%s %s', $options_css['page_size'], $options_css['orientation']);
-$globalOptions['margin'] = $options_css['margin_top'] . 'mm ' . $options_css['margin_right'] . 'mm ' . 
-                           $options_css['margin_bottom'] . 'mm ' . $options_css['margin_left'] . 'mm';
+$globalOptions['margin'] = (int) $options_css['margin_top'] . 'mm ' . (int) $options_css['margin_right'] . 'mm ' . 
+                           (int) $options_css['margin_bottom'] . 'mm ' . (int) $options_css['margin_left'] . 'mm';
 foreach ($globalOptions as $key => $value) {
     $pageOptions.= sprintf('%s: %s;', $key, $value);
+}
+
+foreach ($options_css as &$value) {
+    $value = str_replace('[page]', '"counter(page)"', $value);
+    $value = str_replace('[topage]', '"counter(pages)"', $value);
+    $value = preg_replace('/"{1,}/', '"', $value);
 }
 
 if(!empty($options_css['header_left'])) {
@@ -64,7 +70,9 @@ if(!empty($options_css['footer_center'])) {
 if(!empty($options_css['footer_right'])) {
     $pageOptions.= sprintf($customHeaderFooter, 'bottom-right', 'content', $options_css['footer_right']);
 }
+
 $customCSS = sprintf($customCSS_format, $pageOptions);
+$customCSS = preg_replace('/"{2,}/', '', $customCSS);
 
 $pdf = new WeasyPrint($filename_html);
 if(!$pdf->saveAs($filename_pdf, $customCSS)) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <title>GeoRoadBook, create your geocaching roadbook</title>
@@ -11,19 +11,16 @@
         <script type="text/javascript">
             var roadbook_id = '{$roadbook_id|escape:js}', language = '{$language|escape:js}';
         </script>
-        <script language="javascript" type="text/javascript" src="../lib/georoadbook.js"></script>
+        
     </head>
     <body>
         <div class="container">
             <div class="hero-unit">
-                <header>
-                    <h1>GeoRoadBook</h1>
-                    <p><small>GeoRoadbook is a web app to get your geocaching roadbook ready-to-print from your gpx file (pocket query, gsak).</small></p>
-                </header>
+                {include file="header.tpl"}
+
                 <div id="ui_edition">
                     <div>
                         <div class="pull-right">
-                            {*<button type="submit" id="fullscreen" class="btn btn-primary"><i class="icon-fullscreen icon-white"></i> Fullscreen</button>*}
                             <button type="submit" id="delete" class="btn btn-warning"><i class="icon-trash icon-white"></i> Delete</button>
                         </div>
                         <ul id="download">
@@ -39,17 +36,9 @@
             </div>
         </div>
 
-        <footer id="footer">
-          <div class="container">
-            <p class="muted">
-                <a href="https://github.com/Surfoo/georoadbook/issues?direction=desc&amp;sort=created&amp;state=open">Report Bugs / issues</a><br />
-                <a href="https://github.com/Surfoo/georoadbook">Source available on github.com</a>
-            </p>
-          </div>
-        </footer>
+        {include file="footer.tpl"}
+
         <script src="../bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript">
-        
-        </script>
+        <script src="../lib/georoadbook.js" type="text/javascript"></script>
     </body>
 </html>

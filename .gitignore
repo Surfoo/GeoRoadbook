@@ -1,8 +1,8 @@
 *~
 *.swp
+*.gpx
 *.sublime-project
 *.sublime-workspace
 templates_c/*
-upload/*
 roadbook/*.*
 roadbook/pdf/*

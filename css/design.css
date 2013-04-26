@@ -1,12 +1,5 @@
-/*body {
-	margin: 1em 1em 0 1em;
-}
-ul {
-	margin-bottom: 0;
-}*/
-
-.container {
-    margin-top: 1em;
+body {
+    padding-top: 1em;
 }
 header {
     border-bottom: 1px solid #ddd;
@@ -14,6 +7,9 @@ header {
 }
 .hero-unit {
     padding: 40px 40px;
+}
+.hero-unit h1 {
+    font-size: 44px;
 }
 #options legend {
     margin: 0;
@@ -38,8 +34,22 @@ header {
     width: 210mm;
     height:100%;
 }
+
 footer {
+    height: 79px;
     background-color: #eee;
     border-top: 1px solid #ddd;
-    padding: 1em 0;
+}
+footer > .container {
+    padding: 5px 0 0 0;
+}
+.github {
+    margin-top: 1px;
+    *margin-right: .3em;
+    line-height: 14px;
+    vertical-align: text-top;
+    background: url('icon-github.png') no-repeat;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
 }

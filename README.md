@@ -1,13 +1,13 @@
-GeoRoadbook is a web app to get your geocaching roadbook ready-to-print from your gpx file (pocket query, gsak).
+GeoRoadbook is a web app to create your geocaching roadbook ready-to-print from your gpx file (pocket query, gsak).
 
 Works with:
 * [jQuery](http://jquery.com/) 2.0.0
 * [TinyMCE](http://www.tinymce.com/) 3.5.8
 * [WeasyPrint](http://www.weasyprint.org/) 0.19
+* [Bootstrap](http://twitter.github.io/bootstrap/) 2.3.1
 
 Depends on:
 * ttf-mscorefonts-installer
-* [WeasyPrint](http://www.weasyprint.org/)
 
 Get the source
 --------------
@@ -24,4 +24,4 @@ GeoRoadbook is distributed under [Apache License, Version 2.0](http://www.apache
 Contact
 -------
 
-- original author: Surfoo
+- original author: surfooo at gmail dot com
