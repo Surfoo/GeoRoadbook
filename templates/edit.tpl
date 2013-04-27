@@ -7,7 +7,7 @@
         <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
         <link href="../css/design.css" rel="stylesheet" media="screen">
         <script type="text/javascript" src="../lib/jquery-2.0.0.min.js"></script>
-        <script type="text/javascript" src="../lib/tinymce/tiny_mce.js"></script>
+        <script type="text/javascript" src="../lib/tinymce358/tiny_mce.js"></script>
         <script type="text/javascript">
             var roadbook_id = '{$roadbook_id|escape:js}', language = '{$language|escape:js}';
         </script>
