@@ -33,6 +33,10 @@ $hd = fopen($filename_json, 'w');
 fwrite($hd, json_encode($options_css));
 fclose($hd);
 
+if(array_key_exists('real_export', $_POST) && $_POST['real_export'] == "false") {
+    renderAjax(array('success' => true));
+}
+
 require LIB_DIR . 'WeasyPrint.php';
 
 $customCSS_format = "@page {%s}";
