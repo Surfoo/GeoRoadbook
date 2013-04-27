@@ -8,16 +8,24 @@ body, td, pre {
     margin: 8px;
 }
 
-.container1 {
-    float: left;
-    width: 50%;
-}
-.container2 {
-    text-align: right;
-}
 .clear {
     clear: both;
     height: 0;
+}
+.containers {
+    position: relative;
+    min-height: 60px;
+}
+.container1 {
+    position: absolute;
+    top:0 ;
+    left: 0;
+}
+.container2 {
+    position:absolute;
+    top:0;
+    right:0;
+    text-align: right;
 }
 .container1 p, .container2 p {
     margin: 0.5mm 0;

@@ -85,6 +85,7 @@
                 </xsl:variable>
                 <!-- End variables -->
 
+                <div class="containers">
                 <div class="container1">
                     <h1>
                         <xsl:choose>
@@ -230,7 +231,7 @@
                 </p>
                 <div class="clear"><xsl:text disable-output-escaping="yes"><![CDATA[]]></xsl:text></div>
               </div>
-
+              </div>
             <!--<p>
               <xsl:if test="string(normalize-space(grdspk:cache/grdspk:state))">
                 <xsl:value-of select="$locale/text[@id='location']" />&#160;<xsl:value-of select="grdspk:cache/grdspk:state" />, <xsl:value-of select="grdspk:cache/grdspk:country" />
