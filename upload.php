@@ -62,11 +62,11 @@ if(array_key_exists('locale', $_POST) && in_array($_POST['locale'], $locales)) {
     $current_locale     = $_POST['locale'];
 }
 
-$display_note       = isset($_POST['note']) && $_POST['note'] == "true"             ? true : false;
-$display_short_desc = isset($_POST['short_desc']) && $_POST['short_desc'] == "true" ? true : false;
-$display_hint       = isset($_POST['hint']) && $_POST['hint'] == "true"             ? true : false;
-$display_logs       = isset($_POST['logs']) && $_POST['logs'] == "true"             ? true : false;
-$hint_encrypted     = isset($_POST['hint_encrypted']) && $_POST['logs'] == "true"   ? true : false;
+$display_note       = isset($_POST['note']) && $_POST['note'] == "true"                       ? true : false;
+$display_short_desc = isset($_POST['short_desc']) && $_POST['short_desc'] == "true"           ? true : false;
+$display_hint       = isset($_POST['hint']) && $_POST['hint'] == "true"                       ? true : false;
+$display_logs       = isset($_POST['logs']) && $_POST['logs'] == "true"                       ? true : false;
+$hint_encrypted     = isset($_POST['hint_encrypted']) && $_POST['hint_encrypted'] == "true"   ? true : false;
 
 $uniqid = substr(md5(uniqid(mt_rand(), true)), 0, 16);
 
@@ -95,7 +95,7 @@ $xsl->setParameter('', 'display_logs', $display_logs);
 
 $html = $xsl->transformToXML($xml);
 
-if($hint_encrypted) {
+if($display_hint && $hint_encrypted) {
     $dom = new DomDocument();
     $dom->loadHTML($html);
     $finder = new DomXPath($dom);

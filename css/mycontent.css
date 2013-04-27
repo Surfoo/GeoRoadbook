@@ -10,7 +10,7 @@ body, td, pre {
 
 .container1 {
     float: left;
-    width: 50%; /* Bug in weasyPrint, fixed width temporarily, WIP */
+    width: 50%;
 }
 .container2 {
     text-align: right;
@@ -107,6 +107,6 @@ h1 img, .finder_name img {
 }
 
 .short_description img, .long_description img {
-    max-width: 15cm;
+    max-width: 100%;
     height: auto;
 }
