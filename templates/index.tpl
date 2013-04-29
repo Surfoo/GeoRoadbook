@@ -19,7 +19,7 @@
                         Your roadbook has been deleted!
                     </div>
                 {/if}
-                <form action="upload.php" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <form action="#" method="post" class="form-horizontal">
                     <fieldset>
                         <div id="error" class="alert alert-block hide"></div>
                         <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -36,13 +36,14 @@
                         </div>
                         <p><label for="locale">Language:<br />
                             <select name="locale" id="locale" size="2">
-                                <option value="en" selected="selected">English</option>
-                                <option value="fr">Français</option>
+                                <option value="en"{if $language == "en"} selected="selected"{/if}>English</option>
+                                <option value="fr"{if $language == "fr"} selected="selected"{/if}>Français</option>
                             </select></label>
                         </p>
                         <fieldset id="options">
                             <legend class="small">Options:</legend>
                             <div class="control-group">
+                                <label for="toc" class="checkbox inline"><input type="checkbox" name="toc" id="toc" value="1" /> Table of content</label><br />
                                 <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Display a cache note area</label><br />
                                 <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Display short description</label><br />
                                 <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Display additionnal hint</label><br />

@@ -59,9 +59,10 @@ if (!is_array($schemas)) {
 
 $current_locale = $locales[0];
 if(array_key_exists('locale', $_POST) && in_array($_POST['locale'], $locales)) {
-    $current_locale     = $_POST['locale'];
+    $current_locale = $_POST['locale'];
 }
 
+$display_toc        = isset($_POST['toc']) && $_POST['toc']   == "true"                       ? true : false;
 $display_note       = isset($_POST['note']) && $_POST['note'] == "true"                       ? true : false;
 $display_short_desc = isset($_POST['short_desc']) && $_POST['short_desc'] == "true"           ? true : false;
 $display_hint       = isset($_POST['hint']) && $_POST['hint'] == "true"                       ? true : false;
@@ -94,10 +95,13 @@ $xsl->setParameter('', 'display_hint', $display_hint);
 $xsl->setParameter('', 'display_logs', $display_logs);
 
 $html = $xsl->transformToXML($xml);
+$html = preg_replace('/<\?xml[^>]*\?>/i', '', $html);
+$html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<html lang="' . $current_locale. '">', trim($html));
+// $html = htmlspecialchars_decode($html);
 
 if($display_hint && $hint_encrypted) {
     $dom = new DomDocument();
-    $dom->loadHTML($html);
+    @$dom->loadHTML($html);
     $finder = new DomXPath($dom);
     $classname="cacheHintContent";
     $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
@@ -108,10 +112,38 @@ if($display_hint && $hint_encrypted) {
     $html = $dom->saveHtml();
 }
 
+if($display_toc) {
+    $dom = new DomDocument();
+    @$dom->loadHTML($html);
+    $finder = new DomXPath($dom);
+    $classname="cacheTitle";
+    $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+    $tocContent = array();
+    foreach($nodes as $node) {
+        $icon  = $node->firstChild->getAttribute('src');
+        $title = $node->textContent;
+        $tocContent[] = array('icon' => $icon, 'title' => $title);
+    }
 
-$html = preg_replace('/<\?xml[^>]*\?>/i', '', $html);
-$html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<html lang="' . $current_locale. '">', trim($html));
-$html = htmlspecialchars_decode($html);
+    if(!empty($tocContent)) {
+        require LIB_DIR . 'smarty/Smarty.class.php';
+        $smarty = new Smarty();
+        $smarty->assign('toc', $tocContent);
+        $toc_html = $smarty->fetch('templates/toc.tpl');
+
+        $frag = $dom->createDocumentFragment();
+        $frag->appendXML($toc_html);
+
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $first = $body->getElementsByTagName('div')->item(0);
+        $body->insertBefore($frag, $first);
+        // $body->appendChild($frag);
+        $html = $dom->saveHtml();
+
+    }
+
+}
+
 
 // if(isset($_POST['typog­ra­phy'])) {
 //     require LIB_DIR . '/php-typography/php-typography.php';

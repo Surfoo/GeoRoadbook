@@ -118,3 +118,41 @@ h1 img, .finder_name img {
     max-width: 100%;
     height: auto;
 }
+
+/* Table of Content */
+#toc {
+    border-spacing: 0px;
+    border-collapse: collapse;
+    width: 100%;
+}
+#toc th {
+    text-align: center;
+}
+#tocHeadName {
+    text-align:left;
+}
+#tocHeadFound, #tocHeadDnf, #tocHeadPage {
+    width: 1cm;
+}
+thead {
+    border: 1px solid #000;
+}
+thead th {
+    height: 0.7cm;
+}
+tr {
+    border-left: 1px solid #000;
+}
+#tocHeadName, #tocHeadFound, #tocHeadDnf,
+.tocName, .tocFound, .tocDnf, .tocPage {
+    border-right: 1px solid #000;
+}
+#toc tr {
+    border-bottom: 1px solid #000;
+}
+.tocIcon {
+    width: 0.5cm;
+}
+.tocPage {
+    text-align:right;
+}

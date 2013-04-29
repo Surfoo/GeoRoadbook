@@ -62,7 +62,46 @@ if(array_key_exists('zip', $_GET) && ZIP_ARCHIVE && class_exists('ZipArchive')) 
 }
 
 if(array_key_exists('raw', $_GET)) {
-    echo file_get_contents($path_filename_html);
+
+    $html = file_get_contents($path_filename_html);
+
+    // UGLY DUPLICATE CODE
+    $json = file_get_contents(ROADBOOKS_DIR . sprintf(FILE_FORMAT, (string) $_GET['roadbook'], 'json'));
+    $options_css = json_decode($json, true);
+
+    if(!is_null($options_css)) {
+        $customCSS_format = "@page {%s}";
+        $customHeaderFooter = '@%s {%s: "%s"}';
+        $pageOptions = '';
+
+        $globalOptions['size'] = sprintf('%s %s', $options_css['page_size'], $options_css['orientation']);
+        $globalOptions['margin'] = (int) $options_css['margin_top'] . 'mm ' . (int) $options_css['margin_right'] . 'mm ' . 
+                                   (int) $options_css['margin_bottom'] . 'mm ' . (int) $options_css['margin_left'] . 'mm';
+        foreach ($globalOptions as $key => $value) {
+            $pageOptions.= sprintf('%s: %s;', $key, $value);
+        }
+
+        foreach ($options_css as &$value) {
+            if($value != "") {
+                $value = str_replace('[page]', '"counter(page)"', $value);
+                $value = str_replace('[topage]', '"counter(pages)"', $value);
+                $value = preg_replace('/"{1,}/', '"', $value);
+            }
+        }
+
+        $pageOptions.= sprintf($customHeaderFooter, 'top-left', 'content', $options_css['header_left']);
+        $pageOptions.= sprintf($customHeaderFooter, 'top-center', 'content', $options_css['header_center']);
+        $pageOptions.= sprintf($customHeaderFooter, 'top-right', 'content', $options_css['header_right']);
+        $pageOptions.= sprintf($customHeaderFooter, 'bottom-left', 'content', $options_css['footer_left']);
+        $pageOptions.= sprintf($customHeaderFooter, 'bottom-center', 'content', $options_css['footer_center']);
+        $pageOptions.= sprintf($customHeaderFooter, 'bottom-right', 'content', $options_css['footer_right']);
+
+        $customCSS = sprintf($customCSS_format, $pageOptions);
+        //$customCSS = preg_replace('/"{2,}/', '', $customCSS);
+        $customCSS = '<style type="text/css">' . $customCSS . '</style>';
+        $html = str_replace("</head>", $customCSS . "</head>", $html);
+    }
+    echo $html;
     exit(0);
 }
 

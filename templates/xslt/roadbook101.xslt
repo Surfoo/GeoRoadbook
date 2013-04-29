@@ -86,151 +86,151 @@
                 <!-- End variables -->
 
                 <div class="containers">
-                <div class="container1">
-                    <h1>
-                        <xsl:choose>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Traditional Cache'">
-                                <img src="../img/caches/{$icon_cache_dir}/traditional.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Multi-cache'">
-                                <img src="../img/caches/{$icon_cache_dir}/multi.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Unknown Cache'">
-                                <img src="../img/caches/{$icon_cache_dir}/mystery.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Event Cache'">
-                                <img src="../img/caches/{$icon_cache_dir}/event.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Webcam Cache'">
-                                <img src="../img/caches/{$icon_cache_dir}/webcam.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Wherigo Cache'">
-                                <img src="../img/caches/{$icon_cache_dir}/wherigo.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Earthcache'">
-                                <img src="../img/caches/{$icon_cache_dir}/earthcache.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Virtual Cache'">
-                                <img src="../img/caches/{$icon_cache_dir}/virtual.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Letterbox Hybrid'">
-                                <img src="../img/caches/{$icon_cache_dir}/letterbox.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Cache In Trash Out Event'">
-                                <img src="../img/caches/{$icon_cache_dir}/cito.gif" alt="" />
-                            </xsl:when>
-                            <xsl:when test="grdspk:cache/grdspk:type = 'Mega-Event Cache'">
-                                <img src="../img/caches/{$icon_cache_dir}/megaevent.gif" alt="" />
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <img src="../img/not_chosen.gif" alt="" />
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    <xsl:value-of select="grdspk:cache/grdspk:name"/></h1>
+                  <div class="container1">
+                      <h1 class="cacheTitle">
+                          <xsl:choose>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Traditional Cache'">
+                                  <img src="../img/caches/{$icon_cache_dir}/traditional.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Multi-cache'">
+                                  <img src="../img/caches/{$icon_cache_dir}/multi.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Unknown Cache'">
+                                  <img src="../img/caches/{$icon_cache_dir}/mystery.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Event Cache'">
+                                  <img src="../img/caches/{$icon_cache_dir}/event.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Webcam Cache'">
+                                  <img src="../img/caches/{$icon_cache_dir}/webcam.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Wherigo Cache'">
+                                  <img src="../img/caches/{$icon_cache_dir}/wherigo.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Earthcache'">
+                                  <img src="../img/caches/{$icon_cache_dir}/earthcache.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Virtual Cache'">
+                                  <img src="../img/caches/{$icon_cache_dir}/virtual.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Letterbox Hybrid'">
+                                  <img src="../img/caches/{$icon_cache_dir}/letterbox.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Cache In Trash Out Event'">
+                                  <img src="../img/caches/{$icon_cache_dir}/cito.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Mega-Event Cache'">
+                                  <img src="../img/caches/{$icon_cache_dir}/megaevent.gif" alt="" />
+                              </xsl:when>
+                              <xsl:otherwise>
+                                  <img src="../img/not_chosen.gif" alt="" />
+                              </xsl:otherwise>
+                          </xsl:choose>
+                      <xsl:value-of select="grdspk:cache/grdspk:name"/></h1>
 
-                    <p><strong><xsl:value-of select="$lat"/>&#160;<xsl:value-of select="$lon"/></strong></p>
+                      <p><strong><xsl:value-of select="$lat"/>&#160;<xsl:value-of select="$lon"/></strong></p>
 
-                    <p><xsl:value-of select="$locale/text[@id='difficulty']" />
-                        <span>
-                            <xsl:choose>
-                                <xsl:when test="grdspk:cache/grdspk:difficulty = '1'">
-                                    <img src="../img/cotation/stars1.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:difficulty = '1.5'">
-                                    <img src="../img/cotation/stars1_5.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:difficulty = '2'">
-                                    <img src="../img/cotation/stars2.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:difficulty = '2.5'">
-                                    <img src="../img/cotation/stars2_5.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:difficulty = '3'">
-                                    <img src="../img/cotation/stars3.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:difficulty = '3.5'">
-                                    <img src="../img/cotation/stars3_5.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:difficulty = '4'">
-                                    <img src="../img/cotation/stars4.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:difficulty = '4.5'">
-                                    <img src="../img/cotation/stars4_5.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:difficulty = '5'">
-                                    <img src="../img/cotation/stars5.png" alt="" />
-                                </xsl:when>
-                            </xsl:choose>
-                        </span>
-                        &#160;<xsl:value-of select="$locale/text[@id='terrain']" />
-                        <span>
-                            <xsl:choose>
-                                <xsl:when test="grdspk:cache/grdspk:terrain = '1'">
-                                    <img src="../img/cotation/stars1.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:terrain = '1.5'">
-                                    <img src="../img/cotation/stars1_5.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:terrain = '2'">
-                                    <img src="../img/cotation/stars2.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:terrain = '2.5'">
-                                    <img src="../img/cotation/stars2_5.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:terrain = '3'">
-                                    <img src="../img/cotation/stars3.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:terrain = '3.5'">
-                                    <img src="../img/cotation/stars3_5.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:terrain = '4'">
-                                    <img src="../img/cotation/stars4.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:terrain = '4.5'">
-                                    <img src="../img/cotation/stars4_5.png" alt="" />
-                                </xsl:when>
-                                <xsl:when test="grdspk:cache/grdspk:terrain = '5'">
-                                    <img src="../img/cotation/stars5.png" alt="" />
-                                </xsl:when>
-                            </xsl:choose>
-                        </span>
-                    </p>
-              </div>
+                      <p><xsl:value-of select="$locale/text[@id='difficulty']" />
+                          <span>
+                              <xsl:choose>
+                                  <xsl:when test="grdspk:cache/grdspk:difficulty = '1'">
+                                      <img src="../img/cotation/stars1.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:difficulty = '1.5'">
+                                      <img src="../img/cotation/stars1_5.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:difficulty = '2'">
+                                      <img src="../img/cotation/stars2.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:difficulty = '2.5'">
+                                      <img src="../img/cotation/stars2_5.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:difficulty = '3'">
+                                      <img src="../img/cotation/stars3.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:difficulty = '3.5'">
+                                      <img src="../img/cotation/stars3_5.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:difficulty = '4'">
+                                      <img src="../img/cotation/stars4.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:difficulty = '4.5'">
+                                      <img src="../img/cotation/stars4_5.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:difficulty = '5'">
+                                      <img src="../img/cotation/stars5.png" alt="" />
+                                  </xsl:when>
+                              </xsl:choose>
+                          </span>
+                          &#160;<xsl:value-of select="$locale/text[@id='terrain']" />
+                          <span>
+                              <xsl:choose>
+                                  <xsl:when test="grdspk:cache/grdspk:terrain = '1'">
+                                      <img src="../img/cotation/stars1.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:terrain = '1.5'">
+                                      <img src="../img/cotation/stars1_5.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:terrain = '2'">
+                                      <img src="../img/cotation/stars2.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:terrain = '2.5'">
+                                      <img src="../img/cotation/stars2_5.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:terrain = '3'">
+                                      <img src="../img/cotation/stars3.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:terrain = '3.5'">
+                                      <img src="../img/cotation/stars3_5.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:terrain = '4'">
+                                      <img src="../img/cotation/stars4.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:terrain = '4.5'">
+                                      <img src="../img/cotation/stars4_5.png" alt="" />
+                                  </xsl:when>
+                                  <xsl:when test="grdspk:cache/grdspk:terrain = '5'">
+                                      <img src="../img/cotation/stars5.png" alt="" />
+                                  </xsl:when>
+                              </xsl:choose>
+                          </span>
+                      </p>
+                </div>
 
 
-              <div class="container2">
-                <p class="cacheGCode"><xsl:value-of select="gpx:name"/></p>
-                <p>
-                    <xsl:if test="string(normalize-space(grdspk:cache/grdspk:placed_by))">
-                        <xsl:value-of select="$locale/text[@id='by']" />&#160;<strong><xsl:value-of select="grdspk:cache/grdspk:placed_by" /></strong>,
-                    </xsl:if>
-                    <xsl:value-of select="$locale/text[@id='hidden']" /><strong>&#160;<xsl:value-of select="$hidden_date" /></strong>
-                </p>
-                <p>
-                  <xsl:value-of select="$locale/text[@id='size']" />&#160;
-                  <xsl:choose>
-                    <xsl:when test="grdspk:cache/grdspk:container = 'Micro'">
-                      <img src="../img/container/micro.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='micro']" />)
-                  </xsl:when>
-                  <xsl:when test="grdspk:cache/grdspk:container = 'Small'">
-                      <img src="../img/container/small.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='small']" />)
-                  </xsl:when>
-                  <xsl:when test="grdspk:cache/grdspk:container = 'Regular'">
-                      <img src="../img/container/regular.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='regular']" />)
-                  </xsl:when>
-                  <xsl:when test="grdspk:cache/grdspk:container = 'Large'">
-                      <img src="../img/container/large.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='large']" />)
-                  </xsl:when>
-                  <xsl:when test="grdspk:cache/grdspk:container = 'Other'">
-                      <img src="../img/container/other.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='other']" />)
-                  </xsl:when>
-                  <xsl:when test="grdspk:cache/grdspk:container = 'Not chosen' or grdspk:cache/grdspk:container = 'not_chosen'">
-                      <img src="../img/container/not_chosen.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='not_chosen']" />)
-                  </xsl:when>
-                </xsl:choose>
-                </p>
-                <div class="clear"><xsl:text disable-output-escaping="yes"><![CDATA[]]></xsl:text></div>
-              </div>
+                <div class="container2">
+                  <p class="cacheGCode"><xsl:value-of select="gpx:name"/></p>
+                  <p>
+                      <xsl:if test="string(normalize-space(grdspk:cache/grdspk:placed_by))">
+                          <xsl:value-of select="$locale/text[@id='by']" />&#160;<strong><xsl:value-of select="grdspk:cache/grdspk:placed_by" /></strong>,
+                      </xsl:if>
+                      <xsl:value-of select="$locale/text[@id='hidden']" /><strong>&#160;<xsl:value-of select="$hidden_date" /></strong>
+                  </p>
+                  <p>
+                    <xsl:value-of select="$locale/text[@id='size']" />&#160;
+                    <xsl:choose>
+                      <xsl:when test="grdspk:cache/grdspk:container = 'Micro'">
+                        <img src="../img/container/micro.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='micro']" />)
+                    </xsl:when>
+                    <xsl:when test="grdspk:cache/grdspk:container = 'Small'">
+                        <img src="../img/container/small.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='small']" />)
+                    </xsl:when>
+                    <xsl:when test="grdspk:cache/grdspk:container = 'Regular'">
+                        <img src="../img/container/regular.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='regular']" />)
+                    </xsl:when>
+                    <xsl:when test="grdspk:cache/grdspk:container = 'Large'">
+                        <img src="../img/container/large.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='large']" />)
+                    </xsl:when>
+                    <xsl:when test="grdspk:cache/grdspk:container = 'Other'">
+                        <img src="../img/container/other.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='other']" />)
+                    </xsl:when>
+                    <xsl:when test="grdspk:cache/grdspk:container = 'Not chosen' or grdspk:cache/grdspk:container = 'not_chosen'">
+                        <img src="../img/container/not_chosen.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='not_chosen']" />)
+                    </xsl:when>
+                  </xsl:choose>
+                  </p>
+                  <div class="clear"><xsl:text disable-output-escaping="yes"><![CDATA[]]></xsl:text></div>
+                </div>
               </div>
             <!--<p>
               <xsl:if test="string(normalize-space(grdspk:cache/grdspk:state))">

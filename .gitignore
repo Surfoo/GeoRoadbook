@@ -3,6 +3,7 @@
 *.gpx
 *.sublime-project
 *.sublime-workspace
+TODO
 templates_c/*
 roadbook/*.*
 roadbook/pdf/*
