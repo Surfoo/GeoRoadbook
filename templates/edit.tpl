@@ -4,14 +4,14 @@
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <title>GeoRoadBook, create your geocaching roadbook</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
-        <link href="../css/design.css" rel="stylesheet" media="all">
-        <script type="text/javascript" src="../js/jquery-2.0.0.min.js"></script>
-        <script type="text/javascript" src="../js/tinymce4/tinymce.min.js"></script>
+        <link rel="icon" type="image/png" href="/css/icon-roadbook.png" />
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
+        <link rel="stylesheet" href="/css/design.css" media="all">
+        <script type="text/javascript" src="/js/jquery-2.0.0.min.js"></script>
+        <script type="text/javascript" src="/js/tinymce4/tinymce.min.js"></script>
         <script type="text/javascript">
             var roadbook_id = '{$roadbook_id|escape:js}', language = '{$language|escape:js}';
         </script>
-        
     </head>
     <body>
         <div class="container">
@@ -48,7 +48,7 @@
 
         {include file="footer.tpl"}
 
-        <script src="../bootstrap/js/bootstrap.min.js"></script>
-        <script src="../js/georoadbook.js" type="text/javascript"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/js/georoadbook.js" type="text/javascript"></script>
     </body>
 </html>

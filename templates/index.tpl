@@ -4,9 +4,10 @@
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <title>GeoRoadBook, create your geocaching roadbook</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="bootstrap/css/bootstrap-fileupload.min.css" rel="stylesheet" media="screen">
-        <link href="css/design.css" rel="stylesheet" media="all">
+        <link rel="icon" type="image/png" href="/css/icon-roadbook.png" />
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="screen">
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="screen">
+        <link rel="stylesheet" href="/css/design.css" media="all">
     </head>
     <body>
         <div class="container">
@@ -64,9 +65,9 @@
 
         {include file="footer.tpl"}
 
-        <script src="js/jquery-2.0.0.min.js" type="text/javascript"></script>
-        <script src="bootstrap/js/bootstrap.min.js"></script>
-        <script src="bootstrap/js/bootstrap-fileupload.js"></script>
-        <script src="js/upload.js" type="text/javascript"></script>
+        <script src="/js/jquery-2.0.0.min.js" type="text/javascript"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/bootstrap/js/bootstrap-fileupload.js"></script>
+        <script src="/js/upload.js" type="text/javascript"></script>
     </body>
 </html>
