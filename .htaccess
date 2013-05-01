@@ -1,21 +1,20 @@
 RewriteEngine on
 RewriteRule roadbook/(.*).html(.*) /edit.php?roadbook=$1&$2 [PT,QSA]
-RewriteRule roadbook/(.*).html(.*) /edit.php?roadbook=$1&$2 [PT,QSA]
 
 #gzip
 AddOutputFilterByType DEFLATE text/javascript application/javascript text/css application/xhtml+xml text/html
 
-<FilesMatch "css/roadbook.css">
+<Files css/roadbook.css>
 ExpiresActive Off
 Header set Cache-Control "max-age=0, private, no-store, no-cache, must-revalidate"
 Header set Pragma "no-cache"
-</FilesMatch>
+</Files>
 
-<FilesMatch "roadbook/*.json">
+<Files *.json>
 ExpiresActive Off
 Header set Cache-Control "max-age=0, private, no-store, no-cache, must-revalidate"
 Header set Pragma "no-cache"
-</FilesMatch>
+</Files>
 
 <Files *.gpx>
 Deny From All

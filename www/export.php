@@ -93,4 +93,4 @@ $size = round(filesize($filename_pdf) / 1024 / 1024, 2);
 renderAjax(array('success' => true,
                  'size'=> $size,
                  //'command'=> $pdf->command,
-                 'link' => '<a href="../../../../roadbook/' . basename($filename_html) . '?pdf">Download your roadbook now</a>'));
+                 'link' => '<a href="/roadbook/' . basename($filename_html) . '?pdf">Download your roadbook now</a>'));
