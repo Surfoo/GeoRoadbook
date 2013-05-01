@@ -1,0 +1,164 @@
+html {
+    -weasy-hyphens: auto;
+}
+body, td, pre {
+    color: #000;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    margin: 8px;
+}
+
+.clear {
+    clear: both;
+    height: 0;
+}
+.containers {
+    position: relative;
+    min-height: 60px;
+}
+.container1 {
+    position: absolute;
+    top:0 ;
+    left: 0;
+}
+.container2 {
+    position:absolute;
+    top:0;
+    right:0;
+    text-align: right;
+}
+.container1 p, .container2 p {
+    margin: 0.5mm 0;
+}
+h1 {
+    font-size: 12pt;
+    margin: 0;
+}
+h1 img {
+    width: 20px;
+    height: auto;
+}
+.cacheInfos {
+    margin-bottom: 1mm;
+}
+h1 img, .finder_name img {
+    vertical-align: middle;
+}
+.cacheGCode {
+    font-size: 12pt;
+    font-weight: bold;
+}
+.cacheAttributes {
+    margin: 1mm 0 0mm 0;
+    padding: 0;
+    height: 30px;
+}
+.cacheAttributes li {
+    list-style-type: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0 1mm 0 0;
+    height: 30px;
+    width: 30px;
+}
+.cacheNote {
+    height: 3cm;
+    border: 1px solid #000;
+    margin-top: 1mm;
+}
+.cacheNote p {
+    margin: 0;
+    border-bottom: 1px solid #000;
+    background-color: #ddd;
+}
+.cacheHint {
+    margin-bottom: 2mm;
+}
+
+.cacheHint p {
+    margin: 0;
+}
+
+.cacheLogs img {
+    margin: 1mm;
+}
+.cacheLogs table {
+    border-spacing: 0px;
+    border-collapse: collapse;
+    width: 100%;
+}
+.cacheLogDate {
+    width: 30mm;
+    text-align: right;
+}
+.cacheLogText {
+    overflow: hidden;
+    /*text-overflow: ellipsis;*/
+}
+
+.cacheLogs tr:nth-child(odd) {
+    background: #eee;
+    font-weight: bold;
+}
+.cacheLogs tr:nth-child(even) {
+    background: #fff;
+    border-bottom: 1px solid #000;
+}
+
+.cacheHint p:first-child, .cacheLogs p:first-child {
+    font-size: 12pt;
+    font-weight: bold;
+    border-bottom: 1pt solid black;
+    margin: 0 0 1pt 0;
+}
+.pagebreak {
+    display: block;
+    clear: both;
+    page-break-after: always;
+}
+
+.short_description img, .long_description img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Table of Content */
+#tocTitle {
+    text-align: center;
+}
+#toc {
+    border-spacing: 0px;
+    border-collapse: collapse;
+    width: 100%;
+}
+#toc th {
+    text-align: center;
+    vertical-align: center;
+}
+#tocHeadName {
+    text-align:left;
+}
+#tocHeadFound, #tocHeadDnf, #tocHeadPage {
+    width: 1cm;
+}
+#toc thead {
+    border: 1px solid #000;
+    background-color: #eee;
+}
+#toc thead th {
+    height: 0.7cm;
+}
+#toc tr {
+    border-left: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+#tocHeadName, #tocHeadFound, #tocHeadDnf,
+.tocName, .tocFound, .tocDnf, .tocPage {
+    border-right: 1px solid #000;
+}
+.tocIcon {
+    width: 0.5cm;
+}
+.tocPage {
+    text-align:right;
+}

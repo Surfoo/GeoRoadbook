@@ -43,10 +43,11 @@
                         <fieldset id="options">
                             <legend class="small">Options:</legend>
                             <div class="control-group">
+                                <label for="tidy" class="checkbox inline"><input type="checkbox" name="tidy" id="tidy" value="1" /> Cleanup & repair HTML</label><br />
                                 <label for="toc" class="checkbox inline"><input type="checkbox" name="toc" id="toc" value="1" /> Table of content</label><br />
                                 <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Display a cache note area</label><br />
                                 <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Display short description</label><br />
-                                <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Display additionnal hint</label><br />
+                                <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Display additionnal hints</label><br />
                                     <div id="hint_options">
                                         <label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label>
                                         <label for="hint_decrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_decrypted" value="0" checked="checked" /> Decrypted</label>
@@ -63,9 +64,9 @@
 
         {include file="footer.tpl"}
 
-        <script src="lib/jquery-2.0.0.min.js" type="text/javascript"></script>
+        <script src="js/jquery-2.0.0.min.js" type="text/javascript"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="bootstrap/js/bootstrap-fileupload.js"></script>
-        <script src="lib/upload.js" type="text/javascript"></script>
+        <script src="js/upload.js" type="text/javascript"></script>
     </body>
 </html>

@@ -1,0 +1,56 @@
+body {
+    padding-top: 1em;
+}
+header {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1em;
+}
+.hero-unit {
+    padding: 40px 40px;
+}
+.hero-unit h1 {
+    font-size: 44px;
+}
+#options legend {
+    margin: 0;
+}
+#options .control-group {
+    margin-top:0;
+    margin-left: 20px;
+}
+#hint_options {
+    margin-left: 20px;
+}
+
+#download {
+    margin: 0;
+}
+#download li {
+    display: inline;
+}
+#tinymce {
+    margin-top: 1em;
+}
+
+footer {
+    height: 79px;
+    background-color: #eee;
+    border-top: 1px solid #ddd;
+}
+footer > .container {
+    padding: 5px 0 0 0;
+}
+.github {
+    margin-top: 1px;
+    *margin-right: .3em;
+    line-height: 14px;
+    vertical-align: text-top;
+    background: url('icon-github.png') no-repeat;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+
+#ui_export .modal-body {
+    max-height: 800px;
+}

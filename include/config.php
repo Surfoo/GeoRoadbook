@@ -3,9 +3,10 @@ error_reporting(-1);
 ini_set('display_errors', '1');
 
 define('ROOT',          dirname(__DIR__));
-define('UPLOAD_DIR',    ROOT . '/upload/');
-define('ROADBOOKS_DIR', ROOT . '/roadbook/');
+define('ROADBOOKS_DIR', ROOT . '/www/roadbook/');
 define('LIB_DIR',       ROOT . '/lib/');
+define('TEMPLATE_DIR',  ROOT . '/templates/');
+define('TEMPLATE_COMPILED_DIR', ROOT . '/templates_c/');
 
 define('ICON_CACHE_DIR', '32x32');
 

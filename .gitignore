@@ -5,5 +5,5 @@
 *.sublime-workspace
 TODO
 templates_c/*
-roadbook/*.*
-roadbook/pdf/*
+www/roadbook/*.*
+www/roadbook/pdf/*

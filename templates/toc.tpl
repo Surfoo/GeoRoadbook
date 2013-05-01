@@ -1,4 +1,4 @@
-<h1>Table of contents</h1>
+<h1 id="tocTitle">Table of contents</h1>
 
 <table id="toc">
     <thead>
