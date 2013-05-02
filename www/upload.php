@@ -62,7 +62,7 @@ if(array_key_exists('locale', $_POST) && in_array($_POST['locale'], $locales)) {
     $current_locale = $_POST['locale'];
 }
 
-$html_tidy          = isset($_POST['tidy']) && $_POST['tidy']   == "true"                   ? true : false;
+$html_tidy          = isset($_POST['tidy']) && $_POST['tidy'] == "true"                     ? true : false;
 $display_toc        = isset($_POST['toc']) && $_POST['toc']   == "true"                     ? true : false;
 $display_note       = isset($_POST['note']) && $_POST['note'] == "true"                     ? true : false;
 $display_short_desc = isset($_POST['short_desc']) && $_POST['short_desc'] == "true"         ? true : false;
@@ -98,7 +98,7 @@ $xsl->setParameter('', 'display_logs', $display_logs);
 $html = $xsl->transformToXML($xml);
 $html = preg_replace('/<\?xml[^>]*\?>/i', '', $html);
 $html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<html lang="' . $current_locale. '">', trim($html));
-// $html = htmlspecialchars_decode($html);
+$html = htmlspecialchars_decode($html);
 
 // HTML Tidy
 if($html_tidy) {
@@ -108,12 +108,9 @@ if($html_tidy) {
                'output-xhtml'   => true,
                'wrap'           => 0);
 
-    // Tidy
     $tidy = new tidy;
     $tidy->parseString($html, $config, 'utf8');
     $tidy->cleanRepair();
-
-    // Affichage
     $html = $tidy;
 }
 
