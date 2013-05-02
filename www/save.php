@@ -1,7 +1,8 @@
 <?php
 
 if(!array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
-    die('not an ajax request.');
+    header("HTTP/1.0 400 Bad Request");
+    exit(0);
 }
 
 require dirname(__DIR__) . '/include/config.php';

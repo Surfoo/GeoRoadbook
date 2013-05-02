@@ -8,7 +8,8 @@
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
         <link rel="stylesheet" href="/css/design.css" media="all">
         <script type="text/javascript" src="/js/jquery-2.0.0.min.js"></script>
-        <script type="text/javascript" src="/js/tinymce4/tinymce.min.js"></script>
+        <!--<script type="text/javascript" src="/js/tinymce4/tinymce.min.js"></script>-->
+        <script type="text/javascript" src="/js/tinymce358/tiny_mce.js"></script>
         <script type="text/javascript">
             var roadbook_id = '{$roadbook_id|escape:js}', language = '{$language|escape:js}';
         </script>
