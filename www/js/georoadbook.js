@@ -14,7 +14,6 @@ $().ready(function() {
         height: "297mm",
         schema: "html4",
         content_css: "../css/roadbook.css",
-        /* + new Date().getTime()*/
         //theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
         //theme_advanced_fonts: "Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats",
         font_size_style_values: "10px,12px,13px,14px,16px,18px,20px",
@@ -70,7 +69,7 @@ function save() {
         datatype: 'json',
         data: {
             id: roadbook_id,
-            content: ed.getContent({format: 'raw'})
+            content: ed.getContent()
         },
         success: function(data) {
             ed.startContent = ed.getContent();
