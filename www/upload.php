@@ -7,29 +7,11 @@ if (empty($_POST) || !array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_S
     exit(0);
 }
 
-$errors = array();
-if (empty($_POST['gpx'])) {
-    $errors[] = 'MISSING_FILE';
+if (!array_key_exists('gpx', $_POST) || empty($_POST['gpx'])) {
+    renderAjax(array('success' => false, 'message' => 'MISSING_FILE'));
 }
-if (isset($_POST['locale']) && !in_array($_POST['locale'], $locales)) {
-    $errors[] = 'INVALID_LOCALE';
-}
-
-/*if (empty($errors) && $_FILES['gpx']['error'] == UPLOAD_ERR_OK) {
-
-    $finfo = new finfo(FILEINFO_MIME);
-    $type = $finfo->file($_FILES['gpx']['tmp_name']);
-
-    $mime = substr($type, 0, strpos($type, ';'));
-    if (!in_array($mime, $mimes)) {
-        unlink($_FILES['gpx']['tmp_name']);
-        $errors[] = 'INVALID_FILE';
-    }
-}
-*/
-
-if (!empty($errors)) {
-    renderAjax(array('success' => false, 'message' => $errors));
+if (!array_key_exists('locale', $_POST) || !in_array($_POST['locale'], $locales)) {
+    renderAjax(array('success' => false, 'message' => 'INVALID_LOCALE'));
 }
 
 //detect shema of geocaching gpx
@@ -42,7 +24,7 @@ foreach ($searchNode as $searchNode) {
     $schemas = explode(' ', $searchNode->getAttribute('xsi:schemaLocation'));
 }
 if (!is_array($schemas)) {
-    $errors[] = 'INVALID_SCHEMA';
+    renderAjax(array('success' => false, 'message' => 'INVALID_SCHEMA'));
 } else {
     foreach ($schemas as $schema) {
         if (preg_match('!^http://www.groundspeak.com/cache/([0-9/]*)$!i', $schema, $matche)) {
@@ -51,7 +33,7 @@ if (!is_array($schemas)) {
     }
 
     if (!array_key_exists(1, $matche)) {
-        $errors[] = 'INVALID_SCHEMA';
+        $renderAjax(array('success' => false, 'message' => 'INVALID_SCHEMA'));
     } else {
         $schema_version = $matche[1];
     }
