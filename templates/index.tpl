@@ -33,7 +33,7 @@
                                     <span class="fileupload-exists">Change</span><input type="file" name="gpx" id="gpx" />
                                 </span>
                                 <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
-                            </div> <small>(Max {$max_filesize|escape})</small>
+                            </div>
                         </div>
                         <p><label for="locale">Language:<br />
                             <select name="locale" id="locale" size="2">
