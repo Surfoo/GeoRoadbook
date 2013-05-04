@@ -33,7 +33,7 @@ if (!is_array($schemas)) {
     }
 
     if (!array_key_exists(1, $matche)) {
-        $renderAjax(array('success' => false, 'message' => 'INVALID_SCHEMA'));
+        renderAjax(array('success' => false, 'message' => 'INVALID_SCHEMA'));
     } else {
         $schema_version = $matche[1];
     }
