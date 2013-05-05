@@ -25,19 +25,17 @@ foreach ($searchNode as $searchNode) {
 }
 if (!is_array($schemas)) {
     renderAjax(array('success' => false, 'message' => 'INVALID_SCHEMA'));
-} else {
-    foreach ($schemas as $schema) {
-        if (preg_match('!^http://www.groundspeak.com/cache/([0-9/]*)$!i', $schema, $matche)) {
-            break;
-        }
-    }
+}
 
-    if (!array_key_exists(1, $matche)) {
-        renderAjax(array('success' => false, 'message' => 'INVALID_SCHEMA'));
-    } else {
-        $schema_version = $matche[1];
+foreach ($schemas as $schema) {
+    if (preg_match('!^http://www.groundspeak.com/cache/([0-9/]*)$!i', $schema, $matche)) {
+        break;
     }
 }
+if (!array_key_exists(1, $matche)) {
+    renderAjax(array('success' => false, 'message' => 'INVALID_SCHEMA'));
+}
+$schema_version = $matche[1];
 
 $current_locale = $locales[0];
 if(array_key_exists('locale', $_POST) && in_array($_POST['locale'], $locales)) {
