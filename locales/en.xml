@@ -16,4 +16,7 @@
     <text id="not_chosen">Not chosen</text>
     <text id="note">Personal Cache Note</text>
     <format id="date">%Y/%m/%d</format>
+    <text id="toc_title">Table of contents</text>
+    <text id="toc_name">Cache name</text>
+    <text id="toc_page">Page</text>
 </i18n>

@@ -97,16 +97,24 @@ if($display_toc) {
     $finder = new DomXPath($dom);
     $classname="cacheTitle";
     $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
-    $tocContent = array();
+    $toc_content = array();
     foreach($nodes as $node) {
         $icon  = $node->firstChild->getAttribute('src');
         $title = $node->textContent;
-        $tocContent[] = array('icon' => $icon, 'title' => $title);
+        $toc_content[] = array('icon' => $icon, 'title' => $title);
     }
 
-    if(!empty($tocContent)) {
+    if(!empty($toc_content)) {
+        $toc = new DomDocument();
+        $toc->load('../locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
+        $xPath = new DOMXPath($toc);
+        $toc_i18n['title'] = $xPath->query("text[@id='toc_title']")->item(0)->nodeValue;
+        $toc_i18n['name']  = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
+        $toc_i18n['page']  = $xPath->query("text[@id='toc_page']")->item(0)->nodeValue;
+
         require LIB_DIR . 'class.smarty_georoadbook.php';
-        $smarty->assign('toc', $tocContent);
+        $smarty->assign('i18n', $toc_i18n);
+        $smarty->assign('content', $toc_content);
         $toc_html = $smarty->fetch('toc.tpl');
 
         $frag = $dom->createDocumentFragment();

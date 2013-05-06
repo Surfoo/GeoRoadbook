@@ -16,4 +16,7 @@
     <text id="not_chosen">Non choisie</text>
     <text id="note">Notes personnelles sur la cache</text>
     <format id="date">%d/%m/%Y</format>
+    <text id="toc_title">Sommaire</text>
+    <text id="toc_name">Nom de la cache</text>
+    <text id="toc_page">Page</text>
 </i18n>
