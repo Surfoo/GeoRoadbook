@@ -14,17 +14,22 @@ function showHintOptions() {
 }
 
 // file selection
-$('#gpx').change(function(e) {
+if (window.File && window.FileList && window.FileReader) {
 
-    // fetch FileList object
-    var files = e.target.files || e.dataTransfer.files;
+    $('#gpx').change(function(e) {
 
-    // process all File objects
-    for (var i = 0, f; f = files[i]; i++) {
-        ParseFile(f);
-    }
-});
+        // fetch FileList object
+        var files = e.target.files || e.dataTransfer.files;
 
+        // process all File objects
+        for (var i = 0, f; f = files[i]; i++) {
+            ParseFile(f);
+        }
+    });
+} else {
+    $('#error').html('<p>Your browser doesn\'t support some features. Please, upgrade it.<br /> ' +
+        'If you are using Internet Explorer 9, you must install the version 10 manually.</p>').show();
+}
 // output file information
 
 function ParseFile(file) {
