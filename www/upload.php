@@ -10,7 +10,7 @@ if (empty($_POST) || !array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_S
 if (!array_key_exists('gpx', $_POST) || empty($_POST['gpx'])) {
     renderAjax(array('success' => false, 'message' => 'MISSING_FILE'));
 }
-if (!array_key_exists('locale', $_POST) || !in_array($_POST['locale'], $locales)) {
+if (!array_key_exists('locale', $_POST) || !in_array($_POST['locale'], array_keys($locales))) {
     renderAjax(array('success' => false, 'message' => 'INVALID_LOCALE'));
 }
 
@@ -37,11 +37,7 @@ if (!array_key_exists(1, $matche)) {
 }
 $schema_version = $matche[1];
 
-$current_locale = $locales[0];
-if(array_key_exists('locale', $_POST) && in_array($_POST['locale'], $locales)) {
-    $current_locale = $_POST['locale'];
-}
-
+$current_locale     = $_POST['locale'];
 $html_tidy          = isset($_POST['tidy']) && $_POST['tidy'] == "true"                     ? true : false;
 $display_toc        = isset($_POST['toc']) && $_POST['toc']   == "true"                     ? true : false;
 $display_note       = isset($_POST['note']) && $_POST['note'] == "true"                     ? true : false;

@@ -1,0 +1,19 @@
+<?xml version='1.0'?>
+<i18n>
+    <text id="difficulty">Schwierigkeit:</text>
+    <text id="terrain">Gelände:</text>
+    <text id="size">Größe:</text>
+    <text id="location">Stelle:</text>
+    <text id="hint">Zusätzliche Wegpunkte</text>
+    <text id="logs">Geloggte Besuche</text>
+    <text id="by">Von</text>
+    <text id="hidden">Versteckt</text>
+    <text id="micro">Mikro</text>
+    <text id="small">Klein</text>
+    <text id="regular">Normal</text>
+    <text id="large">groß</text>
+    <text id="other">Sonstige</text>
+    <text id="not_chosen">nicht gewählt</text>
+    <text id="note">Persönliche Cache-Notiz</text>
+    <format id="date">%d.%m.%Y</format>
+</i18n>

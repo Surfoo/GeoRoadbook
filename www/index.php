@@ -8,5 +8,6 @@ header('Content-type: text/html; charset=utf-8');
 if(array_key_exists('deleted', $_GET)) {
     $smarty->assign('deleted', true);
 }
+$smarty->assign('locales', $locales);
 $smarty->assign('language', $language);
 $smarty->display('index.tpl');

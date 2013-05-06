@@ -36,9 +36,10 @@
                             </div>
                         </div>
                         <p><label for="locale">Language:<br />
-                            <select name="locale" id="locale" size="2">
-                                <option value="en"{if $language == "en"} selected="selected"{/if}>English</option>
-                                <option value="fr"{if $language == "fr"} selected="selected"{/if}>Français</option>
+                            <select name="locale" id="locale">
+                                {foreach from=$locales key=code item=name}
+                                <option value="{$code|escape}"{if $language == $code} selected="selected"{/if}>{$name|escape}</option>
+                                {/foreach}
                             </select></label>
                         </p>
                         <fieldset id="options">

@@ -15,8 +15,9 @@ define('MAX_RETENTION', 3600*24*30);
 define('ZIP_ARCHIVE', true);
 
 //Locales for the roadbook
-$locales = array('en', 'fr');
-$mimes   = array('application/xml');
+$locales = array('de' => 'Deutsch',
+                 'en' => 'English',
+                 'fr' => 'Français');
 
 //TinyMCE
 $available_languages = array('de', 'en', 'es', 'fr', 'it', 'pt');
