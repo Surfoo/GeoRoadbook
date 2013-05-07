@@ -95,6 +95,7 @@ $('input[type="submit"]').click(function() {
                 return
             }
             if (data && !data.success) {
+                $('#error').html('<p>' + data.message+ '</p>').show();
                 return
             }
             $(location).attr('href', data.redirect);

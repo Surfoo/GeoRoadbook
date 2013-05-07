@@ -7,35 +7,32 @@ if (empty($_POST) || !array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_S
     exit(0);
 }
 
+//Mandatory data
 if (!array_key_exists('gpx', $_POST) || empty($_POST['gpx'])) {
-    renderAjax(array('success' => false, 'message' => 'MISSING_FILE'));
+    renderAjax(array('success' => false, 'message' => 'GPX file is missing.'));
 }
 if (!array_key_exists('locale', $_POST) || !in_array($_POST['locale'], array_keys($locales))) {
-    renderAjax(array('success' => false, 'message' => 'INVALID_LOCALE'));
+    renderAjax(array('success' => false, 'message' => 'Locale is missing or invalid.'));
 }
+
+$xml_content = $_POST['gpx'];
 
 //detect shema of geocaching gpx
-$xml = new DOMDocument();
-$xml->loadXML($_POST['gpx']);
+try {
+    $sxe = new SimpleXMLElement($xml_content);
+}
+catch(Exception $e) {
+    renderAjax(array('success' => false, 'message' => 'Not a xml file.'));
+}
+$schemaLocation = (string) $sxe->attributes('xsi', true)->schemaLocation;
+preg_match('!http://www.groundspeak.com/cache/([0-9/]*)!i', $schemaLocation, $matche);
 
-$searchNode = $xml->getElementsByTagName('gpx');
-$schemas = null;
-foreach ($searchNode as $searchNode) {
-    $schemas = explode(' ', $searchNode->getAttribute('xsi:schemaLocation'));
-}
-if (!is_array($schemas)) {
-    renderAjax(array('success' => false, 'message' => 'INVALID_SCHEMA'));
-}
-
-foreach ($schemas as $schema) {
-    if (preg_match('!^http://www.groundspeak.com/cache/([0-9/]*)$!i', $schema, $matche)) {
-        break;
-    }
-}
 if (!array_key_exists(1, $matche)) {
-    renderAjax(array('success' => false, 'message' => 'INVALID_SCHEMA'));
+    renderAjax(array('success' => false, 'message' => 'Schema is invalid.'));
 }
-$schema_version = $matche[1];
+if($matche[1] == '1/0') {
+    renderAjax(array('success' => false, 'message' => 'GPX schema 1/0 is not supported, please use schema 1/0/1.'));
+}
 
 $current_locale     = $_POST['locale'];
 $html_tidy          = isset($_POST['tidy']) && $_POST['tidy'] == "true"                     ? true : false;
@@ -53,17 +50,11 @@ $hd = fopen(ROADBOOKS_DIR . $filename_gpx, 'w');
 fwrite($hd, $_POST['gpx']);
 fclose($hd);
 
-$xsl    = new XSLTProcessor();
 $xsldoc = new DOMDocument();
+$xsldoc->load('../templates/xslt/roadbook101.xslt');
 
-if ($schema_version == '1/0/1') {
-    $xsldoc->load('../templates/xslt/roadbook101.xslt'); // schema 1/0/1/cache.xsd
-} else {
-    $xsldoc->load('../templates/xslt/roadbook1.xslt'); // schema 1/0/cache.xsd
-}
-
+$xsl = new XSLTProcessor();
 $xsl->importStyleSheet($xsldoc);
-
 $xsl->setParameter('', 'locale_filename', '../../locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
 $xsl->setParameter('', 'icon_cache_dir', ICON_CACHE_DIR);
 $xsl->setParameter('', 'display_note', $display_note);
@@ -71,6 +62,8 @@ $xsl->setParameter('', 'display_short_desc', $display_short_desc);
 $xsl->setParameter('', 'display_hint', $display_hint);
 $xsl->setParameter('', 'display_logs', $display_logs);
 
+$xml = new DOMDocument();
+$xml->loadXML($xml_content);
 $html = $xsl->transformToXML($xml);
 $html = preg_replace('/<\?xml[^>]*\?>/i', '', $html);
 $html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<html lang="' . $current_locale. '">', trim($html));
