@@ -24,7 +24,7 @@
                             <button type="submit" id="delete" class="btn btn-warning"><i class="icon-trash icon-white"></i> Delete</button>
                         </div>
                         <div class="btn-group">
-                            <button type="submit" id="save" class="btn btn-primary">Save</button>
+                            <button type="submit" id="save" class="btn btn-primary" title="{$last_modification|escape}">Save</button>
                             <a href="#ui_export" role="button" class="btn btn-primary" data-toggle="modal">Export</a>
                         </div>
                         <div class="btn-group">

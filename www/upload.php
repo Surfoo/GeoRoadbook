@@ -1,11 +1,11 @@
 <?php
 
-require dirname(__DIR__) . '/include/config.php';
-
 if (empty($_POST) || !array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
     header("HTTP/1.0 400 Bad Request");
     exit(0);
 }
+
+require dirname(__DIR__) . '/include/config.php';
 
 //Mandatory data
 if (!array_key_exists('gpx', $_POST) || empty($_POST['gpx'])) {
@@ -20,8 +20,7 @@ $xml_content = $_POST['gpx'];
 //detect shema of geocaching gpx
 try {
     $sxe = new SimpleXMLElement($xml_content);
-}
-catch(Exception $e) {
+} catch (Exception $e) {
     renderAjax(array('success' => false, 'message' => 'Not a xml file.'));
 }
 $schemaLocation = (string) $sxe->attributes('xsi', true)->schemaLocation;
@@ -30,7 +29,7 @@ preg_match('!http://www.groundspeak.com/cache/([0-9/]*)!i', $schemaLocation, $ma
 if (!array_key_exists(1, $matche)) {
     renderAjax(array('success' => false, 'message' => 'Schema is invalid.'));
 }
-if($matche[1] == '1/0') {
+if ($matche[1] == '1/0') {
     renderAjax(array('success' => false, 'message' => 'GPX schema 1/0 is not supported, please use schema 1/0/1.'));
 }
 
@@ -51,11 +50,11 @@ fwrite($hd, $_POST['gpx']);
 fclose($hd);
 
 $xsldoc = new DOMDocument();
-$xsldoc->load('../templates/xslt/roadbook101.xslt');
+$xsldoc->load(ROOT . '/templates/xslt/roadbook.xslt');
 
 $xsl = new XSLTProcessor();
 $xsl->importStyleSheet($xsldoc);
-$xsl->setParameter('', 'locale_filename', '../../locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
+$xsl->setParameter('', 'locale_filename', ROOT . '/locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
 $xsl->setParameter('', 'icon_cache_dir', ICON_CACHE_DIR);
 $xsl->setParameter('', 'display_note', $display_note);
 $xsl->setParameter('', 'display_short_desc', $display_short_desc);
@@ -70,7 +69,7 @@ $html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<
 $html = htmlspecialchars_decode($html);
 
 // HTML Tidy
-if($html_tidy) {
+if ($html_tidy) {
     // http://tidy.sourceforge.net/docs/quickref.html
     $config = array(
                'doctype'        => 'html',
@@ -84,22 +83,22 @@ if($html_tidy) {
 }
 
 // Table of content
-if($display_toc) {
+if ($display_toc) {
     $dom = new DomDocument();
     $dom->loadHTML($html);
     $finder = new DomXPath($dom);
     $classname="cacheTitle";
     $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
     $toc_content = array();
-    foreach($nodes as $node) {
+    foreach ($nodes as $node) {
         $icon  = $node->firstChild->getAttribute('src');
         $title = $node->textContent;
         $toc_content[] = array('icon' => $icon, 'title' => $title);
     }
 
-    if(!empty($toc_content)) {
+    if (!empty($toc_content)) {
         $toc = new DomDocument();
-        $toc->load('../locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
+        $toc->load(ROOT . '/locales/' . sprintf(FILE_FORMAT, $current_locale, 'xml'));
         $xPath = new DOMXPath($toc);
         $toc_i18n['title'] = $xPath->query("text[@id='toc_title']")->item(0)->nodeValue;
         $toc_i18n['name']  = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
@@ -122,25 +121,24 @@ if($display_toc) {
 }
 
 // Hint
-if($display_hint && $hint_encrypted) {
+if ($display_hint && $hint_encrypted) {
     $dom = new DomDocument();
     $dom->loadHTML($html);
     $finder = new DomXPath($dom);
     $classname="cacheHintContent";
     $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
-    foreach($nodes as $node) {
+    foreach ($nodes as $node) {
         $encoded_hint = str_rot13($node->textContent);
         $node->nodeValue = $encoded_hint;
     }
     $html = $dom->saveHtml();
 }
 
-// if(isset($_POST['typog­ra­phy'])) {
+// if (isset($_POST['typog­ra­phy'])) {
 //     require LIB_DIR . '/php-typography/php-typography.php';
 //     $typo = new phpTypography();
 //     $html = $typo->process($html);
 // }
-
 
 $filename_html = sprintf(FILE_FORMAT, $uniqid, 'html');
 $filename_json = sprintf(FILE_FORMAT, $uniqid, 'json');

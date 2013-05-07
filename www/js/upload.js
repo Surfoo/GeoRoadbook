@@ -52,7 +52,7 @@ function ParseFile(file) {
         doc = parser.parseFromString(e.target.result, 'application/xml');
         if (!doc ||  doc.documentElement.tagName != 'gpx') {
             content_gpx = null;
-            $('#error').html('<p>"' + fileinfo[0]['name'] + '" in an invalid file<p>').show().delay(3000).fadeOut();
+            $('#error').html('<p>"' + fileinfo[0]['name'] + '" in an invalid file.<p>').show().delay(3000).fadeOut();
             return false
         }
         content_gpx = e.target.result;
@@ -63,7 +63,7 @@ function ParseFile(file) {
 
 $('input[type="submit"]').click(function() {
     if (!content_gpx) {
-        $('#error').html('<p>GPX file is missing</p>').show().delay(3000).fadeOut();
+        $('#error').html('<p>GPX file is missing.</p>').show().delay(3000).fadeOut();
         return false
     }
 
@@ -95,7 +95,7 @@ $('input[type="submit"]').click(function() {
                 return
             }
             if (data && !data.success) {
-                $('#error').html('<p>' + data.message+ '</p>').show();
+                $('#error').html('<p>' + data.message + '</p>').show();
                 return
             }
             $(location).attr('href', data.redirect);

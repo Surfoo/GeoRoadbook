@@ -72,8 +72,11 @@ function save() {
             content: ed.getContent()
         },
         success: function(data) {
-            ed.startContent = ed.getContent();
-            ed.isNotDirty = true;
+            if (data && data.success) {
+                $('#save').attr('title', data.last_modification);
+                ed.startContent = ed.getContent();
+                ed.isNotDirty = true;
+            }
         },
         failure: function(data) {}
     });

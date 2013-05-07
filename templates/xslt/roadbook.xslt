@@ -5,9 +5,9 @@
   xmlns:grdspk="http://www.groundspeak.com/cache/1/0/1">
 
   <xsl:import href="functions.xslt" />
-  <xsl:import href="_attributes101.xslt" />
+  <xsl:import href="_attributes.xslt" />
   <xsl:import href="_hint.xslt" />
-  <xsl:import href="_logs101.xslt" />
+  <xsl:import href="_logs.xslt" />
   <xsl:strip-space elements="*" />
 
   <xsl:variable name="locale" select="document($locale_filename)/i18n" />

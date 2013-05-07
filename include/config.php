@@ -14,6 +14,8 @@ define('FILE_FORMAT', '%s.%s');
 define('MAX_RETENTION', 3600*24*30);
 define('ZIP_ARCHIVE', true);
 
+date_default_timezone_set('Europe/Paris');
+
 //Locales for the roadbook
 $locales = array('de' => 'Deutsch',
                  'en' => 'English',

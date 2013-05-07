@@ -18,7 +18,7 @@ if (!file_exists($path_filename_html) || !is_readable($path_filename_html)) {
     exit(0);
 }
 
-if(array_key_exists('pdf', $_GET)) {
+if (array_key_exists('pdf', $_GET)) {
     header('Content-Description: File Transfer');
     header('Content-Type: application/pdf');
     header('Content-Disposition: attachment; filename=roadbook.pdf');
@@ -33,7 +33,7 @@ if(array_key_exists('pdf', $_GET)) {
     exit(0);
 }
 
-if(array_key_exists('zip', $_GET) && ZIP_ARCHIVE && class_exists('ZipArchive')) {
+if (array_key_exists('zip', $_GET) && ZIP_ARCHIVE && class_exists('ZipArchive')) {
     $zip = new ZipArchive();
     $filename_zip = sprintf(FILE_FORMAT, $_GET['roadbook'], 'zip');
 
@@ -61,7 +61,7 @@ if(array_key_exists('zip', $_GET) && ZIP_ARCHIVE && class_exists('ZipArchive')) 
     exit(0);
 }
 
-if(array_key_exists('raw', $_GET)) {
+if (array_key_exists('raw', $_GET)) {
 
     $html = file_get_contents($path_filename_html);
 
@@ -69,20 +69,20 @@ if(array_key_exists('raw', $_GET)) {
     $json = file_get_contents(ROADBOOKS_DIR . sprintf(FILE_FORMAT, (string) $_GET['roadbook'], 'json'));
     $options_css = json_decode($json, true);
 
-    if(!is_null($options_css)) {
+    if (!is_null($options_css)) {
         $customCSS_format = "@page {%s}";
         $customHeaderFooter = '@%s {%s: "%s"}';
         $pageOptions = '';
 
         $globalOptions['size'] = sprintf('%s %s', $options_css['page_size'], $options_css['orientation']);
-        $globalOptions['margin'] = (int) $options_css['margin_top'] . 'mm ' . (int) $options_css['margin_right'] . 'mm ' . 
+        $globalOptions['margin'] = (int) $options_css['margin_top'] . 'mm ' . (int) $options_css['margin_right'] . 'mm ' .
                                    (int) $options_css['margin_bottom'] . 'mm ' . (int) $options_css['margin_left'] . 'mm';
         foreach ($globalOptions as $key => $value) {
             $pageOptions.= sprintf('%s: %s;', $key, $value);
         }
 
         foreach ($options_css as &$value) {
-            if($value != "") {
+            if ($value != "") {
                 $value = str_replace('[page]', '"counter(page)"', $value);
                 $value = str_replace('[topage]', '"counter(pages)"', $value);
                 $value = preg_replace('/"{1,}/', '"', $value);
@@ -110,10 +110,12 @@ require LIB_DIR . 'class.smarty_georoadbook.php';
 $smarty->assign('language', $language);
 $smarty->assign('roadbook_id', $_GET['roadbook']);
 $smarty->assign('roadbook_content', file_get_contents($path_filename_html));
-if(ZIP_ARCHIVE && class_exists('ZipArchive')) {
+$smarty->assign('last_modification', 'Last saved: ' . date('Y-m-d H:i:s', filemtime($path_filename_html)));
+
+if (ZIP_ARCHIVE && class_exists('ZipArchive')) {
     $smarty->assign('available_zip', true);
 }
-if(file_exists($path_filename_pdf)) {
+if (file_exists($path_filename_pdf)) {
     $smarty->assign('available_pdf', true);
 }
 $smarty->display('../templates/edit.tpl');
