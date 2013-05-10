@@ -25,7 +25,7 @@
                         </div>
                         <div class="btn-group">
                             <button type="submit" id="save" class="btn btn-primary" title="{$last_modification|escape}">Save</button>
-                            <a href="#ui_export" role="button" class="btn btn-primary" data-toggle="modal">Export</a>
+                            <a href="#ui_export" role="button" class="btn btn-primary" data-toggle="modal">Export as PDF</a>
                         </div>
                         <div class="btn-group">
                             <button class="btn">Download as</button>
@@ -44,6 +44,7 @@
                         <textarea id="editable" cols="100" rows="100">{$roadbook_content}</textarea>
                     </div>
                 </div>
+                {include file="_faq.tpl"}
             </div>
         </div>
 

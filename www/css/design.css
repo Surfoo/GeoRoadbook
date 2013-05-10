@@ -11,6 +11,9 @@ header {
 .hero-unit h1 {
     font-size: 44px;
 }
+.close,.close:hover {
+	opacity: 1;
+}
 #options legend {
     margin: 0;
 }
@@ -53,4 +56,14 @@ footer > .container {
 
 #ui_export .modal-body {
     max-height: 800px;
+}
+
+#faq .modal-body {
+    max-height: 800px;
+}
+#faq {
+	font-size: 0.8em;
+}
+#faq dd {
+	margin-bottom: 1em;
 }

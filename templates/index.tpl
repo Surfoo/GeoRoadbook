@@ -29,13 +29,13 @@
                                     <i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span>
                                 </div>
                                 <span class="btn btn-file">
-                                    <span class="fileupload-new">GPX File</span>
+                                    <span class="fileupload-new">Browse to GPX File</span>
                                     <span class="fileupload-exists">Change</span><input type="file" name="gpx" id="gpx" />
                                 </span>
                                 <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
                             </div>
                         </div>
-                        <p><label for="locale">Language:<br />
+                        <p><label for="locale">Roadbook language:<br />
                             <select name="locale" id="locale">
                                 {foreach from=$locales key=code item=name}
                                 <option value="{$code|escape}"{if $language == $code} selected="selected"{/if}>{$name|escape}</option>
@@ -46,7 +46,7 @@
                             <legend class="small">Options:</legend>
                             <div class="control-group">
                                 <label for="tidy" class="checkbox inline"><input type="checkbox" name="tidy" id="tidy" value="1" /> Cleanup & repair HTML</label><br />
-                                <label for="toc" class="checkbox inline"><input type="checkbox" name="toc" id="toc" value="1" /> Table of content</label><br />
+                                <label for="toc" class="checkbox inline"><input type="checkbox" name="toc" id="toc" value="1" /> Table of contents</label><br />
                                 <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Display a cache note area</label><br />
                                 <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Display short description</label><br />
                                 <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Display additionnal hints</label><br />
@@ -61,6 +61,7 @@
                         <input type="submit" id="create" name="send" value="Create your roadbook" class="btn btn-large btn-primary" />
                     </fieldset>
                 </form>
+                {include file="_faq.tpl"}
             </div>
         </div>
 

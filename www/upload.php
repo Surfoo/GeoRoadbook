@@ -27,10 +27,10 @@ $schemaLocation = (string) $sxe->attributes('xsi', true)->schemaLocation;
 preg_match('!http://www.groundspeak.com/cache/([0-9/]*)!i', $schemaLocation, $matche);
 
 if (!array_key_exists(1, $matche)) {
-    renderAjax(array('success' => false, 'message' => 'Schema is invalid.'));
+    renderAjax(array('success' => false, 'message' => 'GPX type is incorrect.'));
 }
 if ($matche[1] == '1/0') {
-    renderAjax(array('success' => false, 'message' => 'GPX schema 1/0 is not supported, please use schema 1/0/1.'));
+    renderAjax(array('success' => false, 'message' => 'GPX version 1/0 is not supported, please use version 1/0/1. <a href="http://www.geocaching.com/account/ManagePreferences.aspx">Check your preferences</a>'));
 }
 
 $current_locale     = $_POST['locale'];
