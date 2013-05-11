@@ -7,7 +7,7 @@
         <link rel="icon" type="image/png" href="/css/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
         <link rel="stylesheet" href="/css/design.css" media="all">
-        <script type="text/javascript" src="/js/jquery-2.0.0.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <!--<script type="text/javascript" src="/js/tinymce4/tinymce.min.js"></script>-->
         <script type="text/javascript" src="/js/tinymce358/tiny_mce.js"></script>
         <script type="text/javascript">
@@ -50,7 +50,7 @@
 
         {include file="footer.tpl"}
 
-        <script src="/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/js/georoadbook.js" type="text/javascript"></script>
+        <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/georoadbook.js"></script>
     </body>
 </html>
