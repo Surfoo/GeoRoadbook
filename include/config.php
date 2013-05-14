@@ -10,9 +10,7 @@ define('TEMPLATE_COMPILED_DIR', ROOT . '/templates_c/');
 
 define('ICON_CACHE_DIR', '32x32');
 
-define('FILE_FORMAT', '%s.%s');
 define('MAX_RETENTION', 3600*24*30);
-define('ZIP_ARCHIVE', true);
 
 date_default_timezone_set('Europe/Paris');
 
@@ -36,3 +34,4 @@ if (array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {
 $language = in_array($user_language, $available_languages) ? $user_language : 'en';
 
 require ROOT . '/include/helpers.php';
+require LIB_DIR . 'class.georoadbook.php';

@@ -7,12 +7,15 @@ header {
 }
 .hero-unit {
     padding: 40px 40px;
+    background-image: url('/img/beta.png');
+    background-repeat: no-repeat;
+    background-position: right top;
 }
 .hero-unit h1 {
     font-size: 44px;
 }
 .close,.close:hover {
-	opacity: 1;
+    opacity: 1;
 }
 #options legend {
     margin: 0;

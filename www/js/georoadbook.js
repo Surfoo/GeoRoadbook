@@ -13,7 +13,7 @@ $().ready(function() {
         width: "210mm",
         height: "297mm",
         schema: "html4",
-        content_css: "../css/roadbook.css",
+        content_css: "/css/roadbook.css",
         //theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
         //theme_advanced_fonts: "Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats",
         font_size_style_values: "10px,12px,13px,14px,16px,18px,20px",
@@ -59,29 +59,7 @@ $().ready(function() {
     });*/
 });
 
-function save() {
-    var ed = tinyMCE.get('editable');
-    ed.setProgressState(1);
-    $.ajax({
-        url: "../save.php",
-        type: "POST",
-        async: false,
-        datatype: 'json',
-        data: {
-            id: roadbook_id,
-            content: ed.getContent()
-        },
-        success: function(data) {
-            if (data && data.success) {
-                $('#save').attr('title', data.last_modification);
-                ed.startContent = ed.getContent();
-                ed.isNotDirty = true;
-            }
-        },
-        failure: function(data) {}
-    });
-    ed.setProgressState(0);
-}
+
 
 $(function() {
     $("#delete").button().click(function(event) {
@@ -92,11 +70,11 @@ $(function() {
         ed.setProgressState(1);
 
         $.ajax({
-            url: "../delete.php",
+            url: "/delete.php",
             type: "POST",
             datatype: 'json',
             data: {
-                roadbook: roadbook_id
+                id: roadbook_id
             },
             success: function(data) {
                 ed.setProgressState(0);
@@ -120,7 +98,7 @@ $(function() {
     });
 
     $('#ui_export').on('show', function() {
-        $.getJSON('../roadbook/' + roadbook_id + '.json', function(data) {
+        $.getJSON('/roadbook/' + roadbook_id + '.json', function(data) {
             $.each(data, function(key, val) {
                 if ($('#' + key).is('input')) {
                     $('#' + key).attr("value", val);
@@ -133,7 +111,7 @@ $(function() {
     })
 
     $("#save").click(function(event) {
-        save();
+        saveHtml();
     });
 
     $("#apply").click(function(event) {
@@ -141,21 +119,44 @@ $(function() {
     });
 
     $("#export").click(function(event) {
-        save();
+        saveHtml();
         $('#ui_export').modal('hide');
         _ajax(true);
     });
+
+    function saveHtml() {
+        var ed = tinyMCE.get('editable');
+        ed.setProgressState(1);
+        $.ajax({
+            url: "/save.php",
+            type: "POST",
+            async: false,
+            datatype: 'json',
+            data: {
+                id: roadbook_id,
+                content: ed.getContent()
+            },
+            success: function(data) {
+                if (data && data.success) {
+                    $('#save').attr('title', data.last_modification);
+                    ed.startContent = ed.getContent();
+                    ed.isNotDirty = true;
+                }
+            },
+            failure: function(data) {}
+        });
+        ed.setProgressState(0);
+    }
 
     function _ajax(real_export) {
         var ed = tinyMCE.get('editable');
         tinymce.activeEditor.setProgressState(true);
         $.ajax({
-            url: "../export.php",
+            url: "/export.php",
             type: "POST",
             data: {
                 real_export: real_export,
                 id: roadbook_id,
-                content: ed.getContent(),
                 'page-size': document.forms[0].page_size.value,
                 'orientation': document.forms[0].orientation.value,
                 'margin-left': document.forms[0].margin_left.value,
@@ -178,11 +179,11 @@ $(function() {
                 }
                 $('#export').prop('disabled', false);
                 if (!data || data === "") {
-                    alert('Conversion failed :(');
+                    alert('Conversion failed :-(');
                     return
                 }
                 if (typeof data != 'object') {
-                    alert('Conversion failed :(\nMessage:\n' + data);
+                    alert('Conversion failed :-(\nMessage:\n' + data);
                     return
                 }
 
@@ -192,7 +193,7 @@ $(function() {
                     $('#download_link').html(data.link + ' (' + data.size + 'Mo)');
                     $('#ui_exported').modal('show');
                 } else {
-                    alert('Conversion failed :(\nMessage:\n' + data.error);
+                    alert('Conversion failed :-(\nMessage:\n' + data.error);
                 }
             },
             failure: function(data) {

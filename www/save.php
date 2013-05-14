@@ -1,24 +1,22 @@
 <?php
 
-if (!array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest' || !array_key_exists('id', $_POST)) {
+require dirname(__DIR__) . '/include/config.php';
+
+georoadbook::ajaxRequestOnly();
+
+if (!array_key_exists('id', $_POST) || !array_key_exists('content', $_POST)) {
     header("HTTP/1.0 400 Bad Request");
     exit(0);
 }
 
-require dirname(__DIR__) . '/include/config.php';
+$rdbk = new georoadbook($_POST['id']);
 
-$filename = ROADBOOKS_DIR . sprintf(FILE_FORMAT, (string) $_POST['id'], 'html');
+//hack, bug in TinyMCE
+$html = preg_replace('/<head>\s*<\/head>/m', '<head><meta charset="utf-8" /><title>My roadbook</title><link type="text/css" rel="stylesheet" href="../css/roadbook.css" media="all" /></head>', $_POST['content'], 1);
+$rdbk->saveFile($rdbk->html_file, $html);
 
-try {
-    $hd = fopen($filename, 'w');
-    if (!$hd) {
-        throw new Exception("Could not open the file!");
-    }
-
-    fwrite($hd, $_POST['content']);
-    fclose($hd);
-    renderAjax(array('success' => true, 'last_modification'=> 'Last saved: ' . date('Y-m-d H:i:s', filemtime($filename))));
-} catch (Exception $e) {
-    renderAjax(array('success' => false,
-                     'message' => $e->getMessage()));
+if(!$rdbk->saveFile($rdbk->html_file, $_POST['content'])) {
+    renderAjax(array('success' => false));
 }
+
+renderAjax(array('success' => true, 'last_modification'=> 'Last saved: ' . $rdbk->getLastSavedDate()));

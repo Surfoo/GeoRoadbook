@@ -8,7 +8,7 @@ function recurse_zip($src, &$zip)
             if (is_dir($src . '/' . $file)) {
                 recurse_zip($src . '/' . $file, $zip);
             } else {
-                $zip->addFile($src . '/' . $file);
+                $zip->addFile($src . '/' . $file, substr($src . '/' . $file, strlen(dirname(__DIR__).'/www/')));
             }
         }
     }
@@ -18,7 +18,6 @@ function recurse_zip($src, &$zip)
 function renderAjax($data)
 {
     if (!is_array($data)) {
-        echo '-1';
         exit();
     }
     $content = json_encode($data);
