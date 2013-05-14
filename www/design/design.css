@@ -7,7 +7,7 @@ header {
 }
 .hero-unit {
     padding: 40px 40px;
-    background-image: url('/img/beta.png');
+    background-image: url('/design/beta.png');
     background-repeat: no-repeat;
     background-position: right top;
 }
@@ -27,7 +27,6 @@ header {
 #hint_options {
     margin-left: 20px;
 }
-
 #download {
     margin: 0;
 }
@@ -37,7 +36,6 @@ header {
 #tinymce {
     margin-top: 1em;
 }
-
 footer {
     height: 79px;
     background-color: #eee;
@@ -46,27 +44,15 @@ footer {
 footer > .container {
     padding: 5px 0 0 0;
 }
-.github {
-    margin-top: 1px;
-    *margin-right: .3em;
-    line-height: 14px;
-    vertical-align: text-top;
-    background: url('icon-github.png') no-repeat;
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-}
-
 #ui_export .modal-body {
     max-height: 800px;
 }
-
 #faq .modal-body {
     max-height: 800px;
 }
 #faq {
-	font-size: 0.8em;
+    font-size: 0.8em;
 }
 #faq dd {
-	margin-bottom: 1em;
+    margin-bottom: 1em;
 }
