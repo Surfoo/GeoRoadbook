@@ -4,7 +4,18 @@ require dirname(__DIR__) . '/include/config.php';
 
 georoadbook::ajaxRequestOnly();
 
-if (!array_key_exists('id', $_POST)) {
+if (!array_key_exists('page-size', $_POST) ||
+    !array_key_exists('orientation', $_POST) ||
+    !array_key_exists('margin-left', $_POST) ||
+    !array_key_exists('margin-right', $_POST) ||
+    !array_key_exists('margin-top', $_POST) ||
+    !array_key_exists('margin-bottom', $_POST) ||
+    !array_key_exists('header-left', $_POST) ||
+    !array_key_exists('header-center', $_POST) ||
+    !array_key_exists('header-right', $_POST) ||
+    !array_key_exists('footer-left', $_POST) ||
+    !array_key_exists('footer-center', $_POST) ||
+    !array_key_exists('footer-right', $_POST)) {
     header("HTTP/1.0 400 Bad Request");
     exit(0);
 }
