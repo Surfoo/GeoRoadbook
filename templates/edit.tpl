@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/css/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
-        <link rel="stylesheet" href="/css/design.css" media="all">
+        <link rel="stylesheet" href="/design/design.css" media="all">
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         {*<script type="text/javascript" src="/js/tinymce4/tinymce.min.js"></script>*}
         <script type="text/javascript" src="/js/tinymce358/tiny_mce.js"></script>

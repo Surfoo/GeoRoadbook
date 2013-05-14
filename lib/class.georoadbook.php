@@ -206,7 +206,7 @@ class geoRoadbook {
         }
 
         $zip->addFromString('roadbook/' . basename($this->html_file), file_get_contents($this->html_file));
-        $zip->addFile(dirname(__DIR__) . '/www/css/roadbook.css', 'css/roadbook.css');
+        $zip->addFile(dirname(__DIR__) . '/www/design/roadbook.css', 'design/roadbook.css');
         recurse_zip(dirname(__DIR__) . '/www/img', $zip);
         $zip->close();
 

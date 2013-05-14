@@ -7,7 +7,7 @@
         <link rel="icon" type="image/png" href="/css/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="all" />
-        <link rel="stylesheet" href="/css/design.css" media="all" />
+        <link rel="stylesheet" href="/design/design.css" media="all" />
     </head>
     <body>
         <div class="container">
