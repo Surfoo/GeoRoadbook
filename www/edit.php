@@ -26,7 +26,7 @@ if (array_key_exists('raw', $_GET)) {
     $html = file_get_contents($rdbk->html_file);
     
     //hack, bug in TinyMCE
-    $html = preg_replace('/<head>\s*<\/head>/m', '<head><meta charset="utf-8" /><title>My roadbook</title><link type="text/css" rel="stylesheet" href="../css/roadbook.css" media="all" /></head>', $html, 1);
+    $html = preg_replace('/<head>\s*<\/head>/m', '<head><meta charset="utf-8" /><title>My roadbook</title><link type="text/css" rel="stylesheet" href="../design/roadbook.css" media="all" /></head>', $html, 1);
     $rdbk->saveFile($rdbk->html_file, $html);
 
     $options_css = $rdbk->getCustomCss();
