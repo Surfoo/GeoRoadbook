@@ -30,7 +30,7 @@
         <head>
           <meta charset="utf-8" />
           <title>My roadbook</title>
-          <link type="text/css" rel="stylesheet" href="../css/roadbook.css" media="all" />
+          <link type="text/css" rel="stylesheet" href="../design/roadbook.css" media="all" />
         </head>
       <body>
 

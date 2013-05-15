@@ -43,7 +43,7 @@ class WeasyPrint {
 
     protected function createPdf($filename, $user_stylesheet)
     {
-        $cmd_user_stylesheet = file_get_contents(dirname(__DIR__) . '/www/css/roadbook.css');
+        $cmd_user_stylesheet = file_get_contents(dirname(__DIR__) . '/www/design/roadbook.css');
         if(!empty($user_stylesheet)) {
             $cmd_user_stylesheet.= $user_stylesheet;
         }
