@@ -51,8 +51,8 @@
                                 <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Display short description</label><br />
                                 <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Display additionnal hints</label><br />
                                     <div id="hint_options">
-                                        <label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label>
                                         <label for="hint_decrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_decrypted" value="0" checked="checked" /> Decrypted</label>
+                                        <label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label>
                                     </div>
                                 <label for="logs" class="checkbox inline"><input type="checkbox" name="logs" id="logs" value="1" /> Display logs</label>
                             </div>
