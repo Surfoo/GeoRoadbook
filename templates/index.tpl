@@ -33,7 +33,7 @@
                                     <span class="fileupload-exists">Change</span><input type="file" name="gpx" id="gpx" />
                                 </span>
                                 <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
-                            </div>
+                            </div> <small>(8Mo Maxi)</small>
                         </div>
                         <p><label for="locale">Roadbook language:<br />
                             <select name="locale" id="locale">

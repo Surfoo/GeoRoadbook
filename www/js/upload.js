@@ -23,6 +23,10 @@ if (window.File && window.FileList && window.FileReader) {
 
         // process all File objects
         for (var i = 0, f; f = files[i]; i++) {
+            if(f.size > 8*1024*1024) {
+                $('#error').html('<p>"' + f.name + '" is too big, 8Mo Max.<p>').show();
+                return false;
+            }
             ParseFile(f);
         }
     });
