@@ -11,7 +11,7 @@
             <dt>Why does my roadbook no longer exist?</dt>
             <dd>All roadbooks are kept 1 month after the last modification date. You can know the date with a hover on the "Save" button, and if you save it, it'll be kept again.</dd>
 
-            <dt>Why my GPX file doesn't work?</dt>
+            <dt>Why doesn't my GPX file work?</dt>
             <dd>Only GPX files with the version 1.0.1 are managed, if you don't know the version, <a href="http://www.geocaching.com/account/ManagePreferences.aspx" onclick="window.open(this.href);return false;">check your preferences</a>.<br />
                 GPX with tracks are not supported. If your file always doesn't work, it's maybe malformed.
             </dd>
