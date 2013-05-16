@@ -4,7 +4,7 @@
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <title>GeoRoadBook, create your geocaching roadbook</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/png" href="/css/icon-roadbook.png" />
+        <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="all" />
         <link rel="stylesheet" href="/design/design.css" media="all" />
