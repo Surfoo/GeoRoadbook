@@ -4,7 +4,7 @@
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <title>GeoRoadBook, create your geocaching roadbook</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/png" href="/css/icon-roadbook.png" />
+        <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
         <link rel="stylesheet" href="/design/design.css" media="all">
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
@@ -33,9 +33,9 @@
                                 <span class="caret"></span>
                             </button>
                             <ul id="download" class="dropdown-menu">
-                                <li><a href="?raw" title="View only as HTML page"><img src="/css/icon-html.png" alt="" /> HTML</a></li>
-                                {if isset($available_zip)}<li><a href="?zip" title="Download a zip archive (HTML and images)"><img src="/css/icon-zip.png" alt="" /> ZIP</a></li>{/if}
-                                <li id="dl_pdf" style="display: {if isset($available_pdf)}visible{else}none{/if};"><a href="?pdf" title="Download as PDF"><img src="/css/icon-pdf.png" alt="" /> PDF</a></li>
+                                <li><a href="?raw" title="View only as HTML page"><img src="/design/icon-html.png" alt="" /> HTML</a></li>
+                                {if isset($available_zip)}<li><a href="?zip" title="Download a zip archive (HTML and images)"><img src="/design/icon-zip.png" alt="" /> ZIP</a></li>{/if}
+                                <li id="dl_pdf" style="display: {if isset($available_pdf)}visible{else}none{/if};"><a href="?pdf" title="Download as PDF"><img src="/design/icon-pdf.png" alt="" /> PDF</a></li>
                             </ul>
                         </div>
                         {include file="export.tpl"}
