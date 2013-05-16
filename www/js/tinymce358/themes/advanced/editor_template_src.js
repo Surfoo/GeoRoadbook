@@ -246,7 +246,7 @@
 						tb = DOM.get(ed.id + '_tbl');
 
 						DOM.add(co, 'div', {id : id + '_blocker', 'class' : 'mceBlocker', style : {width : tb.clientWidth + 2, height : tb.clientHeight + 2}});
-						DOM.add(co, 'div', {id : id + '_progress', 'class' : 'mceProgress', style : {left : tb.clientWidth / 2, top : tb.clientHeight / 2}});
+						DOM.add(co, 'div', {id : id + '_progress', 'class' : 'mceProgress', style : {left : tb.clientWidth / 2, top : 100}});
 					}, ti || 0);
 				} else {
 					DOM.remove(id + '_blocker');
