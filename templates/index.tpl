@@ -33,7 +33,7 @@
                                     <span class="fileupload-exists">Change</span><input type="file" name="gpx" id="gpx" />
                                 </span>
                                 <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
-                            </div> <small>(8Mo Maxi)</small>
+                            </div> <small>(8Mo Max)</small>
                         </div>
                         <p><label for="locale">Roadbook language:<br />
                             <select name="locale" id="locale">
@@ -70,6 +70,6 @@
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/bootstrap/js/bootstrap-fileupload.js"></script>
-        <script type="text/javascript" src="/js/upload.js"></script>
+        <script type="text/javascript" src="/js/upload.js?20130516"></script>
     </body>
 </html>

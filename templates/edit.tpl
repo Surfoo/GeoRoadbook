@@ -51,6 +51,6 @@
         {include file="footer.tpl"}
 
         <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/js/georoadbook.js"></script>
+        <script type="text/javascript" src="/js/georoadbook.js?20130516"></script>
     </body>
 </html>
