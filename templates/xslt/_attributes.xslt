@@ -109,7 +109,7 @@
         <xsl:when test=". = 'Recommended at night' and @inc = '1'">
             <li><img src="../img/attributes/night-yes.gif" alt="" /></li>
         </xsl:when>
-        <xsl:when test=". = 'Recommended at night'">
+        <xsl:when test=". = 'Recommended at night' and @inc = '0'">
             <li><img src="../img/attributes/night-no.gif" alt="" /></li>
         </xsl:when>
         <xsl:when test=". = 'Snowshoes' and @inc = '1'">
@@ -133,7 +133,7 @@
         <xsl:when test=". = 'Difficult climbing' and @inc = '0'">
             <li><img src="../img/attributes/climbing-no.gif" alt="" /></li>
         </xsl:when>
-        <xsl:when test=". = 'Significant Hike'">
+        <xsl:when test=". = 'Significant Hike' and @inc = '1'">
             <li><img src="../img/attributes/hiking-yes" alt="" /></li>
         </xsl:when>
         <xsl:when test=". = 'Significant Hike' and @inc = '0'">
@@ -296,7 +296,7 @@
             <li><img src="../img/attributes/cliff-yes.gif" alt="" /></li>
         </xsl:when>
         <xsl:when test=". = 'Abandoned mines' and @inc = '1'">
-            <li><img src="../img/attributes/mine-yes" alt="" /></li>
+            <li><img src="../img/attributes/mine-yes.gif" alt="" /></li>
         </xsl:when>
         <xsl:when test=". = 'Ticks' and @inc = '1'">
             <li><img src="../img/attributes/ticks-yes.gif" alt="" /></li>
@@ -310,7 +310,7 @@
         <xsl:when test=". = 'Thorns' and @inc = '1'">
             <li><img src="../img/attributes/thorn-yes.gif" alt="" /></li>
         </xsl:when>
-        <xsl:when test=". = 'Food Nearby'">
+        <xsl:when test=". = 'Food Nearby' and @inc = '1'">
             <li><img src="../img/attributes/food-yes.gif" alt="" /></li>
         </xsl:when>
         <xsl:when test=". = 'Food Nearby' and @inc = '0'">

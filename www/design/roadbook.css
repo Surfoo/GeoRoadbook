@@ -64,7 +64,7 @@ h1 img, .finder_name img {
 .cacheNote {
     height: 3cm;
     border: 1px solid #000;
-    margin-top: 1mm;
+    margin: 1mm 0;
 }
 .cacheNote p {
     margin: 0;
