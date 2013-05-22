@@ -17,7 +17,9 @@ date_default_timezone_set('Europe/Paris');
 //Locales for the roadbook
 $locales = array('de' => 'Deutsch',
                  'en' => 'English',
-                 'fr' => 'Français');
+                 'fr' => 'Français',
+                 'it' => 'Italiano',
+                 'nl' => 'Nederlands');
 
 //TinyMCE
 $available_languages = array('de', 'en', 'es', 'fr', 'it', 'pt');

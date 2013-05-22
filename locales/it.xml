@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<i18n>
+    <text id="difficulty">Difficoltà:</text>
+    <text id="terrain">Terreno:</text>
+    <text id="size">Dimensione:</text>
+    <text id="location">Location:</text>
+    <text id="hint">Indizi aggiuntivi</text>
+    <text id="logs">Logs</text>
+    <text id="by">Di</text>
+    <text id="hidden">Nascosto</text>
+    <text id="micro">Micro</text>
+    <text id="small">Piccolo</text>
+    <text id="regular">Regolare</text>
+    <text id="large">Grande</text>
+    <text id="other">Altro</text>
+    <text id="not_chosen">Non indicato</text>
+    <text id="note">Note personali sul cache</text>
+    <format id="date">%d/%m/%Y</format>
+    <text id="toc_title">Indice dei contenuti</text>
+    <text id="toc_name">Nome del Cache</text>
+    <text id="toc_page">Pagina</text>
+</i18n>
+
+
+
