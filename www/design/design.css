@@ -6,7 +6,7 @@ header {
     margin-bottom: 1em;
 }
 .hero-unit {
-    padding: 40px 40px;
+    padding: 40px;
     background-image: url('/design/beta.png');
     background-repeat: no-repeat;
     background-position: right top;
@@ -14,7 +14,7 @@ header {
 .hero-unit h1 {
     font-size: 44px;
 }
-.close,.close:hover {
+.close, .close:hover {
     opacity: 1;
 }
 #options legend {
@@ -47,11 +47,14 @@ footer > .container {
 #ui_export .modal-body {
     max-height: 800px;
 }
-#faq .modal-body {
-    max-height: 800px;
-}
 #faq {
     font-size: 0.8em;
+    width: 650px;
+    /* must be half of the width, minus scrollbar on the left (30px) */
+    margin-left: -325px;
+}
+#faq .modal-body {
+    max-height: 800px;
 }
 #faq dd {
     margin-bottom: 1em;
