@@ -23,7 +23,7 @@ if (window.File && window.FileList && window.FileReader) {
 
         // process all File objects
         for (var i = 0, f; f = files[i]; i++) {
-            if(f.size > 8*1024*1024) {
+            if (f.size > 8 * 1024 * 1024) {
                 $('#error').html('<p>"' + f.name + '" is too big, 8Mo Max.<p>').show();
                 return false;
             }
@@ -39,9 +39,10 @@ if (window.File && window.FileList && window.FileReader) {
 function ParseFile(file) {
     var reader = new FileReader();
     var fileinfo = [{
-        'name': file.name,
-        'size': file.size
-    }];
+            'name': file.name,
+            'size': file.size
+        }
+    ];
 
     reader.onload = function(e) {
         if (window.DOMParser) {
@@ -57,10 +58,15 @@ function ParseFile(file) {
         if (!doc ||  doc.documentElement.tagName != 'gpx') {
             content_gpx = null;
             $('#error').html('<p>"' + fileinfo[0]['name'] + '" in an invalid file.<p>').show().delay(3000).fadeOut();
-            return false
+            return false;
+        }
+        var count_caches = e.target.result.match(/<wpt/g);
+        if (count_caches.length > 100) {
+            content_gpx = null;
+            $('#error').html('<p>' + count_caches.length + ' caches in the GPX File. The number of caches is limited to 100 because of limited resources.<p>').show();
+            return false;
         }
         content_gpx = e.target.result;
-
     },
     reader.readAsText(file, 'UTF-8');
 }

@@ -7,6 +7,8 @@ class geoRoadbook {
 
     const ID_LENGTH = 16;
 
+    const MAX_CACHES = 100;
+
     public $id     = null;
 
     public $gpx    = null;
@@ -44,7 +46,7 @@ class geoRoadbook {
         $this->gpx_file  = ROADBOOKS_DIR . sprintf('%s.%s', $this->id, 'gpx');
         $this->html_file = ROADBOOKS_DIR . sprintf('%s.%s', $this->id, 'html');
         $this->json_file = ROADBOOKS_DIR . sprintf('%s.%s', $this->id, 'json');
-        $this->pdf_file  = ROADBOOKS_DIR . '/pdf/' . sprintf('%s.%s', $this->id, 'pdf');
+        $this->pdf_file  = ROADBOOKS_DIR . 'pdf/' . sprintf('%s.%s', $this->id, 'pdf');
     }
 
     /**
@@ -56,6 +58,10 @@ class geoRoadbook {
         self::ajaxRequestOnly();
 
         $this->gpx = $gpx;
+
+        if(substr_count($this->gpx, '<wpt') > self::MAX_CACHES) {
+            return false;
+        }
 
         if(!$this->saveFile($this->gpx_file, $this->gpx)) {
             return false;
