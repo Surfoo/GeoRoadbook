@@ -4,7 +4,7 @@ Works with:
 * [jQuery](http://jquery.com/) 2.0.0
 * [TinyMCE](http://www.tinymce.com/) 3.5.8
 * [WeasyPrint](http://www.weasyprint.org/) 0.19.1
-* [Bootstrap](http://twitter.github.io/bootstrap/) 2.3.1
+* [Bootstrap](http://twitter.github.io/bootstrap/) 2.3.2
 * php5-xsl
 * php5-tidy
 * ttf-mscorefonts-installer
