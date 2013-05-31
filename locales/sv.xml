@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<i18n>
+    <text id="difficulty">Svårighetsgrad:</text>
+    <text id="terrain">Terrängfaktor:</text>
+    <text id="size">Storlek:</text>
+    <text id="location">Plats:</text>
+    <text id="hint">Ytterligare ledtrådar</text>
+    <text id="logs">Loggade besök</text>
+    <text id="by">En cache av</text>
+    <text id="hidden">Gömd</text>
+    <text id="micro">Mikro</text>
+    <text id="small">Liten</text>
+    <text id="regular">Normal</text>
+    <text id="large">Stor</text>
+    <text id="other">Annan</text>
+    <text id="not_chosen">Ej vald</text>
+    <text id="note">Privat anteckning om geocachen</text>
+    <format id="date">%Y/%m/%d</format>
+    <text id="toc_title">Sammanfattning</text>
+    <text id="toc_name">Namn</text>
+    <text id="toc_page">Page</text>
+</i18n>

@@ -18,11 +18,16 @@ define('BOOTSTRAP_VERSION', '2.3.2');
 date_default_timezone_set('Europe/Paris');
 
 //Locales for the roadbook
-$locales = array('de' => 'Deutsch',
+$locales = array('cs' => 'Čeština',
+                 'de' => 'Deutsch',
                  'en' => 'English',
+                 'es' => 'Español',
                  'fr' => 'Français',
                  'it' => 'Italiano',
-                 'nl' => 'Nederlands');
+                 'nl' => 'Nederlands',
+                 'pt' => 'Português',
+                 'th' => 'ภาษาไทย',
+                 'sv' => 'Svenska');
 
 //TinyMCE
 $available_languages = array('de', 'en', 'es', 'fr', 'it', 'pt');
