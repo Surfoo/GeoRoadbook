@@ -15,9 +15,6 @@
             <dd>Only GPX files with the version 1.0.1 are managed, if you don't know the version, <a href="http://www.geocaching.com/account/ManagePreferences.aspx" onclick="window.open(this.href);return false;">check your preferences</a>.<br />
                 GPX with tracks are not supported. If your file always doesn't work, it's maybe malformed.</dd>
 
-            <dt>Combien de caches puis-je avoir sur mon roadbook?</dt>
-            <dd>Le nombre de caches est limité à un maximum de 100. L'export PDF d'un roadbook prends ressources sur le serveur, et trop de caches le surchargeront.</dd>
-
             <dt>Why I can't see spoilers in the roadbook?</dt>
             <dd>Unfortunately, the links to spoilers aren't included in the gpx file, maybe one day Groundspeak will fix this, who knows?<br />
                 If you wants spoilers in the roadbook, you should insert them manually with the image button.</dd>

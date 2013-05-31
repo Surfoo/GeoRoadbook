@@ -55,7 +55,7 @@ page.paperSize = {
   header: {
     height: "0.9cm",
     contents: phantom.callback(function(pageNum, numPages) {
-      var content = "<div style='text-align:" + header_align + ";'>";
+      var content = "<div style='font-size:10pt;text-align:" + header_align + ";'>";
       if (header_pagination) {
         content += pageNum + "/" + numPages;
       } else {
@@ -68,7 +68,7 @@ page.paperSize = {
   footer: {
     height: "0.9cm",
     contents: phantom.callback(function(pageNum, numPages) {
-      var content = "<div style='text-align:" + footer_align + ";'>";
+      var content = "<div style='font-size:10pt;text-align:" + footer_align + ";'>";
       if (footer_pagination) {
         content += pageNum + "/" + numPages;
       } else {
