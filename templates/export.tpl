@@ -4,7 +4,7 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <div class="tabbable"> <!-- Only required for left/right tabs -->
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab">Options</a></li>
+                <li class="active"><a href="#tab1" data-toggle="tab">Format</a></li>
                 <li><a href="#tab2" data-toggle="tab">Header & Footer</a></li>
             </ul>
             <form class="form-horizontal">
