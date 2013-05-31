@@ -7,7 +7,7 @@
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
         <link rel="stylesheet" href="/design/design.css" media="all">
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{$jquery_version}/jquery.min.js"></script>
         {*<script type="text/javascript" src="/js/tinymce4/tinymce.min.js"></script>*}
         <script type="text/javascript" src="/js/tinymce358/tiny_mce.js"></script>
         <script type="text/javascript">
@@ -25,7 +25,7 @@
                         </div>
                         <div class="btn-group">
                             <button type="submit" id="save" class="btn btn-primary" title="{$last_modification|escape}">Save</button>
-                            <a href="#ui_export" role="button" class="btn btn-primary" data-toggle="modal">Export as PDF</a>
+                            <a href="#ui_export" id="btn_export" role="button" class="btn btn-primary" data-toggle="modal">Export as PDF</a>
                         </div>
                         <div class="btn-group">
                             <button class="btn">Download as</button>
@@ -45,12 +45,13 @@
                     </div>
                 </div>
                 {include file="_faq.tpl"}
+                {include file="_about.tpl"}
             </div>
         </div>
 
         {include file="footer.tpl"}
 
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/js/georoadbook.js?20130516"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{$bootstrap_version}/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/georoadbook.min.js?20130531"></script>
     </body>
 </html>

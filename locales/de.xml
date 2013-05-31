@@ -7,16 +7,16 @@
     <text id="hint">Zusätzliche Hinweise</text>
     <text id="logs">Geloggte Besuche</text>
     <text id="by">Von</text>
-    <text id="hidden">Versteckt</text>
+    <text id="hidden">Versteckt am</text>
     <text id="micro">Mikro</text>
     <text id="small">Klein</text>
     <text id="regular">Normal</text>
     <text id="large">groß</text>
     <text id="other">Sonstige</text>
     <text id="not_chosen">nicht gewählt</text>
-    <text id="note">Persönliche Cache-Notiz</text>
+    <text id="note">Persönliche Notiz</text>
     <format id="date">%d.%m.%Y</format>
-    <text id="toc_title">Inhaltsverzeichnis</text>
+    <text id="toc_title">Inhalt</text>
     <text id="toc_name">Cache name</text>
     <text id="toc_page">Seite</text>
 </i18n>

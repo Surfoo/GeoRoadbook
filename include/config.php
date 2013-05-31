@@ -12,6 +12,9 @@ define('ICON_CACHE_DIR', '32x32');
 
 define('MAX_RETENTION', 3600*24*30);
 
+define('JQUERY_VERSION', '2.0.1');
+define('BOOTSTRAP_VERSION', '2.3.2');
+
 date_default_timezone_set('Europe/Paris');
 
 //Locales for the roadbook

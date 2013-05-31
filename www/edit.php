@@ -24,7 +24,7 @@ if (array_key_exists('zip', $_GET) && class_exists('ZipArchive')) {
 
 if (array_key_exists('raw', $_GET)) {
     $html = file_get_contents($rdbk->html_file);
-    
+
     //hack, bug in TinyMCE
     $html = preg_replace('/<head>\s*<\/head>/m', '<head><meta charset="utf-8" /><title>My roadbook</title><link type="text/css" rel="stylesheet" href="../design/roadbook.css" media="all" /></head>', $html, 1);
     $rdbk->saveFile($rdbk->html_file, $html);
@@ -40,6 +40,8 @@ if (array_key_exists('raw', $_GET)) {
 
 require LIB_DIR . 'class.smarty_georoadbook.php';
 
+$smarty->assign('jquery_version', JQUERY_VERSION);
+$smarty->assign('bootstrap_version', BOOTSTRAP_VERSION);
 $smarty->assign('language', $language);
 $smarty->assign('roadbook_id', $rdbk->id);
 $smarty->assign('roadbook_content', file_get_contents($rdbk->html_file));

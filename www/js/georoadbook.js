@@ -20,7 +20,7 @@ $().ready(function() {
         pagebreak_separator: "<p class=\"pagebreak\"><!-- pagebreak --></p>",
         visual: false,
         // Cleanup/Output
-        apply_source_formatting: true,
+        apply_source_formatting: true
         //convert_fonts_to_spans: true,
         //convert_newlines_to_brs: false,
         //fix_list_elements: true,
@@ -62,7 +62,7 @@ $().ready(function() {
 
 
 $(function() {
-    $("#delete").button().click(function(event) {
+    $("#delete").button().click(function() {
         if (!confirm('Are you sure to delete your roadbook?')) {
             return;
         }
@@ -82,7 +82,7 @@ $(function() {
                 if (!data || data === "") {
                     return;
                 }
-                if (typeof data != 'object') {
+                if (typeof data !== 'object') {
                     return;
                 }
                 if (data && data.success) {
@@ -91,7 +91,7 @@ $(function() {
                     return;
                 }
             },
-            failure: function(data) {
+            failure: function() {
                 ed.setProgressState(0);
             }
         });
@@ -100,28 +100,43 @@ $(function() {
     $('#ui_export').on('show', function() {
         $.getJSON('/roadbook/' + roadbook_id + '.json', function(data) {
             $.each(data, function(key, val) {
-                if ($('#' + key).is('input')) {
+                //checkbox
+                if ($('#' + key).is('input[type=checkbox]')) {
                     $('#' + key).attr("value", val);
+                    if (val) {
+                        $('#' + key).prop('checked', true);
+                        $("#" + key.substr(0, 6) + "_text").prop('disabled', true);
+                    }
                 } else if ($('#' + key).is('select')) {
                     $('#' + key).val(val);
                     $('#' + key + ' option[value=' + val + ']').attr('selected', 'selected');
+                } else if ($('#' + key).is('input')) {
+                    $('#' + key).attr("value", val);
                 }
             });
         });
-    })
+    });
 
-    $("#save").click(function(event) {
+    $("#save").click(function() {
         saveHtml();
     });
 
-    $("#apply").click(function(event) {
+    $("#apply").click(function() {
         _ajax(false);
     });
 
-    $("#export").click(function(event) {
+    $("#export").click(function() {
         saveHtml();
         $('#ui_export').modal('hide');
         _ajax(true);
+    });
+
+    $("#header_pagination").click(function() {
+        $("#header_text").prop('disabled', !$("#header_text").prop("disabled"));
+    });
+
+    $("#footer_pagination").click(function() {
+        $("#footer_text").prop('disabled', !$("#footer_text").prop("disabled"));
     });
 
     function saveHtml() {
@@ -143,13 +158,12 @@ $(function() {
                     ed.isNotDirty = true;
                 }
             },
-            failure: function(data) {}
+            failure: function() {}
         });
         ed.setProgressState(0);
     }
 
     function _ajax(real_export) {
-        var ed = tinyMCE.get('editable');
         tinymce.activeEditor.setProgressState(true);
         $.ajax({
             url: "/export.php",
@@ -163,28 +177,28 @@ $(function() {
                 'margin-right': document.forms[0].margin_right.value,
                 'margin-top': document.forms[0].margin_top.value,
                 'margin-bottom': document.forms[0].margin_bottom.value,
-                'header-left': document.forms[0].header_left.value,
-                'header-center': document.forms[0].header_center.value,
-                'header-right': document.forms[0].header_right.value,
-                'footer-left': document.forms[0].footer_left.value,
-                'footer-center': document.forms[0].footer_center.value,
-                'footer-right': document.forms[0].footer_right.value,
+                'header-align': document.forms[0].header_align.value,
+                'header-text': document.forms[0].header_text.value,
+                'header-pagination': !! $('input[name="header_pagination"]:checked').val(),
+                'footer-align': document.forms[0].footer_align.value,
+                'footer-text': document.forms[0].footer_text.value,
+                'footer-pagination': !! $('input[name="footer_pagination"]:checked').val(),
             },
 
             success: function(data) {
                 tinymce.activeEditor.setProgressState(false);
 
                 if (!real_export) {
-                    return
+                    return;
                 }
-                $('#export').prop('disabled', false);
+
                 if (!data || data === "") {
                     alert('Conversion failed :-(');
-                    return
+                    return;
                 }
-                if (typeof data != 'object') {
+                if (typeof data !== 'object') {
                     alert('Conversion failed :-(\nMessage:\n' + data);
-                    return
+                    return;
                 }
 
                 if (data && data.success) {
@@ -196,12 +210,11 @@ $(function() {
                     alert('Conversion failed :-(\nMessage:\n' + data.error);
                 }
             },
-            failure: function(data) {
+            failure: function() {
                 tinymce.activeEditor.setProgressState(false);
                 if (!real_export) {
-                    return
+                    return;
                 }
-                $('#export').prop('disabled', false);
                 alert('Error in exportation.');
             }
         });

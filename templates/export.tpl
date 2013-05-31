@@ -55,43 +55,45 @@
                         </fieldset>
                     </div>
                     <div class="tab-pane" id="tab2">
+                        <small>You can choice to write a text or display the pagination in the header or footer.</small>
                         <fieldset>
                             <legend>Header Text</legend>
-                                <label class="control-label" for="header_left">Left</label>
+                                <label class="control-label" for="header_align">Alignement</label>
                                 <div class="controls">
-                                    <input name="header_left" type="text" id="header_left" />
+                                    <select name="header_align" id="header_align">
+                                        <option value="left">Left</option>
+                                        <option value="center">Center</option>
+                                        <option value="right">Right</option>
+                                    </select>
                                 </div>
-
-                                <label class="control-label" for="header_center">Centered</label>
+                                <label class="control-label" for="header_text">Text</label>
                                 <div class="controls">
-                                    <input name="header_center" type="text" id="header_center" />
+                                    <input name="header_text" type="text" id="header_text" />
                                 </div>
-
-                                <label class="control-label" for="header_right">Right</label>
+                                <label class="control-label" for="header_pagination">Pagination</label>
                                 <div class="controls">
-                                    <input name="header_right" type="text" id="header_right" />
+                                    <input type="checkbox" name="header_pagination" value="1" id="header_pagination" />
                                 </div>
                         </fieldset>
                         <fieldset>
                             <legend>Footer Text</legend>
-                                <label class="control-label" for="footer_left">Left</label>
+                                <label class="control-label" for="footer_align">Alignement</label>
                                 <div class="controls">
-                                    <input name="footer_left" type="text" id="footer_left" />
+                                    <select name="footer_align" id="footer_align">
+                                        <option value="left">Left</option>
+                                        <option value="center">Center</option>
+                                        <option value="right">Right</option>
+                                    </select>
                                 </div>
-
-                                <label class="control-label" for="footer_center">Centered</label>
+                                <label class="control-label" for="footer_text">Text</label>
                                 <div class="controls">
-                                    <input name="footer_center" type="text" id="footer_center" />
+                                    <input name="footer_text" type="text" id="footer_text" />
                                 </div>
-
-                                <label class="control-label" for="footer_right">Right</label>
+                                <label class="control-label" for="footer_pagination">Pagination</label>
                                 <div class="controls">
-                                    <input name="footer_right" type="text" id="footer_right" />
+                                    <input type="checkbox" name="footer_pagination" value="1" id="footer_pagination" />
                                 </div>
                         </fieldset>
-                        <small>
-                            <p><strong>Variables:</strong> [page], [topage]</p>
-                        </small>
                     </div>
                 </div>
             </form>

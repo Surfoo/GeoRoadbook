@@ -1,10 +1,15 @@
 <?php
-
 /**
- * 
+ * Georoadbook Class
+ *
+ * @author  Surfoo <surfooo@gmail.com>
+ * @link    https://github.com/Surfoo/georoadbook
+ * @license http://opensource.org/licenses/eclipse-2.0.php
+ * @package georoadbook
  */
-class geoRoadbook {
 
+class georoadbook
+{
     const ID_LENGTH = 16;
 
     const MAX_CACHES = 100;
@@ -17,7 +22,10 @@ class geoRoadbook {
 
     public $locale = null;
 
-    public static function ajaxRequestOnly() {
+    public $debug  = false;
+
+    public static function ajaxRequestOnly()
+    {
         if (!array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
             header("HTTP/1.0 400 Bad Request");
             exit(0);
@@ -28,19 +36,19 @@ class geoRoadbook {
      * __construct
      * @param string $id
      */
-    public function __construct($id = '') {
-        if(empty($id)) {
+    public function __construct($id = '')
+    {
+        if (empty($id)) {
             $this->id = self::setId();
-        }
-        else {
-            if(!ctype_alnum($id)) {
+        } else {
+            if (!ctype_alnum($id)) {
                 header("HTTP/1.0 404 Not Found");
                 exit();
             }
             $this->id = basename($id);
         }
 
-        if(empty($this->id)) {
+        if (empty($this->id)) {
             return false;
         }
         $this->gpx_file  = ROADBOOKS_DIR . sprintf('%s.%s', $this->id, 'gpx');
@@ -54,16 +62,17 @@ class geoRoadbook {
      * @param  [type] $gpx
      * @return [type]
      */
-    public function create($gpx) {
+    public function create($gpx)
+    {
         self::ajaxRequestOnly();
 
         $this->gpx = $gpx;
 
-        if(substr_count($this->gpx, '<wpt') > self::MAX_CACHES) {
+        /*if (substr_count($this->gpx, '<wpt') > self::MAX_CACHES) {
             return false;
-        }
+        }*/
 
-        if(!$this->saveFile($this->gpx_file, $this->gpx)) {
+        if (!$this->saveFile($this->gpx_file, $this->gpx)) {
             return false;
         }
 
@@ -74,7 +83,8 @@ class geoRoadbook {
      * delete
      * @return [type]
      */
-    public function delete() {
+    public function delete()
+    {
         self::ajaxRequestOnly();
 
         $pattern = ROADBOOKS_DIR . $this->id . '.*';
@@ -92,7 +102,8 @@ class geoRoadbook {
      * getLastSavedDate
      * @return [type]
      */
-    public function getLastSavedDate() {
+    public function getLastSavedDate()
+    {
         return date('Y-m-d H:i:s', filemtime($this->html_file));
     }
 
@@ -100,16 +111,19 @@ class geoRoadbook {
      * export
      * @return [type]
      */
-    public function export() {
+    public function export()
+    {
         self::ajaxRequestOnly();
 
-        require LIB_DIR . 'class.weasyprint.php';
-
-        $pdf = new WeasyPrint($this->html_file);
-        if (!$pdf->saveAs($this->pdf_file, $this->getCustomCss())) {
-            $this->export_errors = $pdf->getError();
+        $cmd = escapeshellcmd('/usr/bin/phantomjs ' . ROOT . '/html2pdf.js ' . $this->id . ' ' . $_SERVER['HTTP_HOST']);
+        if ($this->debug) {
+            $cmd .= ' 2>&1';
+        }
+        $this->result = shell_exec($cmd);
+        if (!is_null($this->result)) {
             return false;
         }
+
         return true;
     }
 
@@ -117,9 +131,10 @@ class geoRoadbook {
      * getCustomCss
      * @return [type]
      */
-    public function getCustomCss() {
+    public function getCustomCss()
+    {
         $this->options_css = json_decode(file_get_contents($this->json_file), true);
-        if(is_null($this->options_css)) {
+        if (is_null($this->options_css)) {
             return false;
         }
 
@@ -167,7 +182,8 @@ class geoRoadbook {
      * @param  [type] $options
      * @return [type]
      */
-    public function saveOptions($options) {
+    public function saveOptions($options)
+    {
         self::ajaxRequestOnly();
 
         $this->options_css = $options;
@@ -177,6 +193,7 @@ class geoRoadbook {
         }
         fwrite($hd, json_encode($this->options_css));
         fclose($hd);
+
         return true;
     }
 
@@ -184,7 +201,8 @@ class geoRoadbook {
      * downloadPdf
      * @return [type]
      */
-    public function downloadPdf() {
+    public function downloadPdf()
+    {
         header('Content-Description: File Transfer');
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename=roadbook.pdf');
@@ -203,7 +221,8 @@ class geoRoadbook {
      * downloadZip
      * @return [type]
      */
-    public function downloadZip() {
+    public function downloadZip()
+    {
         $zip = new ZipArchive();
         $filename_zip = sprintf('%s.%s', $this->id, 'zip');
 
@@ -234,7 +253,8 @@ class geoRoadbook {
     /**
      * setId
      */
-    protected static function setId() {
+    protected static function setId()
+    {
         return substr(md5(uniqid(mt_rand(), true)), 0, self::ID_LENGTH);
     }
 
@@ -244,10 +264,10 @@ class geoRoadbook {
      * @param  string $content
      * @return [type]
      */
-    public function saveFile($filename, $content = '') {
-
+    public function saveFile($filename, $content = '')
+    {
         $hd = fopen($filename, 'w');
-        if(!$hd) {
+        if (!$hd) {
             return false;
         }
         fwrite($hd, $content);
@@ -262,7 +282,8 @@ class geoRoadbook {
      * @param  [type] $options
      * @return [type]
      */
-    public function convertXmlToHtml($locale, $options) {
+    public function convertXmlToHtml($locale, $options)
+    {
         $this->locale = $locale;
 
         $xsldoc = new DOMDocument();
@@ -286,6 +307,7 @@ class geoRoadbook {
         $this->html = preg_replace('/<\?xml[^>]*\?>/i', '', $this->html);
         $this->html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<html lang="' . $this->locale . '">', trim($this->html));
         $this->html = htmlspecialchars_decode($this->html);
+
         return $this->html;
     }
 
@@ -293,8 +315,9 @@ class geoRoadbook {
      * cleanHtml
      * @return [type]
      */
-    public function cleanHtml() {
-        if(is_null($this->html)) {
+    public function cleanHtml()
+    {
+        if (is_null($this->html)) {
             return false;
         }
         // http://tidy.sourceforge.net/docs/quickref.html
@@ -307,13 +330,15 @@ class geoRoadbook {
         $tidy->parseString($this->html, $config, 'utf8');
         $tidy->cleanRepair();
         $this->html = $tidy;
+
         return $this->html;
     }
 
     /**
      * addToC
      */
-    public function addToC() {
+    public function addToC()
+    {
         $dom = new DomDocument();
         $dom->loadHTML($this->html);
         $finder = new DomXPath($dom);
@@ -347,6 +372,7 @@ class geoRoadbook {
             $body->insertBefore($frag, $first);
             // $body->appendChild($frag);
             $this->html = $dom->saveHtml();
+
             return $this->html;
         }
     }
@@ -355,7 +381,8 @@ class geoRoadbook {
      * encryptHints
      * @return [type]
      */
-    public function encryptHints() {
+    public function encryptHints()
+    {
         $dom = new DomDocument();
         $dom->loadHTML($this->html);
         $finder = new DomXPath($dom);
@@ -366,6 +393,7 @@ class geoRoadbook {
             $node->nodeValue = $encoded_hint;
         }
         $this->html = $dom->saveHtml();
+
         return $this->html;
     }
 }

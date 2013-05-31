@@ -62,14 +62,15 @@
                     </fieldset>
                 </form>
                 {include file="_faq.tpl"}
+                {include file="_about.tpl"}
             </div>
         </div>
 
         {include file="footer.tpl"}
 
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{$jquery_version}/jquery.min.js"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{$bootstrap_version}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/bootstrap/js/bootstrap-fileupload.js"></script>
-        <script type="text/javascript" src="/js/upload.js?20130516"></script>
+        <script type="text/javascript" src="/js/upload.min.js?20130531"></script>
     </body>
 </html>

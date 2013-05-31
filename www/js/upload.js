@@ -60,12 +60,12 @@ function ParseFile(file) {
             $('#error').html('<p>"' + fileinfo[0]['name'] + '" in an invalid file.<p>').show().delay(3000).fadeOut();
             return false;
         }
-        var count_caches = e.target.result.match(/<wpt/g);
+        /*var count_caches = e.target.result.match(/<wpt/g);
         if (count_caches.length > 100) {
             content_gpx = null;
             $('#error').html('<p>' + count_caches.length + ' caches in the GPX File. The number of caches is limited to 100 because of limited resources.<p>').show();
             return false;
-        }
+        }*/
         content_gpx = e.target.result;
     },
     reader.readAsText(file, 'UTF-8');

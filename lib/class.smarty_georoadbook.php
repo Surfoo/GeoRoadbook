@@ -8,9 +8,9 @@ require 'smarty/Smarty.class.php';
 // can do that right here. An example:
 // require('guestbook/guestbook.lib.php');
 
-class Smarty_Georoadbook extends Smarty {
-
-   function __construct()
+class Smarty_Georoadbook extends Smarty
+{
+   public function __construct()
    {
         // Class Constructor.
         // These automatically get set with each new instance.
@@ -28,4 +28,3 @@ class Smarty_Georoadbook extends Smarty {
 
 }
 $smarty = new Smarty_Georoadbook();
-?>

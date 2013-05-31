@@ -13,20 +13,21 @@
 
             <dt>Why doesn't my GPX file work?</dt>
             <dd>Only GPX files with the version 1.0.1 are managed, if you don't know the version, <a href="http://www.geocaching.com/account/ManagePreferences.aspx" onclick="window.open(this.href);return false;">check your preferences</a>.<br />
-                GPX with tracks are not supported. If your file always doesn't work, it's maybe malformed.
-            </dd>
+                GPX with tracks are not supported. If your file always doesn't work, it's maybe malformed.</dd>
+
+            <dt>Combien de caches puis-je avoir sur mon roadbook?</dt>
+            <dd>Le nombre de caches est limité à un maximum de 100. L'export PDF d'un roadbook prends ressources sur le serveur, et trop de caches le surchargeront.</dd>
 
             <dt>Why I can't see spoilers in the roadbook?</dt>
             <dd>Unfortunately, the links to spoilers aren't included in the gpx file, maybe one day Groundspeak will fix this, who knows?<br />
-                If you wants spoilers in the roadbook, you should insert them manually with the image button.           
-</dd>
+                If you wants spoilers in the roadbook, you should insert them manually with the image button.</dd>
 
             <dt>Why is pagination missing in the table of contents?</dt>
-            <dd>WeasyPrint, the visual rendering engine used, doesn't implement this feature yet. You should make the pagination manually according to a first exportation in PDF.<br />
+            <dd>WebKit, the visual rendering engine used, doesn't implement this feature yet. You should make the pagination manually according to a first exportation in PDF.<br />
                 You can also use the Print Preview in Chrome with the roadbook in HTML view.</dd>
 
             <dt>Why does my roadbook look good in the editor and not in the PDF?</dt>
-            <dd>The PDF rendering is great but some HTML/CSS features aren't implemented yet (like images resized, text centered). If you find bugs, please <a href="http://www.geocaching.com/email/?guid=84d9b0f4-26c6-49a9-9c14-85fca0b5624b" onclick="window.open(this.href);return false;">contact me</a>, or <a href="https://github.com/Surfoo/georoadbook/issues" onclick="window.open(this.href);return false;">open a bug issue on github.</a></dd>
+            <dd>The PDF rendering is great but some HTML/CSS features aren't implemented yet (like images resized). If you find bugs, please <a href="https://github.com/Surfoo/georoadbook/issues" onclick="window.open(this.href);return false;">open a bug issue on github</a>, or <a href="http://www.geocaching.com/email/?guid=84d9b0f4-26c6-49a9-9c14-85fca0b5624b" onclick="window.open(this.href);return false;">contact me</a>.</dd>
         </dl>
     </div>
 </div>
