@@ -58,7 +58,7 @@
                         <small>You can choice to write a text or display the pagination in the header or footer.</small>
                         <fieldset>
                             <legend>Header Text</legend>
-                                <label class="control-label" for="header_align">Alignement</label>
+                                <label class="control-label" for="header_align">Alignment</label>
                                 <div class="controls">
                                     <select name="header_align" id="header_align">
                                         <option value="left">Left</option>
@@ -77,7 +77,7 @@
                         </fieldset>
                         <fieldset>
                             <legend>Footer Text</legend>
-                                <label class="control-label" for="footer_align">Alignement</label>
+                                <label class="control-label" for="footer_align">Alignment</label>
                                 <div class="controls">
                                     <select name="footer_align" id="footer_align">
                                         <option value="left">Left</option>

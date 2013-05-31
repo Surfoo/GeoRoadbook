@@ -27,7 +27,10 @@
                 You can also use the Print Preview in Chrome with the roadbook in HTML view.</dd>
 
             <dt>Why does my roadbook look good in the editor and not in the PDF?</dt>
-            <dd>The PDF rendering is great but some HTML/CSS features aren't implemented yet (like images resized). If you find bugs, please <a href="https://github.com/Surfoo/georoadbook/issues" onclick="window.open(this.href);return false;">open a bug issue on github</a>, or <a href="http://www.geocaching.com/email/?guid=84d9b0f4-26c6-49a9-9c14-85fca0b5624b" onclick="window.open(this.href);return false;">contact me</a>.</dd>
+            <dd>The PDF rendering is great but some HTML/CSS features aren't implemented yet.<dd>
+
+            <dt>I have a problem with georoabook, what can I do ?</dt>
+            <dd>If you find bugs, please <a href="https://github.com/Surfoo/georoadbook/issues" onclick="window.open(this.href);return false;">open a bug issue on github</a>, or <a href="#about" data-toggle="modal">contact me</a>.</dd>
         </dl>
     </div>
 </div>
