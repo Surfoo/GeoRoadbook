@@ -55,7 +55,7 @@
                         </fieldset>
                     </div>
                     <div class="tab-pane" id="tab2">
-                        <small>You can choice to write a text or display the pagination in the header or footer.</small>
+                        <small>You can choose to write a text or display the pagination in the header or footer.</small>
                         <fieldset>
                             <legend>Header Text</legend>
                                 <label class="control-label" for="header_align">Alignment</label>
