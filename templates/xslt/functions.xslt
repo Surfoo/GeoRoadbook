@@ -79,4 +79,11 @@
     </xsl:choose>
 </xsl:template>
 
+<xsl:template name="ToLower">
+    <xsl:param name="inputString"/>
+    <xsl:variable name="smallCase" select="'abcdefghijklmnopqrstuvwxyz'"/>
+    <xsl:variable name="upperCase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
+    <xsl:value-of select="translate($inputString, $upperCase, $smallCase)"/>
+</xsl:template>
+
 </xsl:stylesheet>

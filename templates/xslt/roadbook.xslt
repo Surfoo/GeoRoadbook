@@ -81,7 +81,7 @@
                     <xsl:with-param name="month" select="$month"></xsl:with-param>
                     <xsl:with-param name="day"   select="$day"></xsl:with-param>
                     <xsl:with-param name="format" select="$locale/format[@id='date']"></xsl:with-param>
-                </xsl:call-template>
+                  </xsl:call-template>
                 </xsl:variable>
                 <!-- End variables -->
 
@@ -122,9 +122,6 @@
                               <xsl:when test="grdspk:cache/grdspk:type = 'Mega-Event Cache'">
                                   <img src="../img/caches/{$icon_cache_dir}/megaevent.gif" alt="" />
                               </xsl:when>
-                              <xsl:otherwise>
-                                  <img src="../img/not_chosen.gif" alt="" />
-                              </xsl:otherwise>
                           </xsl:choose>
                       <xsl:value-of select="grdspk:cache/grdspk:name"/></h1>
 
@@ -207,24 +204,31 @@
                       <xsl:value-of select="$locale/text[@id='hidden']" /><strong>&#160;<xsl:value-of select="$hidden_date" /></strong>
                   </p>
                   <p>
+
+                    <xsl:variable name="container">
+                      <xsl:call-template name="ToLower">
+                        <xsl:with-param name="inputString" select="grdspk:cache/grdspk:container"></xsl:with-param>
+                      </xsl:call-template>
+                    </xsl:variable>
+
                     <xsl:value-of select="$locale/text[@id='size']" />&#160;
                     <xsl:choose>
-                      <xsl:when test="grdspk:cache/grdspk:container = 'Micro'">
+                      <xsl:when test="$container = 'micro'">
                         <img src="../img/container/micro.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='micro']" />)
                     </xsl:when>
-                    <xsl:when test="grdspk:cache/grdspk:container = 'Small'">
+                    <xsl:when test="$container = 'small'">
                         <img src="../img/container/small.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='small']" />)
                     </xsl:when>
-                    <xsl:when test="grdspk:cache/grdspk:container = 'Regular'">
+                    <xsl:when test="$container = 'regular'">
                         <img src="../img/container/regular.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='regular']" />)
                     </xsl:when>
-                    <xsl:when test="grdspk:cache/grdspk:container = 'Large'">
+                    <xsl:when test="$container = 'large'">
                         <img src="../img/container/large.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='large']" />)
                     </xsl:when>
-                    <xsl:when test="grdspk:cache/grdspk:container = 'Other'">
+                    <xsl:when test="$container = 'other'">
                         <img src="../img/container/other.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='other']" />)
                     </xsl:when>
-                    <xsl:when test="grdspk:cache/grdspk:container = 'Not chosen' or grdspk:cache/grdspk:container = 'not_chosen'">
+                    <xsl:when test="$container = 'not chosen' or $container = 'not_chosen'">
                         <img src="../img/container/not_chosen.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='not_chosen']" />)
                     </xsl:when>
                   </xsl:choose>
