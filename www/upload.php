@@ -61,6 +61,10 @@ if ($display_toc) {
 if ($display_hint && $hint_encrypted) {
     $rdbk->encryptHints();
 }
+// Parse logs
+if($display_logs) {
+    $rdbk->parseBBcode();
+}
 
 $rdbk->saveFile($rdbk->html_file, $rdbk->html);
 $rdbk->saveFile($rdbk->json_file);

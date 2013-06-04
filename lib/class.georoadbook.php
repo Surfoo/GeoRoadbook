@@ -24,6 +24,42 @@ class georoadbook
 
     public $debug  = false;
 
+    protected $bbcode_smileys = array(':)'  => 'icon_smile.gif',
+                                      ':D'  => 'icon_smile_big.gif',
+                                      '8D'  => 'icon_smile_cool.gif',
+                                      ':I'  => 'icon_smile_blush.gif',
+                                      ':P'  => 'icon_smile_tongue.gif',
+                                      '}:)' => 'icon_smile_evil.gif',
+                                      ';)'  => 'icon_smile_wink.gif',
+                                      ':o)' => 'icon_smile_clown.gif',
+                                      'B)'  => 'icon_smile_blackeye.gif',
+                                      '8'   => 'icon_smile_8ball.gif',
+                                      ':('  => 'icon_smile_sad.gif',
+                                      '8)'  => 'icon_smile_shy.gif',
+                                      ':O'  => 'icon_smile_shock.gif',
+                                      ':(!' => 'icon_smile_angry.gif',
+                                      'xx(' => 'icon_smile_dead.gif',
+                                      '|)'  => 'icon_smile_sleepy.gif',
+                                      ':X'  => 'icon_smile_kisses.gif',
+                                      '^'   => 'icon_smile_approve.gif',
+                                      'V'   => 'icon_smile_dissapprove.gif',
+                                      '?'   => 'icon_smile_question.gif',
+                                );
+    protected $bbcode_colors = array('black',
+                                     'blue',
+                                     'gold',
+                                     'green',
+                                     'maroon',
+                                     'navy',
+                                     'orange',
+                                     'pink',
+                                     'purple',
+                                     'red',
+                                     'teal',
+                                     'white',
+                                     'yellow',
+                                );
+
     public static function ajaxRequestOnly()
     {
         if (!array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
@@ -386,13 +422,60 @@ class georoadbook
         $dom = new DomDocument();
         $dom->loadHTML($this->html);
         $finder = new DomXPath($dom);
-        $classname="cacheHintContent";
+        $classname = "cacheHintContent";
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
         foreach ($nodes as $node) {
-            $encoded_hint = str_rot13($node->textContent);
-            $node->nodeValue = $encoded_hint;
+            $node->nodeValue = str_rot13($node->textContent);
         }
         $this->html = $dom->saveHtml();
+
+        return $this->html;
+    }
+
+    /**
+     * parseBBcode
+     * @return [type]
+     */
+    public function parseBBcode()
+    {
+        $dom = new DomDocument();
+        $dom->loadHTML($this->html);
+        $finder = new DomXPath($dom);
+        $classname = "cacheLogText";
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+
+        require LIB_DIR . 'jBBCode/Parser.php';
+        require LIB_DIR . 'jBBCode/visitors/SmileyVisitor.php';
+
+        $parser = new JBBCode\Parser();
+        $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
+
+        foreach($this->bbcode_colors as $color) {
+            $builder = new JBBCode\CodeDefinitionBuilder($color, '<span style="color: '.$color.';">{param}</span>');
+            $parser->addCodeDefinition($builder->build());
+        }
+
+        foreach ($nodes as $node) {
+            $raw_log = $node->ownerDocument->saveHTML($node);
+            $raw_log = trim(str_replace(array('<td class="cacheLogText" colspan="2">', '</td>'), '', $raw_log));
+            $log = preg_replace('/<br>$/', '', $raw_log);
+
+            $parser->parse($log);
+            $node->nodeValue = $parser->getAsHtml();
+        }
+        //$smileyVisitor = new \JBBCode\visitors\SmileyVisitor();
+        //$parser->accept($smileyVisitor);
+
+        $this->html = $dom->saveHtml();
+        $bbcodes = array_keys($this->bbcode_smileys);
+        $images = array_values($this->bbcode_smileys);
+        foreach($images as $k=>&$image) {
+          $image = '<img src="../images/icons/' . $image . '" alt="' . $bbcodes[$k] . '" />';
+        }
+        foreach($bbcodes as &$bbcode) {
+          $bbcode = '[' . $bbcode . ']';
+        }
+        $this->html = str_replace($bbcodes, $images, $this->html);
 
         return $this->html;
     }
