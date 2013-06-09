@@ -33,22 +33,22 @@
                             <div class="control-group">
                                 <label class="control-label" for="margin_left">Left</label>
                                 <div class="controls">
-                                    <input name="margin_left" type="number" size="2" maxlength="2" id="margin_left" value="10" style="width:40px;" /> <small>mm</small>
+                                    <input name="margin_left" type="number" min="0" max="50" id="margin_left" value="10" style="width:40px;" /> <small>mm</small>
                                 </div>
 
                                 <label class="control-label" for="margin_right">Right</label>
                                 <div class="controls">
-                                    <input name="margin_right" type="number" size="2" maxlength="2" id="margin_right" value="10" style="width:40px;" /> <small>mm</small>
+                                    <input name="margin_right" type="number" min="0" max="50" id="margin_right" value="10" style="width:40px;" /> <small>mm</small>
                                 </div>
 
                                 <label class="control-label" for="margin_top">Top</label>
                                 <div class="controls">
-                                    <input name="margin_top" type="number" size="2" maxlength="2" id="margin_top" value="10" style="width:40px;" /> <small>mm</small>
+                                    <input name="margin_top" type="number" min="0" max="50" id="margin_top" value="10" style="width:40px;" /> <small>mm</small>
                                 </div>
 
                                 <label class="control-label" for="margin_bottom">Bottom</label>
                                 <div class="controls">
-                                    <input name="margin_bottom" type="number" size="2" maxlength="2" id="margin_bottom" value="10" style="width:40px;" /> <small>mm</small>
+                                    <input name="margin_bottom" type="number" min="0" max="50" id="margin_bottom" value="10" style="width:40px;" /> <small>mm</small>
                                 </div>
 
                             </div>
