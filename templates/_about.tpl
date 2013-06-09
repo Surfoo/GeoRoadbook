@@ -4,6 +4,6 @@
         <h3>About</h3>
     </div>
     <div class="modal-body">
-        <strong>Contact: </strong> surfooo at gmail dot com
+        <strong>Contact: </strong> surfooo at gmail dot com (French or English)
     </div>
 </div>

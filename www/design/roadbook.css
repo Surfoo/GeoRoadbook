@@ -132,6 +132,9 @@ h1 img, .finder_name img {
     text-align: center;
     vertical-align: center;
 }
+#tocHeadNumber {
+    width: 0.8cm;
+}
 #tocHeadName {
     text-align:left;
 }
@@ -149,9 +152,13 @@ h1 img, .finder_name img {
     border-left: 1px solid #000;
     border-bottom: 1px solid #000;
 }
-#tocHeadName, #tocHeadFound, #tocHeadDnf,
-.tocName, .tocFound, .tocDnf, .tocPage {
+
+#tocHeadNumber, #tocHeadName, #tocHeadFound, #tocHeadDnf,
+.tocNumber, .tocName, .tocFound, .tocDnf, .tocPage {
     border-right: 1px solid #000;
+}
+.tocNumber {
+    text-align: center;
 }
 .tocIcon {
     width: 0.5cm;

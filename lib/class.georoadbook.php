@@ -336,7 +336,9 @@ class georoadbook
             $xsl->setParameter('', 'display_hint', $options['hint']);
         if(array_key_exists('logs', $options))
             $xsl->setParameter('', 'display_logs', $options['logs']);
-
+        if(array_key_exists('sort_by', $options))
+            $xsl->setParameter('', 'sort_by', $options['sort_by']);
+    
         $xml = new DOMDocument();
         $xml->loadXML($this->gpx);
         $this->html = $xsl->transformToXML($xml);

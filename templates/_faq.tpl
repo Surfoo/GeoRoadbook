@@ -6,18 +6,22 @@
     <div class="modal-body">
         <dl>
             <dt>My language isn't in the list, how to get it?</dt>
-            <dd>You can translate <a href="https://github.com/Surfoo/georoadbook/blob/master/locales/en.xml" onclick="window.open(this.href);return false;">this file</a> and send it by mail or pull request on github. I'll add it quickly then.</dd>
+            <dd>You can translate <a href="https://github.com/Surfoo/georoadbook/blob/master/locales/en.xml" onclick="window.open(this.href);return false;">this file</a> and make a pull request on github or send it by email. I'll add it quickly then.</dd>
 
             <dt>Why does my roadbook no longer exist?</dt>
             <dd>All roadbooks are kept 1 month after the last modification date. You can know the date with a hover on the "Save" button, and if you save it, it'll be kept again.</dd>
 
+            <dt>Is my roabook public and published on internet?</dt>
+            <dd>No, your roadbook is absolutely private and it doesn't appear on search engines. Only you know the link, and you should keep it private if you prepare an event.<br >
+            Your roadbook can't be found with tests on the URL, there are 16<sup>16</sup> possibilities.</dd>
+
             <dt>Why doesn't my GPX file work?</dt>
             <dd>Only GPX files with the version 1.0.1 are managed, if you don't know the version, <a href="http://www.geocaching.com/account/ManagePreferences.aspx" onclick="window.open(this.href);return false;">check your preferences</a>.<br />
-                GPX with tracks are not supported. If your file always doesn't work, it's maybe malformed.</dd>
+                GPX with tracks are not supported. If your file always doesn't work, it's may be corrupted.</dd>
 
             <dt>Why I can't see spoilers in the roadbook?</dt>
             <dd>Unfortunately, the links to spoilers aren't included in the gpx file, maybe one day Groundspeak will fix this, who knows?<br />
-                If you wants spoilers in the roadbook, you should insert them manually with the image button.</dd>
+                If you want spoilers in the roadbook, you should insert them manually with the image button.</dd>
 
             <dt>Why is pagination missing in the table of contents?</dt>
             <dd>WebKit, the visual rendering engine used, doesn't implement this feature yet. You should make the pagination manually according to a first exportation in PDF.<br />
@@ -26,7 +30,7 @@
             <dt>Why does my roadbook look good in the editor and not in the PDF?</dt>
             <dd>The PDF rendering is great but some HTML/CSS features aren't implemented yet.<dd>
 
-            <dt>I have a problem with georoabook, what can I do ?</dt>
+            <dt>I have a problem with GeoRoadbook, what can I do ?</dt>
             <dd>If you find bugs, please <a href="https://github.com/Surfoo/georoadbook/issues" onclick="window.open(this.href);return false;">open a bug issue on github</a>, or <a href="#about" data-toggle="modal">contact me</a>.</dd>
         </dl>
     </div>

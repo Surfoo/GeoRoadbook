@@ -35,6 +35,7 @@
       <body>
 
         <xsl:for-each select="gpx:gpx/gpx:wpt">
+          <xsl:sort select="translate(grdspk:cache/grdspk:*[local-name()=$sort_by], 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
             <xsl:if test="grdspk:cache">
               <div class="cache">
 
@@ -121,6 +122,9 @@
                               </xsl:when>
                               <xsl:when test="grdspk:cache/grdspk:type = 'Mega-Event Cache'">
                                   <img src="../img/caches/{$icon_cache_dir}/megaevent.gif" alt="" />
+                              </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Waymark'">
+                                  <img src="../img/caches/{$icon_cache_dir}/waymark.gif" alt="" />
                               </xsl:when>
                           </xsl:choose>
                       <xsl:value-of select="grdspk:cache/grdspk:name"/></h1>
@@ -211,27 +215,29 @@
                       </xsl:call-template>
                     </xsl:variable>
 
-                    <xsl:value-of select="$locale/text[@id='size']" />&#160;
-                    <xsl:choose>
-                      <xsl:when test="$container = 'micro'">
-                        <img src="../img/container/micro.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='micro']" />)
-                    </xsl:when>
-                    <xsl:when test="$container = 'small'">
-                        <img src="../img/container/small.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='small']" />)
-                    </xsl:when>
-                    <xsl:when test="$container = 'regular'">
-                        <img src="../img/container/regular.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='regular']" />)
-                    </xsl:when>
-                    <xsl:when test="$container = 'large'">
-                        <img src="../img/container/large.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='large']" />)
-                    </xsl:when>
-                    <xsl:when test="$container = 'other'">
-                        <img src="../img/container/other.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='other']" />)
-                    </xsl:when>
-                    <xsl:when test="$container = 'not chosen' or $container = 'not_chosen'">
-                        <img src="../img/container/not_chosen.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='not_chosen']" />)
-                    </xsl:when>
-                  </xsl:choose>
+                    <xsl:if test="$container != '' and $container != 'unknown'">
+                      <xsl:value-of select="$locale/text[@id='size']" />&#160;
+                      <xsl:choose>
+                        <xsl:when test="$container = 'micro'">
+                          <img src="../img/container/micro.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='micro']" />)
+                        </xsl:when>
+                        <xsl:when test="$container = 'small'">
+                          <img src="../img/container/small.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='small']" />)
+                        </xsl:when>
+                        <xsl:when test="$container = 'regular'">
+                          <img src="../img/container/regular.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='regular']" />)
+                        </xsl:when>
+                        <xsl:when test="$container = 'large'">
+                          <img src="../img/container/large.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='large']" />)
+                        </xsl:when>
+                        <xsl:when test="$container = 'other'">
+                          <img src="../img/container/other.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='other']" />)
+                        </xsl:when>
+                        <xsl:when test="$container = 'not chosen' or $container = 'not_chosen'">
+                          <img src="../img/container/not_chosen.gif" alt="" />&#160;(<xsl:value-of select="$locale/text[@id='not_chosen']" />)
+                        </xsl:when>
+                      </xsl:choose>
+                    </xsl:if>
                   </p>
                   <div class="clear"><xsl:text disable-output-escaping="yes"><![CDATA[]]></xsl:text></div>
                 </div>

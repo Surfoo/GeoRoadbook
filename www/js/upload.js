@@ -1,9 +1,19 @@
 var content_gpx = null;
 showHintOptions();
+showOrderOptions();
 
 $('#hint').change(function() {
     showHintOptions();
 });
+
+$('#sort').change(function() {
+    showOrderOptions();
+});
+
+$('.option-help').tooltip({
+    placement: 'right'
+});
+
 
 function showHintOptions() {
     if ($('#hint').is(':checked')) {
@@ -13,6 +23,13 @@ function showHintOptions() {
     }
 }
 
+function showOrderOptions() {
+    if ($('#sort').is(':checked')) {
+        $('#sort_options').show();
+    } else {
+        $('#sort_options').hide();
+    }
+}
 // file selection
 if (window.File && window.FileList && window.FileReader) {
 
@@ -77,28 +94,20 @@ $('input[type="submit"]').click(function() {
         return false
     }
 
-    var locale = $('#locale').attr('selected', 'selected').val();
-    var tidy = !! $('input[name="tidy"]:checked').val();
-    var toc = !! $('input[name="toc"]:checked').val();
-    var note = !! $('input[name="note"]:checked').val();
-    var short_desc = !! $('input[name="short_desc"]:checked').val();
-    var hint = !! $('input[name="hint"]:checked').val();
-    var hint_encrypted = !! parseInt($('input[name="hint_encrypted"]:checked').val());
-    var logs = !! $('input[name="logs"]:checked').val();
-
     $.ajax({
         url: "upload.php",
         type: "POST",
         data: {
             gpx: content_gpx,
-            locale: locale,
-            tidy: tidy,
-            toc: toc,
-            note: note,
-            short_desc: short_desc,
-            hint: hint,
-            hint_encrypted: hint_encrypted,
-            logs: logs
+            locale: $('#locale').attr('selected', 'selected').val(),
+            tidy: !! $('input[name="tidy"]:checked').val(),
+            toc: !! $('input[name="toc"]:checked').val(),
+            note: !! $('input[name="note"]:checked').val(),
+            short_desc: !! $('input[name="short_desc"]:checked').val(),
+            hint: !! $('input[name="hint"]:checked').val(),
+            hint_encrypted: !! parseInt($('input[name="hint_encrypted"]:checked').val()),
+            logs: !! $('input[name="logs"]:checked').val(),
+            sort_by: $('input[name="sort_by"]:checked').val()
         },
         success: function(data) {
             if (!data || data === "" || typeof data != 'object') {
@@ -110,7 +119,7 @@ $('input[type="submit"]').click(function() {
             }
             $(location).attr('href', data.redirect);
         },
-        failure: function(data) {}
+        failure: function() {}
     });
     return false;
 });

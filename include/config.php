@@ -32,10 +32,7 @@ $locales = array('cs' => 'Čeština',
 //TinyMCE
 $available_languages = array('de', 'en', 'es', 'fr', 'it', 'pt');
 
-$available_options_pdf = array('page-size', 'orientation', 'margin-left',
-                               'margin-right', 'margin-top', 'margin-bottom',
-                               'header-left', 'header-center', 'header-right', 'header-line', 'header-spacing',
-                               'footer-left', 'footer-center', 'footer-right', 'footer-line', 'footer-spacing');
+$available_sorts = array('none', 'name', 'owner', 'difficulty', 'terrain');
 
 $user_language = false;
 if (array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {

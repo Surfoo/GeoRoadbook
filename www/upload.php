@@ -35,6 +35,8 @@ $display_short_desc = isset($_POST['short_desc']) && $_POST['short_desc'] == "tr
 $display_hint       = isset($_POST['hint']) && $_POST['hint'] == "true"                     ? true : false;
 $display_logs       = isset($_POST['logs']) && $_POST['logs'] == "true"                     ? true : false;
 $hint_encrypted     = isset($_POST['hint_encrypted']) && $_POST['hint_encrypted'] == "true" ? true : false;
+//$sort               = isset($_POST['sort']) && $_POST['sort'] == "true"                     ? true : false;
+$sort_by            = isset($_POST['sort_by']) && in_array($_POST['sort_by'], $available_sorts) ? $_POST['sort_by'] : $available_sorts[0];
 
 $rdbk = new georoadbook();
 
@@ -42,10 +44,12 @@ if(!$rdbk->create($_POST['gpx'])) {
     renderAjax(array('success' => false));
 }
 
-$options = array('note' => $display_note,
+$options = array('note'       => $display_note,
                  'short_desc' => $display_short_desc,
-                 'hint' => $display_hint,
-                 'logs' => $display_logs);
+                 'hint'       => $display_hint,
+                 'logs'       => $display_logs,
+                 'sort_by'    => $sort_by);
+
 $rdbk->convertXmlToHtml($_POST['locale'], $options);
 
 if ($html_tidy) {
@@ -61,6 +65,7 @@ if ($display_toc) {
 if ($display_hint && $hint_encrypted) {
     $rdbk->encryptHints();
 }
+
 // Parse logs
 if($display_logs) {
     $rdbk->parseBBcode();

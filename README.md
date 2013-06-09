@@ -3,8 +3,9 @@ GeoRoadbook is a web app to create your geocaching roadbook ready-to-print from 
 Works with:
 * [jQuery](http://jquery.com/) 2.0.1
 * [TinyMCE](http://www.tinymce.com/) 3.5.8
-* [PhantomJS](http://phantomjs.org/) 1.9
+* [PhantomJS](http://phantomjs.org/) 1.9.1
 * [Bootstrap](http://twitter.github.io/bootstrap/) 2.3.2
+* [jBBCode](http://jbbcode.com/) 1.2
 * php5-xsl
 * php5-tidy
 * ttf-mscorefonts-installer
