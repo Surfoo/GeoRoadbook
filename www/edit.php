@@ -42,6 +42,7 @@ require LIB_DIR . 'class.smarty_georoadbook.php';
 
 $smarty->assign('jquery_version', JQUERY_VERSION);
 $smarty->assign('bootstrap_version', BOOTSTRAP_VERSION);
+$smarty->assign('suffix_css_js', SUFFIX_CSS_JS);
 $smarty->assign('language', $language);
 $smarty->assign('roadbook_id', $rdbk->id);
 $smarty->assign('roadbook_content', file_get_contents($rdbk->html_file));

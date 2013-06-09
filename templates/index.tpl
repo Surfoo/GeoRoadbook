@@ -7,7 +7,7 @@
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="all" />
-        <link rel="stylesheet" href="/design/design.css" media="all" />
+        <link rel="stylesheet" href="/design/design.css?{$suffix_css_js}" media="all" />
     </head>
     <body>
         <div class="container">
@@ -92,6 +92,6 @@
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{$jquery_version}/jquery.min.js"></script>
         <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{$bootstrap_version}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/bootstrap/js/bootstrap-fileupload.js"></script>
-        <script type="text/javascript" src="/js/upload.min.js?20130531"></script>
+        <script type="text/javascript" src="/js/upload.min.js?{$suffix_css_js}"></script>
     </body>
 </html>
