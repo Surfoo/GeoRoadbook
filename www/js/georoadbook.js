@@ -60,10 +60,10 @@ $().ready(function() {
 
     $("#btn_delete").button().click(function() {
         if ($(this).hasClass('disabled')) {
-            return;
+            return false;
         }
         if (!confirm('Are you sure to delete your roadbook?')) {
-            return;
+            return false;
         }
         var ed = tinyMCE.get('editable');
         ed.setProgressState(1);
@@ -98,7 +98,7 @@ $().ready(function() {
 
     $('#ui_export').on('show', function() {
         if ($('#btn_export').hasClass('disabled')) {
-            return;
+            return false;
         }
         $.getJSON('/roadbook/' + roadbook_id + '.json', function(data) {
             $.each(data, function(key, val) {
@@ -121,7 +121,7 @@ $().ready(function() {
 
     $("#btn_save").click(function() {
         if ($(this).hasClass('disabled')) {
-            return;
+            return false;
         }
         saveHtml();
     });
