@@ -25,13 +25,13 @@
                         </div>
 
                         <div class="btn-group">
-                            <button type="submit" id="save" class="btn btn-primary" title="{$last_modification|escape}">Save</button>
+                            <button type="submit" id="btn_save" class="btn btn-primary" title="{$last_modification|escape}">Save</button>
                             <a href="#ui_export" id="btn_export" role="button" class="btn btn-primary" data-toggle="modal" title="Export as PDF file">Export as PDF</a>
                         </div>
 
                         <div class="btn-group">
-                            <button class="btn btn-primary" title="Download your roadbook"><i class="icon-download icon-white"></i> Download as</button>
-                            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <button class="btn btn-primary" title="Download your roadbook" id="btn_download_title"><i class="icon-download icon-white"></i> Download as</button>
+                            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="btn_download">
                                 <span class="caret"></span>
                             </button>
                             <ul id="download" class="dropdown-menu">
@@ -42,7 +42,7 @@
                         </div>
 
                         <div class="btn-group" title="Delete your roadbook">
-                            <button type="submit" id="delete" class="btn btn-warning"><i class="icon-trash icon-white"></i> Delete</button>
+                            <button type="submit" id="btn_delete" class="btn btn-warning"><i class="icon-trash icon-white"></i> Delete</button>
                         </div>
                         {include file="export.tpl"}
                     </div>

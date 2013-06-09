@@ -57,12 +57,11 @@ $().ready(function() {
         browser_spellcheck: true,
         pagebreak_separator: "<p class=\"pagebreak\"><!-- pagebreak --></p>",
     });*/
-});
 
-
-
-$(function() {
-    $("#delete").button().click(function() {
+    $("#btn_delete").button().click(function() {
+        if ($(this).hasClass('disabled')) {
+            return;
+        }
         if (!confirm('Are you sure to delete your roadbook?')) {
             return;
         }
@@ -98,6 +97,9 @@ $(function() {
     });
 
     $('#ui_export').on('show', function() {
+        if ($('#btn_export').hasClass('disabled')) {
+            return;
+        }
         $.getJSON('/roadbook/' + roadbook_id + '.json', function(data) {
             $.each(data, function(key, val) {
                 //checkbox
@@ -117,7 +119,10 @@ $(function() {
         });
     });
 
-    $("#save").click(function() {
+    $("#btn_save").click(function() {
+        if ($(this).hasClass('disabled')) {
+            return;
+        }
         saveHtml();
     });
 
@@ -153,7 +158,7 @@ $(function() {
             },
             success: function(data) {
                 if (data && data.success) {
-                    $('#save').attr('title', data.last_modification);
+                    $('#btn_save').attr('title', data.last_modification);
                     ed.startContent = ed.getContent();
                     ed.isNotDirty = true;
                 }
@@ -165,6 +170,13 @@ $(function() {
 
     function _ajax(real_export) {
         tinymce.activeEditor.setProgressState(true);
+
+        $('#btn_save').addClass('disabled');
+        $('#btn_export').addClass('disabled');
+        $('#btn_download_title').addClass('disabled');
+        $('#btn_download').addClass('disabled');
+        $('#btn_delete').addClass('disabled');
+
         $.ajax({
             url: "/export.php",
             type: "POST",
@@ -187,6 +199,12 @@ $(function() {
 
             success: function(data) {
                 tinymce.activeEditor.setProgressState(false);
+
+                $('#btn_save').removeClass('disabled');
+                $('#btn_export').removeClass('disabled');
+                $('#btn_download_title').removeClass('disabled');
+                $('#btn_download').removeClass('disabled');
+                $('#btn_delete').removeClass('disabled');
 
                 if (!real_export) {
                     return;
@@ -212,6 +230,13 @@ $(function() {
             },
             failure: function() {
                 tinymce.activeEditor.setProgressState(false);
+
+                $('#btn_save').removeClass('disabled');
+                $('#btn_export').removeClass('disabled');
+                $('#btn_download_title').removeClass('disabled');
+                $('#btn_download').removeClass('disabled');
+                $('#btn_delete').removeClass('disabled');
+
                 if (!real_export) {
                     return;
                 }
@@ -219,4 +244,5 @@ $(function() {
             }
         });
     }
+
 });
