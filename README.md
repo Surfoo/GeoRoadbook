@@ -1,7 +1,9 @@
 GeoRoadbook is a web app to create your geocaching roadbook ready-to-print from your gpx file (pocket query, gsak).
 
+It's hosted here : [http://georoadbook.vaguelibre.net/](http://georoadbook.vaguelibre.net/)
+
 Works with:
-* [jQuery](http://jquery.com/) 2.0.1
+* [jQuery](http://jquery.com/) 2.0.2
 * [TinyMCE](http://www.tinymce.com/) 3.5.8
 * [PhantomJS](http://phantomjs.org/) 1.9.1
 * [Bootstrap](http://twitter.github.io/bootstrap/) 2.3.2
