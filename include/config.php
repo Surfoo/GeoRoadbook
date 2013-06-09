@@ -12,7 +12,7 @@ define('ICON_CACHE_DIR', '32x32');
 
 define('MAX_RETENTION', 3600*24*30);
 
-define('JQUERY_VERSION', '2.0.1');
+define('JQUERY_VERSION', '2.0.2');
 define('BOOTSTRAP_VERSION', '2.3.2');
 define('SUFFIX_CSS_JS', 20130609);
 
