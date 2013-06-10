@@ -37,6 +37,7 @@
                         </div>
                         <p><label for="locale">Roadbook language:<br />
                             <select name="locale" id="locale">
+                                <option value=""></option>
                                 {foreach from=$locales key=code item=name}
                                 <option value="{$code|escape}"{if $language == $code} selected="selected"{/if}>{$name|escape}</option>
                                 {/foreach}

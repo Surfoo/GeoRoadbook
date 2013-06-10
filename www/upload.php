@@ -9,7 +9,7 @@ if (!array_key_exists('gpx', $_POST) || empty($_POST['gpx'])) {
     renderAjax(array('success' => false, 'message' => 'GPX file is missing.'));
 }
 if (!array_key_exists('locale', $_POST) || !in_array($_POST['locale'], array_keys($locales))) {
-    renderAjax(array('success' => false, 'message' => 'Locale is missing or invalid.'));
+    renderAjax(array('success' => false, 'message' => 'Roadbook language is missing or invalid.'));
 }
 
 //detect shema of geocaching gpx
@@ -35,7 +35,6 @@ $display_short_desc = isset($_POST['short_desc']) && $_POST['short_desc'] == "tr
 $display_hint       = isset($_POST['hint']) && $_POST['hint'] == "true"                     ? true : false;
 $display_logs       = isset($_POST['logs']) && $_POST['logs'] == "true"                     ? true : false;
 $hint_encrypted     = isset($_POST['hint_encrypted']) && $_POST['hint_encrypted'] == "true" ? true : false;
-//$sort               = isset($_POST['sort']) && $_POST['sort'] == "true"                     ? true : false;
 $sort_by            = isset($_POST['sort_by']) && in_array($_POST['sort_by'], $available_sorts) ? $_POST['sort_by'] : $available_sorts[0];
 
 $rdbk = new georoadbook();
@@ -44,10 +43,10 @@ if(!$rdbk->create($_POST['gpx'])) {
     renderAjax(array('success' => false));
 }
 
-$options = array('note'       => $display_note,
-                 'short_desc' => $display_short_desc,
-                 'hint'       => $display_hint,
-                 'logs'       => $display_logs,
+$options = array('display_note'       => $display_note,
+                 'display_short_desc' => $display_short_desc,
+                 'display_hint'       => $display_hint,
+                 'display_logs'       => $display_logs,
                  'sort_by'    => $sort_by);
 
 $rdbk->convertXmlToHtml($_POST['locale'], $options);

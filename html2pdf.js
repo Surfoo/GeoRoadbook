@@ -22,24 +22,33 @@ var header_pagination = 0;
 var footer_align = 'left';
 var footer_text = '';
 var footer_pagination = 0;
-
 var json_file = 'roadbook/' + id + '.json';
+
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 if (fs.exists(json_file) && fs.size(json_file) > 0) {
   var plainOptions = fs.read(json_file);
   options = JSON.parse(plainOptions);
   if (options && typeof options == 'object') {
     page_size = options.page_size;
     orientation = options.orientation;
-    margin_left = options.margin_left;
-    margin_right = options.margin_right;
-    margin_top = options.margin_top;
-    margin_bottom = options.margin_bottom;
-    header_align = options.header_align;
-    header_text = options.header_text;
-    header_pagination = options.header_pagination;
-    footer_align = options.footer_align;
-    footer_text = options.footer_text;
-    footer_pagination = options.footer_pagination;
+    margin_left = parseInt(options.margin_left);
+    margin_right = parseInt(options.margin_right);
+    margin_top = parseInt(options.margin_top);
+    margin_bottom = parseInt(options.margin_bottom);
+    header_align = escapeHtml(options.header_align);
+    header_text = escapeHtml(options.header_text);
+    header_pagination = !! options.header_pagination;
+    footer_align = escapeHtml(options.footer_align);
+    footer_text = escapeHtml(options.footer_text);
+    footer_pagination = !! options.footer_pagination;
   }
 }
 
@@ -47,10 +56,10 @@ page.paperSize = {
   format: page_size,
   orientation: orientation,
   margin: {
-    left: parseInt(margin_left) + 'mm',
-    right: parseInt(margin_right) + 'mm',
-    top: parseInt(margin_top) + 'mm',
-    bottom: parseInt(margin_bottom) + 'mm'
+    left: margin_left + 'mm',
+    right: margin_right + 'mm',
+    top: margin_top + 'mm',
+    bottom: margin_bottom + 'mm'
   },
   header: {
     height: "0.9cm",
@@ -61,7 +70,7 @@ page.paperSize = {
       } else {
         content += header_text;
       }
-      content += "<div style=''></div>";
+      content += "</div>";
       return content;
     })
   },

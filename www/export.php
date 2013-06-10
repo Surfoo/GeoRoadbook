@@ -47,7 +47,7 @@ if (array_key_exists('real_export', $_POST) && $_POST['real_export'] == "false")
     renderAjax(array('success' => true));
 }
 
-if(!$rdbk->export($options_css)) {
+if(!$rdbk->export()) {
     renderAjax(array('success' => false, 'error' => $rdbk->result));
 }
 

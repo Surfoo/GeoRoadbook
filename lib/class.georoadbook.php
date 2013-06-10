@@ -60,6 +60,10 @@ class georoadbook
                                      'yellow',
                                 );
 
+    /**
+     * ajaxRequestOnly
+     * @return void
+     */
     public static function ajaxRequestOnly()
     {
         if (!array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
@@ -95,8 +99,8 @@ class georoadbook
 
     /**
      * create
-     * @param  [type] $gpx
-     * @return [type]
+     * @param  string $gpx
+     * @return boolean
      */
     public function create($gpx)
     {
@@ -117,7 +121,7 @@ class georoadbook
 
     /**
      * delete
-     * @return [type]
+     * @return boolean
      */
     public function delete()
     {
@@ -136,7 +140,7 @@ class georoadbook
 
     /**
      * getLastSavedDate
-     * @return [type]
+     * @return string
      */
     public function getLastSavedDate()
     {
@@ -145,7 +149,7 @@ class georoadbook
 
     /**
      * export
-     * @return [type]
+     * @return boolean
      */
     public function export()
     {
@@ -165,7 +169,7 @@ class georoadbook
 
     /**
      * getCustomCss
-     * @return [type]
+     * @return string
      */
     public function getCustomCss()
     {
@@ -174,40 +178,26 @@ class georoadbook
             return false;
         }
 
+        $this->options_css = array_map('trim', $this->options_css);
+
         $customCSS_format = "@page{%s}";
         $customHeaderFooter = '@%s{%s:"%s"}';
         $pageOptions = '';
 
         $globalOptions['size'] = sprintf('%s %s', $this->options_css['page_size'], $this->options_css['orientation']);
-        $globalOptions['margin'] = (int) $this->options_css['margin_top'] . 'mm ' . (int) $this->options_css['margin_right'] . 'mm ' .
-                                   (int) $this->options_css['margin_bottom'] . 'mm ' . (int) $this->options_css['margin_left'] . 'mm';
+        $globalOptions['margin'] = (int) $this->options_css['margin_top'] . 'mm ' .
+                                   (int) $this->options_css['margin_right'] . 'mm ' .
+                                   (int) $this->options_css['margin_bottom'] . 'mm ' .
+                                   (int) $this->options_css['margin_left'] . 'mm';
         foreach ($globalOptions as $key => $value) {
             $pageOptions.= sprintf('%s: %s;', $key, $value);
         }
 
-        foreach ($this->options_css as &$value) {
-            $value = str_replace('[page]', '"counter(page)"', $value);
-            $value = str_replace('[topage]', '"counter(pages)"', $value);
-            $value = preg_replace('/"{1,}/', '"', $value);
+        if (!empty($this->options_css['header_text'])) {
+            $pageOptions.= sprintf($customHeaderFooter, 'top-' . $this->options_css['header_align'], 'content', htmlspecialchars($this->options_css['header_text']));
         }
-
-        if (!empty($this->options_css['header_left'])) {
-            $pageOptions.= sprintf($customHeaderFooter, 'top-left', 'content', $this->options_css['header_left']);
-        }
-        if (!empty($this->options_css['header_center'])) {
-            $pageOptions.= sprintf($customHeaderFooter, 'top-center', 'content', $this->options_css['header_center']);
-        }
-        if (!empty($this->options_css['header_right'])) {
-            $pageOptions.= sprintf($customHeaderFooter, 'top-right', 'content', $this->options_css['header_right']);
-        }
-        if (!empty($this->options_css['footer_left'])) {
-            $pageOptions.= sprintf($customHeaderFooter, 'bottom-left', 'content', $this->options_css['footer_left']);
-        }
-        if (!empty($this->options_css['footer_center'])) {
-            $pageOptions.= sprintf($customHeaderFooter, 'bottom-center', 'content', $this->options_css['footer_center']);
-        }
-        if (!empty($this->options_css['footer_right'])) {
-            $pageOptions.= sprintf($customHeaderFooter, 'bottom-right', 'content', $this->options_css['footer_right']);
+        if (!empty($this->options_css['footer_text'])) {
+            $pageOptions.= sprintf($customHeaderFooter, 'bottom-' . $this->options_css['footer_align'], 'content', htmlspecialchars($this->options_css['footer_text']));
         }
 
         return sprintf($customCSS_format, $pageOptions);
@@ -215,8 +205,8 @@ class georoadbook
 
     /**
      * saveOptions
-     * @param  [type] $options
-     * @return [type]
+     * @param  string $options
+     * @return boolean
      */
     public function saveOptions($options)
     {
@@ -235,7 +225,7 @@ class georoadbook
 
     /**
      * downloadPdf
-     * @return [type]
+     * @return void
      */
     public function downloadPdf()
     {
@@ -255,7 +245,7 @@ class georoadbook
 
     /**
      * downloadZip
-     * @return [type]
+     * @return void
      */
     public function downloadZip()
     {
@@ -288,6 +278,7 @@ class georoadbook
 
     /**
      * setId
+     * @return string
      */
     protected static function setId()
     {
@@ -296,9 +287,9 @@ class georoadbook
 
     /**
      * saveFile
-     * @param  [type] $filename
+     * @param  string $filename
      * @param  string $content
-     * @return [type]
+     * @return boolean
      */
     public function saveFile($filename, $content = '')
     {
@@ -314,9 +305,9 @@ class georoadbook
 
     /**
      * convertXmlToHtml
-     * @param  [type] $locale
-     * @param  [type] $options
-     * @return [type]
+     * @param  string $locale
+     * @param  array $options
+     * @return string
      */
     public function convertXmlToHtml($locale, $options)
     {
@@ -328,52 +319,38 @@ class georoadbook
         $xsl->importStyleSheet($xsldoc);
         $xsl->setParameter('', 'locale_filename', ROOT . '/locales/' . sprintf('%s.%s', $this->locale, 'xml'));
         $xsl->setParameter('', 'icon_cache_dir', ICON_CACHE_DIR);
-        if(array_key_exists('note', $options))
-            $xsl->setParameter('', 'display_note', $options['note']);
-        if(array_key_exists('short_desc', $options))
-            $xsl->setParameter('', 'display_short_desc', $options['short_desc']);
-        if(array_key_exists('hint', $options))
-            $xsl->setParameter('', 'display_hint', $options['hint']);
-        if(array_key_exists('logs', $options))
-            $xsl->setParameter('', 'display_logs', $options['logs']);
-        if(array_key_exists('sort_by', $options))
-            $xsl->setParameter('', 'sort_by', $options['sort_by']);
-    
+        $xsl->setParameter('', $options);
+
         $xml = new DOMDocument();
         $xml->loadXML($this->gpx);
         $this->html = $xsl->transformToXML($xml);
         $this->html = preg_replace('/<\?xml[^>]*\?>/i', '', $this->html);
         $this->html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<html lang="' . $this->locale . '">', trim($this->html));
         $this->html = htmlspecialchars_decode($this->html);
-
-        return $this->html;
     }
 
     /**
      * cleanHtml
-     * @return [type]
+     * @return string
      */
     public function cleanHtml()
     {
-        if (is_null($this->html)) {
-            return false;
-        }
         // http://tidy.sourceforge.net/docs/quickref.html
-        $config = array(
+        if (!is_null($this->html)) {
+            $config = array(
                    'doctype'        => 'html',
                    'output-xhtml'   => true,
                    'wrap'           => 0);
-
-        $tidy = new tidy;
-        $tidy->parseString($this->html, $config, 'utf8');
-        $tidy->cleanRepair();
-        $this->html = $tidy;
-
-        return $this->html;
+            $tidy = new tidy;
+            $tidy->parseString($this->html, $config, 'utf8');
+            $tidy->cleanRepair();
+            $this->html = $tidy;
+        }
     }
 
     /**
      * addToC
+     * @return void
      */
     public function addToC()
     {
@@ -410,14 +387,12 @@ class georoadbook
             $body->insertBefore($frag, $first);
             // $body->appendChild($frag);
             $this->html = $dom->saveHtml();
-
-            return $this->html;
         }
     }
 
     /**
      * encryptHints
-     * @return [type]
+     * @return void
      */
     public function encryptHints()
     {
@@ -430,13 +405,11 @@ class georoadbook
             $node->nodeValue = str_rot13($node->textContent);
         }
         $this->html = $dom->saveHtml();
-
-        return $this->html;
     }
 
     /**
      * parseBBcode
-     * @return [type]
+     * @return void
      */
     public function parseBBcode()
     {
@@ -478,7 +451,5 @@ class georoadbook
           $bbcode = '[' . $bbcode . ']';
         }
         $this->html = str_replace($bbcodes, $images, $this->html);
-
-        return $this->html;
     }
 }
