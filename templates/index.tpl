@@ -3,6 +3,7 @@
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <title>GeoRoadbook, create your geocaching roadbook</title>
+        <meta name="description" content="GeoRoadbook is a free and open source web app to create your geocaching roadbook ready-to-print from your gpx file (Pocket queries, GSAK, GCTour, etc.)">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
