@@ -7,7 +7,9 @@ if (!array_key_exists('roadbook', $_GET)) {
     exit(0);
 }
 
-$rdbk = new georoadbook($_GET['roadbook']);
+use Geocaching\Georoadbook\Georoadbook;
+
+$rdbk = new Georoadbook($_GET['roadbook']);
 
 if (!file_exists($rdbk->html_file) || !is_readable($rdbk->html_file)) {
     header("HTTP/1.0 404 Not Found");

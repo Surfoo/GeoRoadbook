@@ -2,7 +2,9 @@
 
 require dirname(__DIR__) . '/include/config.php';
 
-georoadbook::ajaxRequestOnly();
+use Geocaching\Georoadbook\Georoadbook;
+
+Georoadbook::ajaxRequestOnly();
 
 //Mandatory data
 if (!array_key_exists('gpx', $_POST) || empty($_POST['gpx'])) {
@@ -25,7 +27,8 @@ if (!array_key_exists(1, $matche)) {
     renderAjax(array('success' => false, 'message' => 'GPX type is incorrect.'));
 }
 if ($matche[1] == '1/0') {
-    renderAjax(array('success' => false, 'message' => 'GPX version 1/0 is not supported, please use version 1/0/1. <a href="http://www.geocaching.com/account/ManagePreferences.aspx">Check your preferences</a>'));
+    renderAjax(array('success' => false, 'message' => 'GPX version 1/0 is not supported, please use version 1/0/1. '.
+                                                      '<a href="http://www.geocaching.com/account/ManagePreferences.aspx">Check your preferences</a>'));
 }
 
 $html_tidy          = isset($_POST['tidy']) && $_POST['tidy'] == "true"                     ? true : false;
@@ -37,9 +40,9 @@ $display_logs       = isset($_POST['logs']) && $_POST['logs'] == "true"         
 $hint_encrypted     = isset($_POST['hint_encrypted']) && $_POST['hint_encrypted'] == "true" ? true : false;
 $sort_by            = isset($_POST['sort_by']) && in_array($_POST['sort_by'], $available_sorts) ? $_POST['sort_by'] : $available_sorts[0];
 
-$rdbk = new georoadbook();
+$rdbk = new Georoadbook();
 
-if(!$rdbk->create($_POST['gpx'])) {
+if (!$rdbk->create($_POST['gpx'])) {
     renderAjax(array('success' => false));
 }
 
@@ -47,10 +50,11 @@ $options = array('display_note'       => $display_note,
                  'display_short_desc' => $display_short_desc,
                  'display_hint'       => $display_hint,
                  'display_logs'       => $display_logs,
-                 'sort_by'    => $sort_by);
+                 'sort_by'            => $sort_by);
 
 $rdbk->convertXmlToHtml($_POST['locale'], $options);
 
+// Html tidy
 if ($html_tidy) {
     $rdbk->cleanHtml();
 }
@@ -66,7 +70,7 @@ if ($display_hint && $hint_encrypted) {
 }
 
 // Parse logs
-if($display_logs) {
+if ($display_logs) {
     $rdbk->parseBBcode();
 }
 

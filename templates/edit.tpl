@@ -44,7 +44,7 @@
                         <div class="btn-group" title="Delete your roadbook">
                             <button type="submit" id="btn_delete" class="btn btn-warning"><i class="icon-trash icon-white"></i> Delete</button>
                         </div>
-                        {include file="export.tpl"}
+                        {include file="_export.tpl"}
                     </div>
                     <div id="tinymce">
                         <textarea id="editable" cols="100" rows="100">{$roadbook_content}</textarea>

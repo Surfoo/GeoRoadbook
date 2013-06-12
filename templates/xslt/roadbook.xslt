@@ -126,6 +126,12 @@
                               <xsl:when test="grdspk:cache/grdspk:type = 'Waymark'">
                                   <img src="../img/caches/{$icon_cache_dir}/waymark.gif" alt="" />
                               </xsl:when>
+                              <xsl:when test="grdspk:cache/grdspk:type = 'Benchmark'">
+                                  <img src="../img/caches/{$icon_cache_dir}/benchmark.gif" alt="" />
+                              </xsl:when>
+                              <xsl:otherwise>
+                                  <img src="../img/caches/{$icon_cache_dir}/unknown.gif" alt="" />
+                              </xsl:otherwise>
                           </xsl:choose>
                       <xsl:value-of select="grdspk:cache/grdspk:name"/></h1>
 

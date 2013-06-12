@@ -2,7 +2,9 @@
 
 require dirname(__DIR__) . '/include/config.php';
 
-georoadbook::ajaxRequestOnly();
+use Geocaching\Georoadbook\Georoadbook;
+
+Georoadbook::ajaxRequestOnly();
 
 if (!array_key_exists('page-size', $_POST) ||
     !array_key_exists('orientation', $_POST) ||
@@ -20,7 +22,7 @@ if (!array_key_exists('page-size', $_POST) ||
     exit(0);
 }
 
-$rdbk = new georoadbook($_POST['id']);
+$rdbk = new Georoadbook($_POST['id']);
 
 if (!file_exists($rdbk->html_file) || !is_readable($rdbk->html_file)) {
     header("HTTP/1.0 404 Not Found");
@@ -47,7 +49,7 @@ if (array_key_exists('real_export', $_POST) && $_POST['real_export'] == "false")
     renderAjax(array('success' => true));
 }
 
-if(!$rdbk->export()) {
+if (!$rdbk->export()) {
     renderAjax(array('success' => false, 'error' => $rdbk->result));
 }
 

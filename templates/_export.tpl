@@ -1,8 +1,7 @@
-<!-- Modal -->
 <div id="ui_export" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="ui_export" aria-hidden="true">
     <div class="modal-body">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <div class="tabbable"> <!-- Only required for left/right tabs -->
+        <div class="tabbable">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab1" data-toggle="tab">Format</a></li>
                 <li><a href="#tab2" data-toggle="tab">Header & Footer</a></li>

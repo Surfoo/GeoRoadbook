@@ -42,4 +42,11 @@ if (array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {
 $language = in_array($user_language, $available_languages) ? $user_language : 'en';
 
 require ROOT . '/include/helpers.php';
-require LIB_DIR . 'class.georoadbook.php';
+
+spl_autoload_register(function ($classname) {
+    $classname = ltrim($classname, "\\");
+    preg_match('/^(.+)?([^\\\\]+)$/U', $classname, $match);
+    $classname = str_replace("\\", "/", $match[1]). str_replace(["\\", "_"], "/", $match[2]) . ".php";
+    include_once dirname(__DIR__) . '/lib/' . $classname;
+});
+

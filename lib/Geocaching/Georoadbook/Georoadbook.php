@@ -8,7 +8,11 @@
  * @package georoadbook
  */
 
-class georoadbook
+namespace Geocaching\Georoadbook;
+
+use JBBCode;
+
+class Georoadbook
 {
     const ID_LENGTH = 16;
 
@@ -249,16 +253,16 @@ class georoadbook
      */
     public function downloadZip()
     {
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         $filename_zip = sprintf('%s.%s', $this->id, 'zip');
 
-        if ($zip->open($filename_zip, ZIPARCHIVE::CREATE) !== true) {
+        if ($zip->open($filename_zip, \ZIPARCHIVE::CREATE) !== true) {
             exit('Unable to open ' . basename($filename_zip));
         }
 
         $zip->addFromString('roadbook/' . basename($this->html_file), file_get_contents($this->html_file));
-        $zip->addFile(dirname(__DIR__) . '/www/design/roadbook.css', 'design/roadbook.css');
-        recurse_zip(dirname(__DIR__) . '/www/img', $zip);
+        $zip->addFile(ROOT . '/www/design/roadbook.css', 'design/roadbook.css');
+        recurse_zip(ROOT . '/www/img', $zip);
         $zip->close();
 
         header('Content-Description: File Transfer');
@@ -313,15 +317,15 @@ class georoadbook
     {
         $this->locale = $locale;
 
-        $xsldoc = new DOMDocument();
+        $xsldoc = new \DOMDocument();
         $xsldoc->load(ROOT . '/templates/xslt/roadbook.xslt');
-        $xsl = new XSLTProcessor();
+        $xsl = new \XSLTProcessor();
         $xsl->importStyleSheet($xsldoc);
         $xsl->setParameter('', 'locale_filename', ROOT . '/locales/' . sprintf('%s.%s', $this->locale, 'xml'));
         $xsl->setParameter('', 'icon_cache_dir', ICON_CACHE_DIR);
         $xsl->setParameter('', $options);
 
-        $xml = new DOMDocument();
+        $xml = new \DOMDocument();
         $xml->loadXML($this->gpx);
         $this->html = $xsl->transformToXML($xml);
         $this->html = preg_replace('/<\?xml[^>]*\?>/i', '', $this->html);
@@ -341,7 +345,7 @@ class georoadbook
                    'doctype'        => 'html',
                    'output-xhtml'   => true,
                    'wrap'           => 0);
-            $tidy = new tidy;
+            $tidy = new \tidy;
             $tidy->parseString($this->html, $config, 'utf8');
             $tidy->cleanRepair();
             $this->html = $tidy;
@@ -354,9 +358,9 @@ class georoadbook
      */
     public function addToC()
     {
-        $dom = new DomDocument();
+        $dom = new \DomDocument();
         $dom->loadHTML($this->html);
-        $finder = new DomXPath($dom);
+        $finder = new \DomXPath($dom);
         $classname="cacheTitle";
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
         $toc_content = array();
@@ -367,9 +371,9 @@ class georoadbook
         }
 
         if (!empty($toc_content)) {
-            $toc = new DomDocument();
+            $toc = new \DomDocument();
             $toc->load(ROOT . '/locales/' . sprintf('%s.%s', $this->locale, 'xml'));
-            $xPath = new DOMXPath($toc);
+            $xPath = new \DOMXPath($toc);
             $toc_i18n['title'] = $xPath->query("text[@id='toc_title']")->item(0)->nodeValue;
             $toc_i18n['name']  = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
             $toc_i18n['page']  = $xPath->query("text[@id='toc_page']")->item(0)->nodeValue;
@@ -396,9 +400,9 @@ class georoadbook
      */
     public function encryptHints()
     {
-        $dom = new DomDocument();
+        $dom = new \DomDocument();
         $dom->loadHTML($this->html);
-        $finder = new DomXPath($dom);
+        $finder = new \DomXPath($dom);
         $classname = "cacheHintContent";
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
         foreach ($nodes as $node) {
@@ -413,14 +417,11 @@ class georoadbook
      */
     public function parseBBcode()
     {
-        $dom = new DomDocument();
+        $dom = new \DomDocument();
         $dom->loadHTML($this->html);
-        $finder = new DomXPath($dom);
+        $finder = new \DomXPath($dom);
         $classname = "cacheLogText";
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
-
-        require LIB_DIR . 'jBBCode/Parser.php';
-        require LIB_DIR . 'jBBCode/visitors/SmileyVisitor.php';
 
         $parser = new JBBCode\Parser();
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
@@ -438,12 +439,12 @@ class georoadbook
             $parser->parse($log);
             $node->nodeValue = $parser->getAsHtml();
         }
-        //$smileyVisitor = new \JBBCode\visitors\SmileyVisitor();
+        //$smileyVisitor = new JBBCode\visitors\SmileyVisitor();
         //$parser->accept($smileyVisitor);
 
         $this->html = $dom->saveHtml();
         $bbcodes = array_keys($this->bbcode_smileys);
-        $images = array_values($this->bbcode_smileys);
+        $images  = array_values($this->bbcode_smileys);
         foreach($images as $k=>&$image) {
           $image = '<img src="../images/icons/' . $image . '" alt="' . $bbcodes[$k] . '" />';
         }
