@@ -378,10 +378,12 @@ class Georoadbook
             $toc_i18n['name']  = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
             $toc_i18n['page']  = $xPath->query("text[@id='toc_page']")->item(0)->nodeValue;
 
-            require LIB_DIR . 'class.smarty_georoadbook.php';
-            $smarty->assign('i18n', $toc_i18n);
-            $smarty->assign('content', $toc_content);
-            $toc_html = $smarty->fetch('toc.tpl');
+            \Twig_Autoloader::register();
+            $loader = new \Twig_Loader_Filesystem(TEMPLATE_DIR);
+            $twig   = new \Twig_Environment($loader, array('cache' => TEMPLATE_COMPILED_DIR));
+
+            $toc_html = $twig->render('toc.tpl', array('i18n'    => $toc_i18n,
+                                                       'content' => $toc_content));
 
             $frag = $dom->createDocumentFragment();
             $frag->appendXML($toc_html);
