@@ -7,6 +7,10 @@ if (!array_key_exists('roadbook', $_GET)) {
     exit(0);
 }
 
+Twig_Autoloader::register();
+$loader = new Twig_Loader_Filesystem(TEMPLATE_DIR);
+$twig   = new Twig_Environment($loader, array('cache' => TEMPLATE_COMPILED_DIR));
+
 use Geocaching\Georoadbook\Georoadbook;
 
 $rdbk = new Georoadbook($_GET['roadbook']);
@@ -40,20 +44,21 @@ if (array_key_exists('raw', $_GET)) {
     exit(0);
 }
 
-require LIB_DIR . 'class.smarty_georoadbook.php';
 
-$smarty->assign('jquery_version', JQUERY_VERSION);
-$smarty->assign('bootstrap_version', BOOTSTRAP_VERSION);
-$smarty->assign('suffix_css_js', SUFFIX_CSS_JS);
-$smarty->assign('language', $language);
-$smarty->assign('roadbook_id', $rdbk->id);
-$smarty->assign('roadbook_content', file_get_contents($rdbk->html_file));
-$smarty->assign('last_modification', 'Last saved: ' . $rdbk->getLastSavedDate());
+$twig_vars = array('jquery_version'    => JQUERY_VERSION,
+                   'bootstrap_version' => BOOTSTRAP_VERSION,
+                   'suffix_css_js'     => SUFFIX_CSS_JS,
+                   'language'          => $language,
+                   'roadbook_id'       => $rdbk->id,
+                   'roadbook_content'  => file_get_contents($rdbk->html_file),
+                   'last_modification' => 'Last saved: ' . $rdbk->getLastSavedDate()
+                   );
 
 if (class_exists('ZipArchive')) {
-    $smarty->assign('available_zip', true);
+    $twig_vars['available_zip'] = true;
 }
 if (file_exists($rdbk->pdf_file)) {
-    $smarty->assign('available_pdf', true);
+    $twig_vars['available_pdf'] = true;
 }
-$smarty->display('../templates/edit.tpl');
+
+echo $twig->render('edit.tpl', $twig_vars);

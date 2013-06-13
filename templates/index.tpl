@@ -8,19 +8,19 @@
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="all" />
-        <link rel="stylesheet" href="/design/design.css?{$suffix_css_js}" media="all" />
+        <link rel="stylesheet" href="/design/design.css?{{ suffix_css_js }}" media="all" />
     </head>
     <body>
         <div class="container">
             <div class="hero-unit">
-                {include file="header.tpl"}
+                {% include 'header.tpl' %}
                 
-                {if isset($deleted)}
+                {% if deleted is defined %}
                     <div class="alert alert-success fade in">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                         Your roadbook has been deleted!
                     </div>
-                {/if}
+                {% endif %}
                 <form action="#" method="post" class="form-horizontal">
                     <fieldset>
                         <div id="error" class="alert alert-block hide"></div>
@@ -39,9 +39,9 @@
                         <p><label for="locale">Roadbook language:<br />
                             <select name="locale" id="locale">
                                 <option value=""></option>
-                                {foreach from=$locales key=code item=name}
-                                <option value="{$code|escape}"{if $language == $code} selected="selected"{/if}>{$name|escape}</option>
-                                {/foreach}
+                                {% for code, name in locales %}
+                                <option value="{{ code|e }}"{% if language == code %} selected="selected"{% endif %}>{{ name|e }}</option>
+                                {% endfor %}
                             </select> <i class="icon-question-sign option-help" data-toggle="tooltip" title="Choose the language of your roadbook."></i></label>
                         </p>
                         <fieldset id="options">
@@ -83,17 +83,17 @@
                         <input type="submit" id="create" name="send" value="Create your roadbook" class="btn btn-large btn-primary" />
                     </fieldset>
                 </form>
-                {include file="_faq.tpl"}
-                {include file="_about.tpl"}
-                {include file="_donate.tpl"}
+                {% include '_faq.tpl' %}
+                {% include '_about.tpl' %}
+                {% include '_donate.tpl' %}
             </div>
         </div>
 
-        {include file="footer.tpl"}
+        {% include 'footer.tpl' %}
 
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{$jquery_version}/jquery.min.js"></script>
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{$bootstrap_version}/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ bootstrap_version }}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/bootstrap/js/bootstrap-fileupload.js"></script>
-        <script type="text/javascript" src="/js/upload.min.js?{$suffix_css_js}"></script>
+        <script type="text/javascript" src="/js/upload.min.js?{{ suffix_css_js }}"></script>
     </body>
 </html>

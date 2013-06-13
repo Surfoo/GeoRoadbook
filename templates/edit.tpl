@@ -6,18 +6,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
-        <link rel="stylesheet" href="/design/design.css?{$suffix_css_js}" media="all">
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{$jquery_version}/jquery.min.js"></script>
-        {*<script type="text/javascript" src="/js/tinymce4/tinymce.min.js"></script>*}
+        <link rel="stylesheet" href="/design/design.css?{{ suffix_css_js }}" media="all">
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
         <script type="text/javascript" src="/js/tinymce358/tiny_mce.js"></script>
         <script type="text/javascript">
-            var roadbook_id = '{$roadbook_id|escape:js}', language = '{$language|escape:js}';
+            var roadbook_id = '{{ roadbook_id|e('js') }}', language = '{{ language|e('js') }}';
         </script>
     </head>
     <body>
         <div class="container">
             <div class="hero-unit">
-                {include file="header.tpl"}
+                {% include 'header.tpl' %}
                 <div id="ui_edition">
                     <div id="actions">
                         <div class="pull-right">
@@ -25,7 +24,7 @@
                         </div>
 
                         <div class="btn-group">
-                            <button type="submit" id="btn_save" class="btn btn-primary" title="{$last_modification|escape}">Save</button>
+                            <button type="submit" id="btn_save" class="btn btn-primary" title="{{ last_modification|e }}">Save</button>
                             <a href="#ui_export" id="btn_export" role="button" class="btn btn-primary" data-toggle="modal" title="Export as PDF file">Export as PDF</a>
                         </div>
 
@@ -36,30 +35,30 @@
                             </button>
                             <ul id="download" class="dropdown-menu">
                                 <li><a href="?raw" title="View only as HTML page"><img src="/design/icon-html.png" alt="" /> HTML</a></li>
-                                {if isset($available_zip)}<li><a href="?zip" title="Download a zip archive (HTML and images)"><img src="/design/icon-zip.png" alt="" /> ZIP</a></li>{/if}
-                                <li id="dl_pdf" style="display: {if isset($available_pdf)}visible{else}none{/if};"><a href="?pdf" title="Download as PDF"><img src="/design/icon-pdf.png" alt="" /> PDF</a></li>
+                                {% if available_zip is defined %}<li><a href="?zip" title="Download a zip archive (HTML and images)"><img src="/design/icon-zip.png" alt="" /> ZIP</a></li>{% endif %}
+                                <li id="dl_pdf" style="display: {% if available_pdf is defined %}visible{% else %}none{% endif %};"><a href="?pdf" title="Download as PDF"><img src="/design/icon-pdf.png" alt="" /> PDF</a></li>
                             </ul>
                         </div>
 
                         <div class="btn-group" title="Delete your roadbook">
                             <button type="submit" id="btn_delete" class="btn btn-warning"><i class="icon-trash icon-white"></i> Delete</button>
                         </div>
-                        {include file="_export.tpl"}
+                        {% include '_export.tpl' %}
                     </div>
                     <div id="tinymce">
-                        <textarea id="editable" cols="100" rows="100">{$roadbook_content}</textarea>
+                        <textarea id="editable" cols="100" rows="100">{{ roadbook_content }}</textarea>
                     </div>
                 </div>
-                {include file="_faq.tpl"}
-                {include file="_about.tpl"}
-                {include file="_donate.tpl"}
-                {include file="_help.tpl"}
+                {% include '_faq.tpl' %}
+                {% include '_about.tpl' %}
+                {% include '_donate.tpl' %}
+                {% include '_help.tpl' %}
             </div>
         </div>
 
-        {include file="footer.tpl"}
+        {% include 'footer.tpl' %}
 
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{$bootstrap_version}/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/js/georoadbook.min.js?{$suffix_css_js}"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ bootstrap_version }}/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/georoadbook.min.js?{{ suffix_css_js }}"></script>
     </body>
 </html>

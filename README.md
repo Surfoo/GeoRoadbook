@@ -8,6 +8,7 @@ Works with:
 * [PhantomJS](http://phantomjs.org/) 1.9.1
 * [Bootstrap](http://twitter.github.io/bootstrap/) 2.3.2
 * [jBBCode](http://jbbcode.com/) 1.2
+* [Twig](http://twig.sensiolabs.org/) 1.13.1
 * php5-xsl
 * php5-tidy
 * ttf-mscorefonts-installer
