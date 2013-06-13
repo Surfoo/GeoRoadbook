@@ -39,6 +39,7 @@ $display_hint       = isset($_POST['hint']) && $_POST['hint'] == "true"         
 $display_logs       = isset($_POST['logs']) && $_POST['logs'] == "true"                     ? true : false;
 $hint_encrypted     = isset($_POST['hint_encrypted']) && $_POST['hint_encrypted'] == "true" ? true : false;
 $sort_by            = isset($_POST['sort_by']) && in_array($_POST['sort_by'], $available_sorts) ? $_POST['sort_by'] : $available_sorts[0];
+$pagebreak          = isset($_POST['pagebreak']) && $_POST['pagebreak'] == "true"           ? true : false;
 
 $rdbk = new Georoadbook();
 
@@ -50,7 +51,9 @@ $options = array('display_note'       => $display_note,
                  'display_short_desc' => $display_short_desc,
                  'display_hint'       => $display_hint,
                  'display_logs'       => $display_logs,
-                 'sort_by'            => $sort_by);
+                 'sort_by'            => $sort_by,
+                 'pagebreak'          => $pagebreak,
+                 );
 
 $rdbk->convertXmlToHtml($_POST['locale'], $options);
 

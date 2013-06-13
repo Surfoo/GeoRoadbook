@@ -91,7 +91,7 @@ function ParseFile(file) {
 $('input[type="submit"]').click(function() {
     if (!content_gpx) {
         $('#error').html('<p>GPX file is missing.</p>').show().delay(3000).fadeOut();
-        return false
+        return false;
     }
 
     $.ajax({
@@ -107,7 +107,8 @@ $('input[type="submit"]').click(function() {
             hint: !! $('input[name="hint"]:checked').val(),
             hint_encrypted: !! parseInt($('input[name="hint_encrypted"]:checked').val()),
             logs: !! $('input[name="logs"]:checked').val(),
-            sort_by: $('input[name="sort_by"]:checked').val()
+            sort_by: $('input[name="sort_by"]:checked').val(),
+            pagebreak: !! $('input[name="pagebreak"]:checked').val()
         },
         success: function(data) {
             if (!data || data === "" || typeof data != 'object') {

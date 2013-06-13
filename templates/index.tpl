@@ -47,6 +47,7 @@
                         <fieldset id="options">
                             <legend class="small">Options:</legend>
                             <div class="control-group">
+                                <legend class="small"><small>General:</small></legend>
                                 <label for="tidy" class="checkbox inline"><input type="checkbox" name="tidy" id="tidy" value="1" /> Cleanup & repair HTML</label>
                                 <i class="icon-question-sign option-help" data-toggle="tooltip" title="HTML code can be invalid sometimes, use this option to fix errors."></i><br />
 
@@ -61,7 +62,10 @@
                                 
                                 <label for="toc" class="checkbox inline"><input type="checkbox" name="toc" id="toc" value="1" /> Table of contents</label>
                                 <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the summary of caches, in 6 columns : Number, Type, Name, Found, Didn't Find and Page."></i><br />
-                                
+                            </div>
+
+                            <div class="control-group">
+                                <legend class="small"><small>Caches:</small></legend>
                                 <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Cache note area</label>
                                 <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display a writing area for notes, calculations..."></i><br />
                                 
@@ -75,8 +79,12 @@
                                     <label for="hint_decrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_decrypted" value="0" checked="checked" /> Decrypted</label>
                                     <label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label>
                                 </div>
+
                                 <label for="logs" class="checkbox inline"><input type="checkbox" name="logs" id="logs" value="1" /> Logs</label>
-                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display all logs from your GPX file."></i>
+                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display all logs from your GPX file."></i><br />
+
+                                <label for="pagebreak" class="checkbox inline"><input type="checkbox" name="pagebreak" id="pagebreak" value="1" /> Page break between caches</label>
+                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Caches start on a new page"></i>
                             </div>
                         </fieldset>
 
