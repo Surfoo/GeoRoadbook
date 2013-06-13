@@ -100,7 +100,6 @@ $('input[type="submit"]').click(function() {
         data: {
             gpx: content_gpx,
             locale: $('#locale').attr('selected', 'selected').val(),
-            tidy: !! $('input[name="tidy"]:checked').val(),
             toc: !! $('input[name="toc"]:checked').val(),
             note: !! $('input[name="note"]:checked').val(),
             short_desc: !! $('input[name="short_desc"]:checked').val(),
@@ -108,7 +107,8 @@ $('input[type="submit"]').click(function() {
             hint_encrypted: !! parseInt($('input[name="hint_encrypted"]:checked').val()),
             logs: !! $('input[name="logs"]:checked').val(),
             sort_by: $('input[name="sort_by"]:checked').val(),
-            pagebreak: !! $('input[name="pagebreak"]:checked').val()
+            pagebreak: !! $('input[name="pagebreak"]:checked').val(),
+            images: !! $('input[name="images"]:checked').val()
         },
         success: function(data) {
             if (!data || data === "" || typeof data != 'object') {

@@ -103,7 +103,7 @@ class Georoadbook
 
     /**
      * create
-     * @param  string $gpx
+     * @param  string  $gpx
      * @return boolean
      */
     public function create($gpx)
@@ -209,7 +209,7 @@ class Georoadbook
 
     /**
      * saveOptions
-     * @param  string $options
+     * @param  string  $options
      * @return boolean
      */
     public function saveOptions($options)
@@ -291,8 +291,8 @@ class Georoadbook
 
     /**
      * saveFile
-     * @param  string $filename
-     * @param  string $content
+     * @param  string  $filename
+     * @param  string  $content
      * @return boolean
      */
     public function saveFile($filename, $content = '')
@@ -310,7 +310,7 @@ class Georoadbook
     /**
      * convertXmlToHtml
      * @param  string $locale
-     * @param  array $options
+     * @param  array  $options
      * @return string
      */
     public function convertXmlToHtml($locale, $options)
@@ -331,6 +331,8 @@ class Georoadbook
         $this->html = preg_replace('/<\?xml[^>]*\?>/i', '', $this->html);
         $this->html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<html lang="' . $this->locale . '">', trim($this->html));
         $this->html = htmlspecialchars_decode($this->html);
+
+        $this->cleanHtml();
     }
 
     /**
@@ -361,8 +363,7 @@ class Georoadbook
         $dom = new \DomDocument();
         $dom->loadHTML($this->html);
         $finder = new \DomXPath($dom);
-        $classname="cacheTitle";
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheTitle ')]");
         $toc_content = array();
         foreach ($nodes as $node) {
             $icon  = $node->firstChild->getAttribute('src');
@@ -397,6 +398,50 @@ class Georoadbook
     }
 
     /**
+     * removeImages
+     * @return void
+     */
+    public function removeImages($display_short_desc)
+    {
+        $dom = new \DomDocument();
+        $dom->loadHTML($this->html);
+
+        //short_description
+        if ($display_short_desc) {
+
+            $finder = new \DomXPath($dom);
+            $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' short_description ')]");
+            foreach ($nodes as $node) {
+                $imagesNodeList = $node->getElementsByTagName('img');
+                $domElemsToRemove = array();
+                foreach ($imagesNodeList as $domElement) {
+                    $domElemsToRemove[] = $domElement;
+                }
+                foreach ($domElemsToRemove as $domElement) {
+                    $domElement->parentNode->removeChild($domElement);
+                }
+            }
+
+            $this->html = $dom->saveHtml();
+        }
+
+        $finder = new \DomXPath($dom);
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' long_description ')]");
+        foreach ($nodes as $node) {
+            $imagesNodeList = $node->getElementsByTagName('img');
+            $domElemsToRemove = array();
+            foreach ($imagesNodeList as $domElement) {
+                $domElemsToRemove[] = $domElement;
+            }
+            foreach ($domElemsToRemove as $domElement) {
+                $domElement->parentNode->removeChild($domElement);
+            }
+        }
+
+        $this->html = $dom->saveHtml();
+    }
+
+    /**
      * encryptHints
      * @return void
      */
@@ -405,8 +450,7 @@ class Georoadbook
         $dom = new \DomDocument();
         $dom->loadHTML($this->html);
         $finder = new \DomXPath($dom);
-        $classname = "cacheHintContent";
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheHintContent ')]");
         foreach ($nodes as $node) {
             $node->nodeValue = str_rot13($node->textContent);
         }
@@ -421,14 +465,14 @@ class Georoadbook
     {
         $dom = new \DomDocument();
         $dom->loadHTML($this->html);
+
         $finder = new \DomXPath($dom);
-        $classname = "cacheLogText";
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
 
         $parser = new JBBCode\Parser();
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
 
-        foreach($this->bbcode_colors as $color) {
+        foreach ($this->bbcode_colors as $color) {
             $builder = new JBBCode\CodeDefinitionBuilder($color, '<span style="color: '.$color.';">{param}</span>');
             $parser->addCodeDefinition($builder->build());
         }
@@ -437,22 +481,23 @@ class Georoadbook
             $raw_log = $node->ownerDocument->saveHTML($node);
             $raw_log = trim(str_replace(array('<td class="cacheLogText" colspan="2">', '</td>'), '', $raw_log));
             $log = preg_replace('/<br>$/', '', $raw_log);
-
             $parser->parse($log);
             $node->nodeValue = $parser->getAsHtml();
         }
+
         //$smileyVisitor = new JBBCode\visitors\SmileyVisitor();
         //$parser->accept($smileyVisitor);
+        $this->html = htmlspecialchars_decode($dom->saveHtml());
 
-        $this->html = $dom->saveHtml();
         $bbcodes = array_keys($this->bbcode_smileys);
         $images  = array_values($this->bbcode_smileys);
-        foreach($images as $k=>&$image) {
-          $image = '<img src="../images/icons/' . $image . '" alt="' . $bbcodes[$k] . '" />';
+        foreach ($images as $k=>&$image) {
+            $image = '<img src="../images/icons/' . $image . '" alt="' . $bbcodes[$k] . '" />';
         }
-        foreach($bbcodes as &$bbcode) {
-          $bbcode = '[' . $bbcode . ']';
+        foreach ($bbcodes as &$bbcode) {
+            $bbcode = '[' . $bbcode . ']';
         }
+
         $this->html = str_replace($bbcodes, $images, $this->html);
     }
 }

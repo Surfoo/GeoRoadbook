@@ -46,49 +46,56 @@
                         </p>
                         <fieldset id="options">
                             <legend class="small">Options:</legend>
-                            <div class="control-group">
-                                <legend class="small"><small>General:</small></legend>
-                                <label for="tidy" class="checkbox inline"><input type="checkbox" name="tidy" id="tidy" value="1" /> Cleanup & repair HTML</label>
-                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="HTML code can be invalid sometimes, use this option to fix errors."></i><br />
 
-                                <label for="sort" class="checkbox inline"><input type="checkbox" name="sort" id="sort" value="1" /> Sort caches by</label>
-                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Choose how to sort caches. Sorted according to your GPX file by default."></i><br />
-                                <div id="sort_options" class="hide">
-                                    <label for="sort1" class="radio inline"><input type="radio" name="sort_by" id="sort1" value="name" /> Name</label>
-                                    <label for="sort2" class="radio inline"><input type="radio" name="sort_by" id="sort2" value="owner" /> Owner</label>
-                                    <label for="sort3" class="radio inline"><input type="radio" name="sort_by" id="sort3" value="difficulty" /> Difficulty</label>
-                                    <label for="sort4" class="radio inline"><input type="radio" name="sort_by" id="sort4" value="terrain" /> Terrain</label>
+                            <div class="row">
+                                <div class="span5">
+                                    <div class="control-group">
+                                        <legend class="small"><small>General:</small></legend>
+
+                                        <label for="sort" class="checkbox inline"><input type="checkbox" name="sort" id="sort" value="1" /> Sort caches by</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Choose how to sort caches. Sorted according to your GPX file by default."></i><br />
+                                        <div id="sort_options" class="hide">
+                                            <label for="sort1" class="radio inline"><input type="radio" name="sort_by" id="sort1" value="name" /> Name</label>
+                                            <label for="sort2" class="radio inline"><input type="radio" name="sort_by" id="sort2" value="owner" /> Owner</label>
+                                            <label for="sort3" class="radio inline"><input type="radio" name="sort_by" id="sort3" value="difficulty" /> Difficulty</label>
+                                            <label for="sort4" class="radio inline"><input type="radio" name="sort_by" id="sort4" value="terrain" /> Terrain</label>
+                                        </div>
+
+                                        <label for="toc" class="checkbox inline"><input type="checkbox" name="toc" id="toc" value="1" /> Table of contents</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the summary of caches, in 6 columns : Number, Type, Name, Found, Didn't Find and Page."></i><br />
+                                    </div>
                                 </div>
-                                
-                                <label for="toc" class="checkbox inline"><input type="checkbox" name="toc" id="toc" value="1" /> Table of contents</label>
-                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the summary of caches, in 6 columns : Number, Type, Name, Found, Didn't Find and Page."></i><br />
-                            </div>
+                                <div class="span5">
+                                    <div class="control-group">
+                                        <legend class="small"><small>Geocaches:</small></legend>
+                                        <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Cache note area</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display a writing area for notes, calculations..."></i><br />
 
-                            <div class="control-group">
-                                <legend class="small"><small>Caches:</small></legend>
-                                <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Cache note area</label>
-                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display a writing area for notes, calculations..."></i><br />
-                                
-                                <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Short description</label>
-                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the short description from caches."></i><br />
-                                
-                                <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Additionnal hints</label>
-                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the cache hints. Decrypted by default."></i><br />
-                                
-                                <div id="hint_options" class="hide">
-                                    <label for="hint_decrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_decrypted" value="0" checked="checked" /> Decrypted</label>
-                                    <label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label>
+                                        <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Short description</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the short description from caches."></i><br />
+
+                                        <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Additionnal hints</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the cache hints. Decrypted by default."></i><br />
+
+                                        <div id="hint_options" class="hide">
+                                            <label for="hint_decrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_decrypted" value="0" checked="checked" /> Decrypted</label>
+                                            <label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label>
+                                        </div>
+
+                                        <label for="logs" class="checkbox inline"><input type="checkbox" name="logs" id="logs" value="1" /> Logs</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display all logs from your GPX file."></i><br />
+
+                                        <label for="pagebreak" class="checkbox inline"><input type="checkbox" name="pagebreak" id="pagebreak" value="1" /> Page break between caches</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Caches start on a new page"></i>
+
+                                        <label for="images" class="checkbox inline"><input type="checkbox" name="images" id="images" value="1" /> Remove images</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Remove images from the short and long description"></i>
+                                    </div>
                                 </div>
-
-                                <label for="logs" class="checkbox inline"><input type="checkbox" name="logs" id="logs" value="1" /> Logs</label>
-                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display all logs from your GPX file."></i><br />
-
-                                <label for="pagebreak" class="checkbox inline"><input type="checkbox" name="pagebreak" id="pagebreak" value="1" /> Page break between caches</label>
-                                <i class="icon-question-sign option-help" data-toggle="tooltip" title="Caches start on a new page"></i>
                             </div>
                         </fieldset>
 
-                        <input type="submit" id="create" name="send" value="Create your roadbook" class="btn btn-large btn-primary" />
+                        <input type="submit" id="create" name="send" value="Create your roadbook" class="btn btn-large btn-primary pull-right" />
                     </fieldset>
                 </form>
                 {% include '_faq.tpl' %}

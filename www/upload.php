@@ -31,7 +31,6 @@ if ($matche[1] == '1/0') {
                                                       '<a href="http://www.geocaching.com/account/ManagePreferences.aspx">Check your preferences</a>'));
 }
 
-$html_tidy          = isset($_POST['tidy']) && $_POST['tidy'] == "true"                     ? true : false;
 $display_toc        = isset($_POST['toc']) && $_POST['toc']   == "true"                     ? true : false;
 $display_note       = isset($_POST['note']) && $_POST['note'] == "true"                     ? true : false;
 $display_short_desc = isset($_POST['short_desc']) && $_POST['short_desc'] == "true"         ? true : false;
@@ -40,6 +39,7 @@ $display_logs       = isset($_POST['logs']) && $_POST['logs'] == "true"         
 $hint_encrypted     = isset($_POST['hint_encrypted']) && $_POST['hint_encrypted'] == "true" ? true : false;
 $sort_by            = isset($_POST['sort_by']) && in_array($_POST['sort_by'], $available_sorts) ? $_POST['sort_by'] : $available_sorts[0];
 $pagebreak          = isset($_POST['pagebreak']) && $_POST['pagebreak'] == "true"           ? true : false;
+$images             = isset($_POST['images']) && $_POST['images'] == "true"                 ? true : false;
 
 $rdbk = new Georoadbook();
 
@@ -57,14 +57,14 @@ $options = array('display_note'       => $display_note,
 
 $rdbk->convertXmlToHtml($_POST['locale'], $options);
 
-// Html tidy
-if ($html_tidy) {
-    $rdbk->cleanHtml();
-}
-
 // Table of content
 if ($display_toc) {
     $rdbk->addToc();
+}
+
+// remove images from short and long description
+if ($images) {
+    $rdbk->removeImages($display_short_desc);
 }
 
 // Hint

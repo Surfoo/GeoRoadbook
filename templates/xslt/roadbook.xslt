@@ -310,10 +310,15 @@
   </div>
 </xsl:if>
 </div>
-<xsl:if test='$pagebreak'>
-  <p class="pagebreak"><xsl:text disable-output-escaping="yes"><![CDATA[<!-- pagebreak -->]]></xsl:text></p>
-</xsl:if>
 
+<xsl:choose>
+  <xsl:when test='$pagebreak'>
+    <p class="pagebreak"><xsl:text disable-output-escaping="yes"><![CDATA[<!-- pagebreak -->]]></xsl:text></p>
+  </xsl:when>
+  <xsl:otherwise>
+    <hr class="separator" />
+  </xsl:otherwise>
+</xsl:choose>
 </xsl:if>
 </xsl:for-each>
 </body>

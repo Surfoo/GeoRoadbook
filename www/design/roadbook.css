@@ -9,6 +9,10 @@ body, td, pre {
     clear: both;
     height: 0;
 }
+.separator {
+    margin: 0.5cm 0;
+    border: 0.5mm solid #000;
+}
 .containers {
     position: relative;
     min-height: 60px;
