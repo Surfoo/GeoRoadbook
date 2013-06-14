@@ -8,7 +8,7 @@
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="all" />
-        <link rel="stylesheet" href="/design/design.css?{{ suffix_css_js }}" media="all" />
+        <link rel="stylesheet" href="/design/design.css?{{ constant('SUFFIX_CSS_JS') }}" media="all" />
     </head>
     <body>
         <div class="container">
@@ -50,12 +50,12 @@
                             <div class="row">
                                 <div class="span5">
                                     <div class="control-group">
-                                        <legend class="small"><small>General:</small></legend>
+                                        <legend class="small">General:</legend>
 
                                         <label for="sort" class="checkbox inline"><input type="checkbox" name="sort" id="sort" value="1" /> Sort caches by</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Choose how to sort caches. Sorted according to your GPX file by default."></i><br />
                                         <div id="sort_options" class="hide">
-                                            <label for="sort1" class="radio inline"><input type="radio" name="sort_by" id="sort1" value="name" /> Name</label>
+                                            <label for="sort1" class="radio inline"><input type="radio" name="sort_by" id="sort1" value="name" checked="checked" /> Name</label>
                                             <label for="sort2" class="radio inline"><input type="radio" name="sort_by" id="sort2" value="owner" /> Owner</label>
                                             <label for="sort3" class="radio inline"><input type="radio" name="sort_by" id="sort3" value="difficulty" /> Difficulty</label>
                                             <label for="sort4" class="radio inline"><input type="radio" name="sort_by" id="sort4" value="terrain" /> Terrain</label>
@@ -67,9 +67,13 @@
                                 </div>
                                 <div class="span5">
                                     <div class="control-group">
-                                        <legend class="small"><small>Geocaches:</small></legend>
+                                        <legend class="small">Geocaches:</legend>
+
                                         <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Cache note area</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display a writing area for notes, calculations..."></i><br />
+
+                                        <label for="images" class="checkbox inline"><input type="checkbox" name="images" id="images" value="1" /> Remove images</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Remove images from the short and long description."></i><br />
 
                                         <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Short description</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the short description from caches."></i><br />
@@ -85,11 +89,8 @@
                                         <label for="logs" class="checkbox inline"><input type="checkbox" name="logs" id="logs" value="1" /> Logs</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display all logs from your GPX file."></i><br />
 
-                                        <label for="pagebreak" class="checkbox inline"><input type="checkbox" name="pagebreak" id="pagebreak" value="1" /> Page break between caches</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Caches start on a new page"></i>
-
-                                        <label for="images" class="checkbox inline"><input type="checkbox" name="images" id="images" value="1" /> Remove images</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Remove images from the short and long description"></i>
+                                        <label for="pagebreak" class="checkbox inline"><input type="checkbox" name="pagebreak" id="pagebreak" value="1" /> Page break</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Insert a page break between each caches."></i>
                                     </div>
                                 </div>
                             </div>
@@ -106,9 +107,9 @@
 
         {% include 'footer.tpl' %}
 
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ bootstrap_version }}/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{{ constant('JQUERY_VERSION') }}/jquery.min.js"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ constant('BOOTSTRAP_VERSION') }}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/bootstrap/js/bootstrap-fileupload.js"></script>
-        <script type="text/javascript" src="/js/upload.min.js?{{ suffix_css_js }}"></script>
+        <script type="text/javascript" src="/js/upload.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
     </body>
 </html>

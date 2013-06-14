@@ -9,7 +9,7 @@ if (!array_key_exists('roadbook', $_GET)) {
 
 Twig_Autoloader::register();
 $loader = new Twig_Loader_Filesystem(TEMPLATE_DIR);
-$twig   = new Twig_Environment($loader, array('cache' => TEMPLATE_COMPILED_DIR));
+$twig   = new Twig_Environment($loader, array('debug' => false, 'cache' => TEMPLATE_COMPILED_DIR));
 
 use Geocaching\Georoadbook\Georoadbook;
 
@@ -44,11 +44,7 @@ if (array_key_exists('raw', $_GET)) {
     exit(0);
 }
 
-
-$twig_vars = array('jquery_version'    => JQUERY_VERSION,
-                   'bootstrap_version' => BOOTSTRAP_VERSION,
-                   'suffix_css_js'     => SUFFIX_CSS_JS,
-                   'language'          => $language,
+$twig_vars = array('language'          => $language,
                    'roadbook_id'       => $rdbk->id,
                    'roadbook_content'  => file_get_contents($rdbk->html_file),
                    'last_modification' => 'Last saved: ' . $rdbk->getLastSavedDate()

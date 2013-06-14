@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="all" />
-        <link rel="stylesheet" href="/design/design.css?{{ suffix_css_js }}" media="all">
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
+        <link rel="stylesheet" href="/design/design.css?{{ constant('SUFFIX_CSS_JS') }}" media="all">
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{{ constant('JQUERY_VERSION') }}/jquery.min.js"></script>
         <script type="text/javascript" src="/js/tinymce358/tiny_mce.js"></script>
         <script type="text/javascript">
             var roadbook_id = '{{ roadbook_id|e('js') }}', language = '{{ language|e('js') }}';
@@ -58,7 +58,7 @@
 
         {% include 'footer.tpl' %}
 
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ bootstrap_version }}/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/js/georoadbook.min.js?{{ suffix_css_js }}"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ constant('BOOTSTRAP_VERSION') }}/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/georoadbook.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
     </body>
 </html>
