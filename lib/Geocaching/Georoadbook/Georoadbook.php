@@ -253,6 +253,9 @@ class Georoadbook
      */
     public function downloadZip()
     {
+        if(!class_exists('ZipArchive')) {
+            return false;
+        }
         $zip = new \ZipArchive();
         $filename_zip = sprintf('%s.%s', $this->id, 'zip');
 

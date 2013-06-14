@@ -24,7 +24,7 @@ if (array_key_exists('pdf', $_GET)) {
     $rdbk->downloadPdf();
 }
 
-if (array_key_exists('zip', $_GET) && class_exists('ZipArchive')) {
+if (array_key_exists('zip', $_GET)) {
     $rdbk->downloadZip();
 }
 

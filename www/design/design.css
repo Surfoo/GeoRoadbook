@@ -21,9 +21,11 @@ header {
 #options legend {
     margin: 0;
 }
-#options .row legend {
+#options p {
+    line-height: 40px;
     font-size: 1em;
-    border-color: #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    margin: 0;
 }
 #options .control-group {
     margin-top:0;

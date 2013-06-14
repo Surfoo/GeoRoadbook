@@ -50,7 +50,7 @@
                             <div class="row">
                                 <div class="span5">
                                     <div class="control-group">
-                                        <legend class="small">General:</legend>
+                                        <p class="small">General:</p>
 
                                         <label for="sort" class="checkbox inline"><input type="checkbox" name="sort" id="sort" value="1" /> Sort caches by</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Choose how to sort caches. Sorted according to your GPX file by default."></i><br />
@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="span5">
                                     <div class="control-group">
-                                        <legend class="small">Geocaches:</legend>
+                                        <p class="small">Geocaches:</p>
 
                                         <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Cache note area</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display a writing area for notes, calculations..."></i><br />
