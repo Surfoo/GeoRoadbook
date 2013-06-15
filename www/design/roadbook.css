@@ -131,6 +131,7 @@ h1 img, .finder_name img {
     border-spacing: 0px;
     border-collapse: collapse;
     width: 100%;
+    page-break-after: always;
 }
 #toc th {
     text-align: center;
@@ -148,6 +149,7 @@ h1 img, .finder_name img {
 #toc thead {
     border: 1px solid #000;
     background-color: #eee;
+    display: table-header-group;
 }
 #toc thead th {
     height: 0.7cm;
@@ -155,6 +157,8 @@ h1 img, .finder_name img {
 #toc tr {
     border-left: 1px solid #000;
     border-bottom: 1px solid #000;
+    page-break-inside: avoid;
+    page-break-after: auto;
 }
 
 #tocHeadNumber, #tocHeadName, #tocHeadFound, #tocHeadDnf,
@@ -167,6 +171,10 @@ h1 img, .finder_name img {
 .tocIcon {
     width: 0.5cm;
 }
+.tocIcon img {
+    width: 16px;
+    height: 16px;
+}
 .tocPage {
-    text-align:right;
+    text-align: right;
 }

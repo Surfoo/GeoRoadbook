@@ -15,7 +15,7 @@
         {% for cache in content %}
         <tr>
             <td class="tocNumber">{{ loop.index }}</td>
-            <td class="tocIcon"><img src="{{ cache.icon|e }}" style="width: 16px;height:16px" /></td>
+            <td class="tocIcon"><img src="{{ cache.icon|e }}" /></td>
             <td class="tocName">{{ cache.title|e }}</td>
             <td class="tocFound"> </td>
             <td class="tocDnf"> </td>
@@ -25,5 +25,3 @@
         </tbody>
     {% endif %}
 </table>
-
-<p class="pagebreak"><!-- pagebreak --></p>

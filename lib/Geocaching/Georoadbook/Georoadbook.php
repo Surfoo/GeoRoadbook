@@ -314,7 +314,7 @@ class Georoadbook
      * convertXmlToHtml
      * @param  string $locale
      * @param  array  $options
-     * @return string
+     * @return void
      */
     public function convertXmlToHtml($locale, $options)
     {
@@ -340,7 +340,7 @@ class Georoadbook
 
     /**
      * cleanHtml
-     * @return string
+     * @return void
      */
     public function cleanHtml()
     {
@@ -409,7 +409,6 @@ class Georoadbook
         $dom = new \DomDocument();
         $dom->loadHTML($this->html);
 
-        //short_description
         if ($display_short_desc) {
 
             $finder = new \DomXPath($dom);

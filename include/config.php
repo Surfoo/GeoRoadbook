@@ -14,7 +14,7 @@ define('MAX_RETENTION', 3600*24*30);
 
 define('JQUERY_VERSION', '2.0.2');
 define('BOOTSTRAP_VERSION', '2.3.2');
-define('SUFFIX_CSS_JS', 20130614);
+define('SUFFIX_CSS_JS', 20130615);
 
 date_default_timezone_set('Europe/Paris');
 
