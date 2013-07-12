@@ -20,6 +20,7 @@ date_default_timezone_set('Europe/Paris');
 
 //Locales for the roadbook
 $locales = array('cs' => 'Čeština',
+                 'da' => 'Dansk',
                  'de' => 'Deutsch',
                  'en' => 'English',
                  'es' => 'Español',
@@ -49,4 +50,3 @@ spl_autoload_register(function ($classname) {
     $classname = str_replace("\\", "/", $match[1]). str_replace(["\\", "_"], "/", $match[2]) . ".php";
     include_once dirname(__DIR__) . '/lib/' . $classname;
 });
-

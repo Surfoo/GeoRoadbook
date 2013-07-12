@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<i18n>
+    <text id="difficulty">Sværhedsgrad:</text>
+    <text id="terrain">Terræn:</text>
+    <text id="size">Størrelse:</text>
+    <text id="location">Placering:</text>
+    <text id="hint">Yderligere tip</text>
+    <text id="logs">loggede besøg</text>
+    <text id="by">En cache af</text>
+    <text id="hidden">Gemt</text>
+    <text id="micro">Mikro</text>
+    <text id="small">Lille</text>
+    <text id="regular">Almindelig</text>
+    <text id="large">Stor</text>
+    <text id="other">Andet</text>
+    <text id="not_chosen">Ikke valgt</text>
+    <text id="note">Personlig cache note</text>
+    <format id="date">%d/%m/%Y</format>
+    <text id="toc_title">Indholdsfortegnelse</text>
+    <text id="toc_name">Cache navn</text>
+    <text id="toc_page">Side</text>
+</i18n>
