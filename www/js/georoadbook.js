@@ -1,7 +1,7 @@
 $().ready(function() {
 
     // Config TinyMCE3.5.8
-    tinyMCE.init({
+    /*tinyMCE.init({
         language: language,
         mode: "exact",
         theme_advanced_layout_manager: "SimpleLayout",
@@ -39,24 +39,28 @@ $().ready(function() {
                 ed.isNotDirty = false;
             });
         }*/
-    });
+    //});
 
     // Config TinyMCE4
-    /*tinymce.init({
+    tinymce.init({
         selector: "#editable",
         language: language,
         height: "297mm",
         plugins: [
             "advlist autolink link image lists charmap hr anchor pagebreak",
             "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking",
-            "table contextmenu directionality emoticons template paste textcolor"],
+            "table contextmenu paste textcolor"],
         content_css: "../design/roadbook.css",
-        menu: '',
-        toolbar1: "undo redo | forecolor backcolor | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent",
-        toolbar2: "link image hr subscript superscript pagebreak table | code fullscreen",
+        menubar : false,
+        toolbar1: "undo redo | formatselect fontselect fontsizeselect | forecolor backcolor | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify",
+        toolbar2: "bullist numlist outdent indent | link image hr table subscript superscript charmap pagebreak | code fullscreen",
         browser_spellcheck: true,
         pagebreak_separator: "<p class=\"pagebreak\"><!-- pagebreak --></p>",
-    });*/
+        width: "210mm",
+        height: "297mm",
+        schema: "html4",
+        apply_source_formatting: true,
+    });
 
     $("#btn_delete").button().click(function() {
         if ($(this).hasClass('disabled')) {

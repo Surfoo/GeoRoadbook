@@ -108,6 +108,10 @@ footer > .container {
     top: 10%;
 }
 
+.mce-throbber{
+    background-position: center 80px !important;
+}
+
 @media all and (min-height: 40em) {
     .modal {
         position: fixed;

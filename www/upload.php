@@ -77,6 +77,8 @@ if ($display_logs) {
     $rdbk->parseBBcode();
 }
 
+$rdbk->getOnlyBody();
+
 $rdbk->saveFile($rdbk->html_file, $rdbk->html);
 $rdbk->saveFile($rdbk->json_file);
 

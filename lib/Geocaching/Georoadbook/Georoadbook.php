@@ -10,7 +10,7 @@
 
 namespace Geocaching\Georoadbook;
 
-use JBBCode;
+use JBBCode, Twig_Autoloader;
 
 class Georoadbook
 {
@@ -263,7 +263,13 @@ class Georoadbook
             exit('Unable to open ' . basename($filename_zip));
         }
 
-        $zip->addFromString('roadbook/' . basename($this->html_file), file_get_contents($this->html_file));
+        Twig_Autoloader::register();
+        $loader = new \Twig_Loader_Filesystem(TEMPLATE_DIR);
+        $twig   = new \Twig_Environment($loader, array('debug' => false, 'cache' => TEMPLATE_COMPILED_DIR));
+        $twig_vars = array('style' => $this->getCustomCss(),
+                           'content' => file_get_contents($this->html_file));
+        $zip->addFromString('roadbook/' . basename($this->html_file), $twig->render('raw.tpl', $twig_vars));
+
         $zip->addFile(ROOT . '/www/design/roadbook.css', 'design/roadbook.css');
         recurse_zip(ROOT . '/www/img', $zip);
         $zip->close();
@@ -332,7 +338,6 @@ class Georoadbook
         $xml->loadXML($this->gpx);
         $this->html = $xsl->transformToXML($xml);
         $this->html = preg_replace('/<\?xml[^>]*\?>/i', '', $this->html);
-        $this->html = preg_replace('/^<!DOCTYPE.*\s<html[^>]*>$/mi', '<!DOCTYPE html>'."\n".'<html lang="' . $this->locale . '">', trim($this->html));
         $this->html = htmlspecialchars_decode($this->html);
 
         $this->cleanHtml();
@@ -358,6 +363,17 @@ class Georoadbook
     }
 
     /**
+     * getOnlyBody
+     * @return void
+     */
+    public function getOnlyBody()
+    {
+        if(preg_match('/<body>(.*)<\/body>/msU', $this->html, $match)) {
+            $this->html = $match[1];
+        }
+    }
+
+    /**
      * addToC
      * @return void
      */
@@ -369,11 +385,9 @@ class Georoadbook
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheTitle ')]");
         $toc_content = array();
         foreach ($nodes as $node) {
-            $icon  = $node->firstChild->getAttribute('src');
-            $title = $node->textContent;
-            $toc_content[] = array('icon' => $icon, 'title' => $title);
+            $toc_content[] = array('icon'  => $node->firstChild->getAttribute('src'),
+                                   'title' => $node->textContent);
         }
-
         if (!empty($toc_content)) {
             $toc = new \DomDocument();
             $toc->load(ROOT . '/locales/' . sprintf('%s.%s', $this->locale, 'xml'));
@@ -410,7 +424,6 @@ class Georoadbook
         $dom->loadHTML($this->html);
 
         if ($display_short_desc) {
-
             $finder = new \DomXPath($dom);
             $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' short_description ')]");
             foreach ($nodes as $node) {

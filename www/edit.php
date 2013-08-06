@@ -29,18 +29,9 @@ if (array_key_exists('zip', $_GET)) {
 }
 
 if (array_key_exists('raw', $_GET)) {
-    $html = file_get_contents($rdbk->html_file);
-
-    //hack, bug in TinyMCE
-    $html = preg_replace('/<head>\s*<\/head>/m', '<head><meta charset="utf-8" /><title>My roadbook</title><link type="text/css" rel="stylesheet" href="../design/roadbook.css" media="all" /></head>', $html, 1);
-    $rdbk->saveFile($rdbk->html_file, $html);
-
-    $options_css = $rdbk->getCustomCss();
-    if ($options_css) {
-        $customCSS = '<style type="text/css">' . $options_css . '</style>';
-        $html = str_replace("</head>", $customCSS . "</head>", $html);
-    }
-    echo $html;
+    $twig_vars = array('style' => $rdbk->getCustomCss(),
+                       'content' => file_get_contents($rdbk->html_file));
+    echo $twig->render('raw.tpl', $twig_vars);
     exit(0);
 }
 

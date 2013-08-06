@@ -12,16 +12,10 @@
 
   <xsl:variable name="locale" select="document($locale_filename)/i18n" />
 
-  <!--<xsl:output method="html"
-    indent="yes"
-    omit-xml-declaration="yes"
-    encoding="utf-8"
-    doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />-->
-
   <xsl:output
      method="xml"
      doctype-system="about:legacy-compat"
+     omit-xml-declaration="no"
      encoding="UTF-8"
      indent="yes" />
 
@@ -29,8 +23,6 @@
       <html>
         <head>
           <meta charset="utf-8" />
-          <title>My roadbook</title>
-          <link type="text/css" rel="stylesheet" href="../design/roadbook.css" media="all" />
         </head>
       <body>
 
