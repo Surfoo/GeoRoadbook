@@ -96,7 +96,7 @@
                             </div>
                         </fieldset>
 
-                        <input type="submit" id="create" name="send" value="Create your roadbook" class="btn btn-large btn-primary pull-right" />
+                        <input type="submit" id="create" name="send" value="Create your roadbook" data-loading-text="Creating..." class="btn btn-large btn-primary pull-right" />
                     </fieldset>
                 </form>
                 {% include '_faq.tpl' %}

@@ -24,7 +24,7 @@
                         </div>
 
                         <div class="btn-group">
-                            <button type="submit" id="btn_save" class="btn btn-primary" title="{{ last_modification|e }}">Save</button>
+                            <button type="submit" id="btn_save" class="btn btn-primary" data-loading-text="Saving..." title="{{ last_modification|e }}">Save</button>
                             <a href="#ui_export" id="btn_export" role="button" class="btn btn-primary" data-toggle="modal" title="Export as PDF file">Export as PDF</a>
                         </div>
 

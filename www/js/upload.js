@@ -93,6 +93,8 @@ $('input[type="submit"]').click(function() {
         $('#error').html('<p>GPX file is missing.</p>').show().delay(3000).fadeOut();
         return false;
     }
+    var btn = $(this);
+    btn.button('loading');
 
     $.ajax({
         url: "upload.php",
@@ -116,6 +118,7 @@ $('input[type="submit"]').click(function() {
             }
             if (data && !data.success) {
                 $('#error').html('<p>' + data.message + '</p>').show();
+                btn.button('reset');
                 return
             }
             $(location).attr('href', data.redirect);
