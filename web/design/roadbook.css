@@ -80,6 +80,9 @@ h1 img, .finder_name img {
     margin: 0;
 }
 
+.cacheLogs {
+    margin-bottom: 1mm;
+}
 .cacheLogs img {
     margin: 1mm;
 }

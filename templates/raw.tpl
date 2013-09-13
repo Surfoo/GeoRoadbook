@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
     <title>My roadbook</title>
-    <link type="text/css" rel="stylesheet" href="../design/roadbook.css" media="all">
+    <link type="text/css" rel="stylesheet" href="../design/roadbook.css?{{ constant('SUFFIX_CSS_JS') }}" media="all">
     <style type="text/css">{{ style|raw }}</style>
 </head>
 <body>
