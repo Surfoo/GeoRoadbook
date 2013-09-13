@@ -1,0 +1,26 @@
+{
+    "name": "Geocaching/Georoadbook",
+    "license": "Apache-2.0",
+    "type": "project",
+    "keywords": ["geocaching", "georoadbook", "geocache", "roadbook"],
+    "homepage": "http://georoadbook.vaguelibre.net/",
+    "version": "1.0",
+    "time": "2013-09-13",
+    "description": "",
+    "authors": [
+        {
+            "name": "Surfoo",
+            "email": "surfooo@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Georoadbook": "src/Geocaching/Georoadbook" }
+    },
+    "require": {
+        "php": ">=5.3",
+        "jbbcode/jbbcode": "1.2.*",
+        "twitter/bootstrap": "2.3.*",
+        "twig/twig": "1.13.*"
+    }
+}

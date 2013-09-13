@@ -8,7 +8,7 @@ function recurse_zip($src, &$zip)
             if (is_dir($src . '/' . $file)) {
                 recurse_zip($src . '/' . $file, $zip);
             } else {
-                $zip->addFile($src . '/' . $file, substr($src . '/' . $file, strlen(dirname(__DIR__).'/www/')));
+                $zip->addFile($src . '/' . $file, substr($src . '/' . $file, strlen(dirname(__DIR__).'/web/')));
             }
         }
     }

@@ -3,8 +3,7 @@ error_reporting(-1);
 ini_set('display_errors', '1');
 
 define('ROOT',          dirname(__DIR__));
-define('ROADBOOKS_DIR', ROOT . '/www/roadbook/');
-define('LIB_DIR',       ROOT . '/lib/');
+define('ROADBOOKS_DIR', ROOT . '/web/roadbook/');
 define('TEMPLATE_DIR',  ROOT . '/templates/');
 define('TEMPLATE_COMPILED_DIR', ROOT . '/templates_c/');
 
@@ -43,10 +42,4 @@ if (array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {
 $language = in_array($user_language, $available_languages) ? $user_language : 'en';
 
 require ROOT . '/include/helpers.php';
-
-spl_autoload_register(function ($classname) {
-    $classname = ltrim($classname, "\\");
-    preg_match('/^(.+)?([^\\\\]+)$/U', $classname, $match);
-    $classname = str_replace("\\", "/", $match[1]). str_replace(["\\", "_"], "/", $match[2]) . ".php";
-    include_once dirname(__DIR__) . '/lib/' . $classname;
-});
+require ROOT . '/vendor/autoload.php';

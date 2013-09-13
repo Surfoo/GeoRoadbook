@@ -5,6 +5,8 @@
 *.sublime-workspace
 TODO
 templates_c/*
-www/roadbook/*.*
-www/roadbook/pdf/*
+web/roadbook/*.*
+web/roadbook/pdf/*
 packer
+vendor
+composer.phar
