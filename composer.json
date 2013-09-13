@@ -6,16 +6,16 @@
     "homepage": "http://georoadbook.vaguelibre.net/",
     "version": "1.0",
     "time": "2013-09-13",
-    "description": "",
-    "authors": [
-        {
-            "name": "Surfoo",
-            "email": "surfooo@gmail.com",
-            "role": "Developer"
-        }
-    ],
+    "description": "Create your geocaching roadbook ready-to-print from your gpx file.",
+    "authors": [{
+        "name": "Surfoo",
+        "email": "surfooo@gmail.com",
+        "role": "Developer"
+    }],
     "autoload": {
-        "psr-0": { "Georoadbook": "src/Geocaching/Georoadbook" }
+        "psr-0": {
+            "Georoadbook": "src/Geocaching/Georoadbook"
+        }
     },
     "require": {
         "php": ">=5.3",
