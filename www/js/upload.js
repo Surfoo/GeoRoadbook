@@ -107,6 +107,7 @@ $('input[type="submit"]').click(function() {
             short_desc: !! $('input[name="short_desc"]:checked').val(),
             hint: !! $('input[name="hint"]:checked').val(),
             hint_encrypted: !! parseInt($('input[name="hint_encrypted"]:checked').val()),
+            waypoints: !! $('input[name="waypoints"]:checked').val(),
             logs: !! $('input[name="logs"]:checked').val(),
             sort_by: $('input[name="sort_by"]:checked').val(),
             pagebreak: !! $('input[name="pagebreak"]:checked').val(),

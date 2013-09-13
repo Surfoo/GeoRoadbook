@@ -86,6 +86,9 @@
                                             <label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label>
                                         </div>
 
+                                        <label for="waypoints" class="checkbox inline"><input type="checkbox" name="waypoints" id="waypoints" value="1" /> Waypoints</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display additionnals waypoints like parking, stage, questions, etc."></i><br />
+
                                         <label for="logs" class="checkbox inline"><input type="checkbox" name="logs" id="logs" value="1" /> Logs</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display all logs from your GPX file."></i><br />
 

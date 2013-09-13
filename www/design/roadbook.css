@@ -123,6 +123,15 @@ h1 img, .finder_name img {
     height: auto;
 }
 
+.waypoint {
+    margin: 0;
+    padding: 0.5mm;
+    border-bottom: 1px solid gray;
+}
+.waypoint:nth-child(even) {
+    background-color: #efefef;
+}
+
 /* Table of Content */
 #tocTitle {
     text-align: center;

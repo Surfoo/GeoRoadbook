@@ -28,7 +28,21 @@
 
         <xsl:for-each select="gpx:gpx/gpx:wpt">
           <xsl:sort select="translate(grdspk:cache/grdspk:*[local-name()=$sort_by], 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
-            <xsl:if test="grdspk:cache">
+            <xsl:choose>
+              <xsl:when test="grdspk:cache">
+
+              <!-- break page or separator, only after the second geocache -->
+              <xsl:if test="(position()) > 1">
+                <xsl:choose>
+                    <xsl:when test='$pagebreak'>
+                      <p class="pagebreak"><xsl:text disable-output-escaping="yes"><![CDATA[<!-- pagebreak -->]]></xsl:text></p>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <hr class="separator" />
+                    </xsl:otherwise>
+                </xsl:choose>
+              </xsl:if>
+
               <div class="cache">
 
                 <!-- variables -->
@@ -246,74 +260,113 @@
               </xsl:if>
           </p>-->
 
-        <xsl:if test='grdspk:cache/grdspk:attributes/grdspk:attribute'>
-            <ul class="cacheAttributes">
-                <xsl:apply-templates select="grdspk:cache/grdspk:attributes/grdspk:attribute" />
-            </ul>
-        </xsl:if>
+            <xsl:if test='grdspk:cache/grdspk:attributes/grdspk:attribute'>
+                <ul class="cacheAttributes">
+                    <xsl:apply-templates select="grdspk:cache/grdspk:attributes/grdspk:attribute" />
+                </ul>
+            </xsl:if>
 
-        <xsl:if test='$display_note'>
-          <div class="cacheNote">
-            <p><xsl:value-of select="$locale/text[@id='note']" /></p>
-          </div>
-        </xsl:if>
-        <!-- short_description -->
-        <xsl:if test='$display_short_desc and normalize-space(grdspk:cache/grdspk:short_description)'>
-          <div class="short_description">
-            <xsl:choose>
-              <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'True'">
-                <xsl:value-of select="grdspk:cache/grdspk:short_description" disable-output-escaping="yes" />
-              </xsl:when>
-              <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'False'">
-                <xsl:call-template name="PreserveLineBreaks">
-                  <xsl:with-param name="text" select="grdspk:cache/grdspk:short_description"/>
-                </xsl:call-template>
-              </xsl:when>
-            </xsl:choose>
-          </div>
-        </xsl:if>
+            <xsl:if test='$display_note'>
+              <div class="cacheNote">
+                <p><xsl:value-of select="$locale/text[@id='note']" /></p>
+              </div>
+            </xsl:if>
+            <!-- short_description -->
+            <xsl:if test='$display_short_desc and normalize-space(grdspk:cache/grdspk:short_description)'>
+              <div class="short_description">
+                <xsl:choose>
+                  <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'True'">
+                    <xsl:value-of select="grdspk:cache/grdspk:short_description" disable-output-escaping="yes" />
+                  </xsl:when>
+                  <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'False'">
+                    <xsl:call-template name="PreserveLineBreaks">
+                      <xsl:with-param name="text" select="grdspk:cache/grdspk:short_description"/>
+                    </xsl:call-template>
+                  </xsl:when>
+                </xsl:choose>
+              </div>
+            </xsl:if>
 
-<!-- long_description -->
-<div class="long_description">
-  <xsl:choose>
-    <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'True'">
-      <xsl:value-of select="grdspk:cache/grdspk:long_description" disable-output-escaping="yes" />
-    </xsl:when>
-    <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'False'">
-      <xsl:call-template name="PreserveLineBreaks">
-        <xsl:with-param name="text" select="grdspk:cache/grdspk:long_description"/>
-      </xsl:call-template>
-    </xsl:when>
-  </xsl:choose>
-</div>
+            <!-- long_description -->
+            <div class="long_description">
+              <xsl:choose>
+                <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'True'">
+                  <xsl:value-of select="grdspk:cache/grdspk:long_description" disable-output-escaping="yes" />
+                </xsl:when>
+                <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'False'">
+                  <xsl:call-template name="PreserveLineBreaks">
+                    <xsl:with-param name="text" select="grdspk:cache/grdspk:long_description"/>
+                  </xsl:call-template>
+                </xsl:when>
+              </xsl:choose>
+            </div>
 
-<!-- Additional Hints -->
-<xsl:if test='$display_hint'>
-  <xsl:apply-templates select="grdspk:cache/grdspk:encoded_hints" />
-</xsl:if>
+            <!-- Additional Hints -->
+            <xsl:if test='$display_hint'>
+              <xsl:apply-templates select="grdspk:cache/grdspk:encoded_hints" />
+            </xsl:if>
 
-<!-- Logs -->
-<xsl:if test='$display_logs and grdspk:cache/grdspk:logs/grdspk:log'>
-  <div class="cacheLogs">
-    <p><xsl:value-of select="$locale/text[@id='logs']" /></p>
-    <table>
-      <xsl:apply-templates select="grdspk:cache/grdspk:logs/grdspk:log" />
-    </table>
-  </div>
-</xsl:if>
-</div>
+            <!-- Logs -->
+            <xsl:if test='$display_logs and grdspk:cache/grdspk:logs/grdspk:log'>
+              <div class="cacheLogs">
+                <p><xsl:value-of select="$locale/text[@id='logs']" /></p>
+                <table>
+                  <xsl:apply-templates select="grdspk:cache/grdspk:logs/grdspk:log" />
+                </table>
+              </div>
+            </xsl:if>
+            </div>
+          </xsl:when>
 
-<xsl:choose>
-  <xsl:when test='$pagebreak'>
-    <p class="pagebreak"><xsl:text disable-output-escaping="yes"><![CDATA[<!-- pagebreak -->]]></xsl:text></p>
-  </xsl:when>
-  <xsl:otherwise>
-    <hr class="separator" />
-  </xsl:otherwise>
-</xsl:choose>
-</xsl:if>
-</xsl:for-each>
-</body>
+          <!-- Waypoints -->
+          <xsl:otherwise>
+              <xsl:if test='$display_waypoints'>
+                <!-- variables -->
+                <!-- Latitude conversion -->
+                <xsl:variable name="latitude_text">
+                    <xsl:choose>
+                        <xsl:when test="number(substring-before(@lat, '.' )) &lt; 0"> S </xsl:when>
+                        <xsl:when test="number(substring-before(@lat, '.' )) &gt; 0"> N </xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="latitude_degrees">
+                    <xsl:choose>
+                        <xsl:when test="number(substring-before(@lat, '.' )) &lt; 0"><xsl:value-of select="substring-before(@lat, '.' ) * -1" /></xsl:when>
+                        <xsl:when test="number(substring-before(@lat, '.' )) &gt; 0"><xsl:value-of select="substring-before(@lat, '.' )" /></xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
+
+                <!-- Longitude conversion -->
+                <xsl:variable name="longitude_text">
+                    <xsl:choose>
+                        <xsl:when test="number(substring-before(@lon, '.' )) &lt;= 0"> W </xsl:when>
+                        <xsl:when test="number(substring-before(@lon, '.' )) &gt; 0"> E </xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="longitude_degrees">
+                    <xsl:choose>
+                        <xsl:when test="number(substring-before(@lon, '.' )) &lt;= 0"><xsl:value-of select="substring-before(@lon, '.' ) * -1" /></xsl:when>
+                        <xsl:when test="number(substring-before(@lon, '.' )) &gt; 0"><xsl:value-of select="substring-before(@lon, '.' )" /></xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
+
+                <xsl:variable name="lat" select="concat($latitude_text, format-number($latitude_degrees, '00'),'° ', substring(format-number(number(concat('.', substring-after(@lat, '.' )) * 60), '00.000'), 0, 7))" />
+                <xsl:variable name="lon" select="concat($longitude_text, format-number($longitude_degrees, '000'),'° ', substring(format-number(number(concat('.', substring-after(@lon, '.' )) * 60), '00.000'), 0, 7))" />
+
+                <p class="waypoint">
+                  <xsl:value-of select="gpx:sym"/> (<xsl:value-of select="gpx:name"/>) &#8212; <strong><xsl:value-of select="$lat"/>&#160;<xsl:value-of select="$lon"/></strong>
+                  <xsl:if test="gpx:cmt != ''">
+                    <br /><xsl:value-of select="gpx:cmt"/>
+                  </xsl:if>
+                </p>
+              </xsl:if>
+          </xsl:otherwise>
+
+          </xsl:choose>
+
+
+          </xsl:for-each>
+      </body>
 </html>
 </xsl:template>
 </xsl:stylesheet>
