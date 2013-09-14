@@ -27,19 +27,21 @@ $locales = array('cs' => 'Čeština',
                  'it' => 'Italiano',
                  'nl' => 'Nederlands',
                  'pt' => 'Português',
-                 'th' => 'ภาษาไทย',
-                 'sv' => 'Svenska');
+                 'sv' => 'Svenska',
+                 'th' => 'ภาษาไทย');
 
 //TinyMCE
-$available_languages = array('de', 'en', 'es', 'fr', 'it', 'pt');
+$available_languages = array('cs', 'da', 'de', 'en', 'es', 'fr', 'it', 'nl');
 
 $available_sorts = array('none', 'name', 'owner', 'difficulty', 'terrain');
 
-$user_language = false;
+$language = 'en';
 if (array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {
     $user_language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    if(in_array($user_language, $available_languages)) {
+        $language = $user_language;
+    }
 }
-$language = in_array($user_language, $available_languages) ? $user_language : 'en';
 
 require ROOT . '/include/helpers.php';
 require ROOT . '/vendor/autoload.php';
