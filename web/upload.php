@@ -32,6 +32,7 @@ if ($matche[1] == '1/0') {
 $display_toc        = isset($_POST['toc']) && $_POST['toc']   == "true"                     ? true : false;
 $display_note       = isset($_POST['note']) && $_POST['note'] == "true"                     ? true : false;
 $display_short_desc = isset($_POST['short_desc']) && $_POST['short_desc'] == "true"         ? true : false;
+$display_long_desc  = isset($_POST['long_desc']) && $_POST['long_desc'] == "true"           ? true : false;
 $display_hint       = isset($_POST['hint']) && $_POST['hint'] == "true"                     ? true : false;
 $display_logs       = isset($_POST['logs']) && $_POST['logs'] == "true"                     ? true : false;
 $hint_encrypted     = isset($_POST['hint_encrypted']) && $_POST['hint_encrypted'] == "true" ? true : false;
@@ -48,6 +49,7 @@ if (!$rdbk->create($_POST['gpx'])) {
 
 $options = array('display_note'       => $display_note,
                  'display_short_desc' => $display_short_desc,
+                 'display_long_desc'  => $display_long_desc,
                  'display_hint'       => $display_hint,
                  'display_logs'       => $display_logs,
                  'display_waypoints'  => $display_waypoints,

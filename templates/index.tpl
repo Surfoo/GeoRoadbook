@@ -14,7 +14,7 @@
         <div class="container">
             <div class="hero-unit">
                 {% include 'header.tpl' %}
-                
+
                 {% if deleted is defined %}
                     <div class="alert alert-success fade in">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -77,6 +77,9 @@
 
                                         <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Short description</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the short description from caches."></i><br />
+
+                                        <label for="long_desc" class="checkbox inline"><input type="checkbox" name="long_desc" id="long_desc" value="1" /> Long description</label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the long description from caches."></i><br />
 
                                         <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Additionnal hints</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the cache hints. Decrypted by default."></i><br />

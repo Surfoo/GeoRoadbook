@@ -105,6 +105,7 @@ $('input[type="submit"]').click(function() {
             toc: !! $('input[name="toc"]:checked').val(),
             note: !! $('input[name="note"]:checked').val(),
             short_desc: !! $('input[name="short_desc"]:checked').val(),
+            long_desc: !! $('input[name="long_desc"]:checked').val(),
             hint: !! $('input[name="hint"]:checked').val(),
             hint_encrypted: !! parseInt($('input[name="hint_encrypted"]:checked').val()),
             waypoints: !! $('input[name="waypoints"]:checked').val(),

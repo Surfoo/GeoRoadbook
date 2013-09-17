@@ -288,18 +288,20 @@
             </xsl:if>
 
             <!-- long_description -->
-            <div class="long_description">
-              <xsl:choose>
-                <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'True'">
-                  <xsl:value-of select="grdspk:cache/grdspk:long_description" disable-output-escaping="yes" />
-                </xsl:when>
-                <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'False'">
-                  <xsl:call-template name="PreserveLineBreaks">
-                    <xsl:with-param name="text" select="grdspk:cache/grdspk:long_description"/>
-                  </xsl:call-template>
-                </xsl:when>
-              </xsl:choose>
-            </div>
+            <xsl:if test='$display_long_desc and normalize-space(grdspk:cache/grdspk:long_description)'>
+              <div class="long_description">
+                <xsl:choose>
+                  <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'True'">
+                    <xsl:value-of select="grdspk:cache/grdspk:long_description" disable-output-escaping="yes" />
+                  </xsl:when>
+                  <xsl:when test="grdspk:cache/grdspk:long_description/@html = 'False'">
+                    <xsl:call-template name="PreserveLineBreaks">
+                      <xsl:with-param name="text" select="grdspk:cache/grdspk:long_description"/>
+                    </xsl:call-template>
+                  </xsl:when>
+                </xsl:choose>
+              </div>
+            </xsl:if>
 
             <!-- Additional Hints -->
             <xsl:if test='$display_hint'>
