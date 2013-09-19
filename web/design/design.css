@@ -7,10 +7,6 @@ header {
 }
 .hero-unit {
     padding: 40px;
-    background-image: url('/design/beta.png');
-    background-repeat: no-repeat;
-    background-size: 80px 80px;
-    background-position: 295px 13px;
 }
 .hero-unit h1 {
     font-size: 44px;

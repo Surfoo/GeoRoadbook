@@ -72,7 +72,7 @@ function ParseFile(file) {
         }
 
         doc = parser.parseFromString(e.target.result, 'application/xml');
-        if (!doc ||  doc.documentElement.tagName != 'gpx') {
+        if (!doc || doc.documentElement.tagName != 'gpx') {
             content_gpx = null;
             $('#error').html('<p>"' + fileinfo[0]['name'] + '" in an invalid file.<p>').show().delay(3000).fadeOut();
             return false;
@@ -109,6 +109,7 @@ $('input[type="submit"]').click(function() {
             hint: !! $('input[name="hint"]:checked').val(),
             hint_encrypted: !! parseInt($('input[name="hint_encrypted"]:checked').val()),
             waypoints: !! $('input[name="waypoints"]:checked').val(),
+            spoilers: !! $('input[name="spoilers"]:checked').val(),
             logs: !! $('input[name="logs"]:checked').val(),
             sort_by: $('input[name="sort_by"]:checked').val(),
             pagebreak: !! $('input[name="pagebreak"]:checked').val(),

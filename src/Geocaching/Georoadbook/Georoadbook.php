@@ -12,8 +12,6 @@ class Georoadbook
 {
     const ID_LENGTH = 16;
 
-    const MAX_CACHES = 100;
-
     public $id     = null;
 
     public $gpx    = null;
@@ -107,10 +105,6 @@ class Georoadbook
         self::ajaxRequestOnly();
 
         $this->gpx = $gpx;
-
-        /*if (substr_count($this->gpx, '<wpt') > self::MAX_CACHES) {
-            return false;
-        }*/
 
         if (!$this->saveFile($this->gpx_file, $this->gpx)) {
             return false;
@@ -449,6 +443,44 @@ class Georoadbook
             }
         }
 
+        $this->html = $dom->saveHtml();
+    }
+
+    /**
+     * addSpoilers
+     * @return void
+     */
+    public function addSpoilers()
+    {
+        $xml = new \DOMDocument();
+        $xml->loadXML($this->gpx);
+        $waypoints = $xml->getElementsByTagName('wpt');
+        $dom = new \DomDocument();
+        $dom->loadHTML($this->html);
+        $finder = new \DomXPath($dom);
+        foreach($waypoints as $waypoint) {
+            $long_description = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
+            if(empty($long_description->length)) {
+                continue;
+            }
+            if(preg_match_all('/<!-- Spoiler4Gpx \[([^]]*)\]\(([^)]*)\) -->/', $long_description->item(0)->nodeValue, $spoilers, PREG_SET_ORDER)) {
+                $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
+                foreach ($spoilers as $spoiler) {
+                    $nodes = $finder->query("//div[@id='".$gccode."']/div[@class='spoilers']");
+                    if(empty($nodes->length)) {
+                        continue;
+                    }
+                    $frag = $dom->createDocumentFragment();
+                    $frag->appendXML('<p>Spoilers</p>'."\n");
+                    $node->appendChild($frag);
+                    foreach($nodes as $node) {
+                        $frag = $dom->createDocumentFragment();
+                        $frag->appendXML('<img src="' . $spoiler[2] . '" alt="' . $spoiler[1] . '"/><br />'."\n");
+                        $node->appendChild($frag);
+                    }
+                }
+            }
+        }
         $this->html = $dom->saveHtml();
     }
 

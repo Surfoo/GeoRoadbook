@@ -35,6 +35,7 @@ $display_short_desc = isset($_POST['short_desc']) && $_POST['short_desc'] == "tr
 $display_long_desc  = isset($_POST['long_desc']) && $_POST['long_desc'] == "true"           ? true : false;
 $display_hint       = isset($_POST['hint']) && $_POST['hint'] == "true"                     ? true : false;
 $display_logs       = isset($_POST['logs']) && $_POST['logs'] == "true"                     ? true : false;
+$display_spoilers   = isset($_POST['spoilers']) && $_POST['spoilers'] == "true"             ? true : false;
 $hint_encrypted     = isset($_POST['hint_encrypted']) && $_POST['hint_encrypted'] == "true" ? true : false;
 $display_waypoints  = isset($_POST['waypoints']) && $_POST['waypoints'] == "true"           ? true : false;
 $sort_by            = isset($_POST['sort_by']) && in_array($_POST['sort_by'], $available_sorts) ? $_POST['sort_by'] : $available_sorts[0];
@@ -53,6 +54,7 @@ $options = array('display_note'       => $display_note,
                  'display_hint'       => $display_hint,
                  'display_logs'       => $display_logs,
                  'display_waypoints'  => $display_waypoints,
+                 'display_spoilers'   => $display_spoilers,
                  'sort_by'            => $sort_by,
                  'pagebreak'          => $pagebreak,
                  );
@@ -71,6 +73,11 @@ if ($images) {
 // Hint
 if ($display_hint && $hint_encrypted) {
     $rdbk->encryptHints();
+}
+
+// Spoilers
+if($display_spoilers) {
+    $rdbk->addSpoilers();
 }
 
 // Parse logs

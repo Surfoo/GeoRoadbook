@@ -109,7 +109,9 @@ h1 img, .finder_name img {
     border-bottom: 1px solid #000;
 }
 
-.cacheHint p:first-child, .cacheLogs p:first-child {
+.cacheHint p:first-child,
+.cacheSpoilers p:first-child,
+.cacheLogs p:first-child {
     font-size: 12pt;
     font-weight: bold;
     border-bottom: 1pt solid black;

@@ -16,7 +16,7 @@
     <body>
         <div class="container">
             <div class="hero-unit">
-                {% include 'header.tpl' %}
+                {% include '_header.tpl' %}
                 <div id="ui_edition">
                     <div id="actions">
                         <div class="pull-right">
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        {% include 'footer.tpl' %}
+        {% include '_footer.tpl' %}
 
         <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ constant('BOOTSTRAP_VERSION') }}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/js/georoadbook.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>

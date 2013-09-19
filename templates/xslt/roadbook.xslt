@@ -43,7 +43,7 @@
                 </xsl:choose>
               </xsl:if>
 
-              <div class="cache">
+              <div class="cache" id="{gpx:name}">
 
                 <!-- variables -->
                 <!-- Latitude conversion -->
@@ -306,6 +306,11 @@
             <!-- Additional Hints -->
             <xsl:if test='$display_hint'>
               <xsl:apply-templates select="grdspk:cache/grdspk:encoded_hints" />
+            </xsl:if>
+
+            <!-- Spoilers -->
+            <xsl:if test='$display_spoilers'>
+              <div class="cacheSpoilers"></div>
             </xsl:if>
 
             <!-- Logs -->
