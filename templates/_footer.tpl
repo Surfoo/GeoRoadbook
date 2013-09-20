@@ -1,15 +1,5 @@
 <footer>
   <div class="container">
-
-    <div id="paypal">
-        <p><a href="#donate" data-toggle="modal">Read more</a><br />
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-            <input type="hidden" name="cmd" value="_s-xclick">
-            <input type="hidden" name="hosted_button_id" value="ARK6EZ55EG5MY">
-            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" name="submit" alt="PayPal">
-        </form>
-    </div>
-
     <p class="muted credit">
         <i class="icon-question-sign"></i> <a href="#faq" data-toggle="modal">FAQ</a><br />
         <i class="icon-info-sign"></i> <a href="#about" data-toggle="modal">About</a><br />

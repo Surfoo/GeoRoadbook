@@ -110,7 +110,6 @@
                 </form>
                 {% include '_faq.tpl' %}
                 {% include '_about.tpl' %}
-                {% include '_donate.tpl' %}
             </div>
         </div>
 

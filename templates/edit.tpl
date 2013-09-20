@@ -51,7 +51,6 @@
                 </div>
                 {% include '_faq.tpl' %}
                 {% include '_about.tpl' %}
-                {% include '_donate.tpl' %}
                 {% include '_help.tpl' %}
             </div>
         </div>
