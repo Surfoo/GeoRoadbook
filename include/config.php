@@ -5,7 +5,7 @@ ini_set('display_errors', '1');
 define('ROOT',          dirname(__DIR__));
 define('ROADBOOKS_DIR', ROOT . '/web/roadbook/');
 define('TEMPLATE_DIR',  ROOT . '/templates');
-define('TEMPLATE_COMPILED_DIR', ROOT . '/templates_c');
+define('TEMPLATE_COMPILED_DIR', ROOT . '/cache');
 
 define('ICON_CACHE_DIR', '32x32');
 

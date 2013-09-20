@@ -4,9 +4,7 @@
 *.sublime-project
 *.sublime-workspace
 TODO
-templates_c/*
 web/roadbook/*.*
 web/roadbook/pdf/*
 packer
 vendor
-composer.phar
