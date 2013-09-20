@@ -80,6 +80,11 @@ if($display_spoilers) {
     $rdbk->addSpoilers();
 }
 
+// Waypoints
+if($display_waypoints) {
+    $rdbk->addWaypoints();
+}
+
 // Parse logs
 if ($display_logs) {
     $rdbk->parseBBcode();

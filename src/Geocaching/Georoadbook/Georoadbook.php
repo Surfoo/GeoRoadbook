@@ -331,13 +331,15 @@ class Georoadbook
         $this->html = htmlspecialchars_decode($this->html);
 
         $this->cleanHtml();
+
+        $this->clearWaypoints();
     }
 
     /**
      * cleanHtml
      * @return void
      */
-    public function cleanHtml()
+    protected function cleanHtml()
     {
         // http://tidy.sourceforge.net/docs/quickref.html
         if (!is_null($this->html)) {
@@ -350,6 +352,15 @@ class Georoadbook
             $tidy->cleanRepair();
             $this->html = $tidy;
         }
+    }
+
+    /**
+     * clearWaypoints
+     * @return void
+     */
+    protected function clearWaypoints()
+    {
+        $this->html = preg_replace('#<p>Additional [Hidden ]?Waypoints</p>.*(</div>)#msU', '$1', $this->html);
     }
 
     /**
@@ -466,18 +477,68 @@ class Georoadbook
             if(preg_match_all('/<!-- Spoiler4Gpx \[([^]]*)\]\(([^)]*)\) -->/', $long_description->item(0)->nodeValue, $spoilers, PREG_SET_ORDER)) {
                 $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
                 foreach ($spoilers as $spoiler) {
-                    $nodes = $finder->query("//div[@id='".$gccode."']/div[@class='spoilers']");
+                    $nodes = $finder->query("//div[@id='".$gccode."']/div[@class='cacheSpoilers']");
                     if(empty($nodes->length)) {
                         continue;
                     }
                     $frag = $dom->createDocumentFragment();
                     $frag->appendXML('<p>Spoilers</p>'."\n");
-                    $node->appendChild($frag);
                     foreach($nodes as $node) {
+                        $node->appendChild($frag);
                         $frag = $dom->createDocumentFragment();
                         $frag->appendXML('<img src="' . $spoiler[2] . '" alt="' . $spoiler[1] . '"/><br />'."\n");
                         $node->appendChild($frag);
                     }
+                }
+            }
+        }
+        $this->html = $dom->saveHtml();
+    }
+
+    /**
+     * addWaypoints
+     * @return void
+     */
+    public function addWaypoints()
+    {
+        $xml = new \DOMDocument();
+        $xml->loadXML($this->gpx);
+        $waypoints = $xml->getElementsByTagName('wpt');
+        $dom = new \DomDocument();
+        $dom->loadHTML($this->html);
+        $finder = new \DomXPath($dom);
+        foreach($waypoints as $waypoint) {
+            $long_description = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
+            if(empty($long_description->length)) {
+                continue;
+            }
+
+            if(!preg_match('#<p>Additional [Hidden ]?Waypoints</p>#i', $long_description->item(0)->nodeValue, $matches, PREG_OFFSET_CAPTURE)) {
+                continue;
+            }
+
+            $data = substr($long_description->item(0)->nodeValue, $matches[0][1] + strlen($matches[0][0]));
+            if(!$data) {
+                continue;
+            }
+            $details_waypoints = explode('<br />', $data);
+            array_pop($details_waypoints);
+            $details_waypoints = array_chunk($details_waypoints, 3);
+
+            $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
+            $nodes = $finder->query("//div[@id='".$gccode."']/div[@class='cacheWaypoints']");
+            $frag = $dom->createDocumentFragment();
+            $frag->appendXML('<p>Waypoints</p>'."\n");
+
+            foreach($nodes as $node) {
+                $node->appendChild($frag);
+                foreach($details_waypoints as $item) {
+                    $title = preg_replace('/ GC[\w]+/', ' ', $item[0]);
+                    $coordinates = strpos($item[1], 'N/S') === 0 ? '' : ' - ' . $item[1];
+                    $comment = $item[2];
+                    $frag = $dom->createDocumentFragment();
+                    $frag->appendXML('<p><strong>'.$title . $coordinates . '</strong><br />' . $comment . "</p>\n");
+                    $node->appendChild($frag);
                 }
             }
         }

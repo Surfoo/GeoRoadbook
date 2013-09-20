@@ -81,7 +81,7 @@ h1 img, .finder_name img {
 }
 
 .cacheLogs {
-    margin-bottom: 1mm;
+    margin-bottom: 2mm;
 }
 .cacheLogs img {
     margin: 1mm;
@@ -111,7 +111,8 @@ h1 img, .finder_name img {
 
 .cacheHint p:first-child,
 .cacheSpoilers p:first-child,
-.cacheLogs p:first-child {
+.cacheLogs p:first-child,
+.cacheWaypoints p:first-child {
     font-size: 12pt;
     font-weight: bold;
     border-bottom: 1pt solid black;
@@ -128,15 +129,18 @@ h1 img, .finder_name img {
     height: auto;
 }
 
-.waypoint {
+.cacheWaypoints {
+    margin-bottom: 2mm;
+}
+
+.cacheWaypoints p:not(first-child) {
     margin: 0;
     padding: 0.5mm;
     border-bottom: 1px solid gray;
 }
-.waypoint:nth-child(even) {
+.cacheWaypoints p:not(first-child):nth-child(even) {
     background-color: #efefef;
 }
-
 /* Table of Content */
 #tocTitle {
     text-align: center;
