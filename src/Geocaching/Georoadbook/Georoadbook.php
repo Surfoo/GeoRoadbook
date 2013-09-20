@@ -332,7 +332,11 @@ class Georoadbook
 
         $this->cleanHtml();
 
-        $this->clearWaypoints();
+        // Remove comments
+        $this->html = preg_replace('#<!--.*-->#msU', '', $this->html);
+
+        // Remove waypoints
+        $this->html = preg_replace('#<p>Additional [Hidden\s]+?Waypoints</p>.*(</div>)#msU', '$1', $this->html);
     }
 
     /**
@@ -352,15 +356,6 @@ class Georoadbook
             $tidy->cleanRepair();
             $this->html = $tidy;
         }
-    }
-
-    /**
-     * clearWaypoints
-     * @return void
-     */
-    protected function clearWaypoints()
-    {
-        $this->html = preg_replace('#<p>Additional [Hidden ]?Waypoints</p>.*(</div>)#msU', '$1', $this->html);
     }
 
     /**
@@ -513,7 +508,7 @@ class Georoadbook
                 continue;
             }
 
-            if(!preg_match('#<p>Additional [Hidden ]?Waypoints</p>#i', $long_description->item(0)->nodeValue, $matches, PREG_OFFSET_CAPTURE)) {
+            if(!preg_match('#<p>Additional [Hidden\s]+?Waypoints</p>#i', $long_description->item(0)->nodeValue, $matches, PREG_OFFSET_CAPTURE)) {
                 continue;
             }
 
@@ -534,7 +529,7 @@ class Georoadbook
                 $node->appendChild($frag);
                 foreach($details_waypoints as $item) {
                     $title = preg_replace('/ GC[\w]+/', ' ', $item[0]);
-                    $coordinates = strpos($item[1], 'N/S') === 0 ? '' : ' - ' . $item[1];
+                    $coordinates = strpos($item[1], 'N/S') === 0 ? '' : ' - ' . trim(html_entity_decode($item[1]));
                     $comment = $item[2];
                     $frag = $dom->createDocumentFragment();
                     $frag->appendXML('<p><strong>'.$title . $coordinates . '</strong><br />' . $comment . "</p>\n");
