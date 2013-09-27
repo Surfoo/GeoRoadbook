@@ -560,6 +560,7 @@ class Georoadbook
                 }
                 if(in_array($char, array(']'))) {
                     $encode = true;
+                    continue;
                 }
                 if($encode) {
                     $char = str_rot13($char);
