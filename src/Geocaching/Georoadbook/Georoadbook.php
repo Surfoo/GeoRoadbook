@@ -551,7 +551,21 @@ class Georoadbook
         $finder = new \DomXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheHintContent ')]");
         foreach ($nodes as $node) {
-            $node->nodeValue = str_rot13($node->textContent);
+            $chars = str_split($node->textContent);
+            $encode = true;
+            foreach($chars as &$char) {
+                if(in_array($char, array('['))) {
+                    $encode = false;
+                    continue;
+                }
+                if(in_array($char, array(']'))) {
+                    $encode = true;
+                }
+                if($encode) {
+                    $char = str_rot13($char);
+                }
+            }
+            $node->nodeValue = implode('', $chars);
         }
         $this->html = $dom->saveHtml();
     }
