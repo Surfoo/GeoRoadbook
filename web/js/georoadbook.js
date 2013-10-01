@@ -1,25 +1,163 @@
-$().ready(function() {
+(function() {
 
-    // Config TinyMCE 4
-    tinymce.init({
-        selector: "#editable",
-        language: language,
-        height: "297mm",
-        plugins: [
-            "advlist autolink link image lists charmap hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking",
-            "table contextmenu paste textcolor"],
-        content_css: "../design/roadbook.css",
-        menubar : false,
-        toolbar1: "undo redo | formatselect fontselect fontsizeselect | forecolor backcolor | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify",
-        toolbar2: "bullist numlist outdent indent | link image hr table subscript superscript charmap pagebreak | code fullscreen",
-        browser_spellcheck: true,
-        pagebreak_separator: "<p class=\"pagebreak\"><!-- pagebreak --></p>",
-        width: "210mm",
-        height: "297mm",
-        schema: "html4",
-        apply_source_formatting: true,
+    $('#spoilers4gpx').click(function(event) {
+        event.preventDefault();
+        window.open(this.href);
     });
+
+    /**** Upload *****/
+    var content_gpx = null;
+
+    $('#hint').change(function() {
+        if ($('#hint').is(':checked')) {
+            $('#hint_options').show();
+        } else {
+            $('#hint_options').hide();
+        }
+    });
+
+    $('#sort').change(function() {
+        if ($('#sort').is(':checked')) {
+            $('#sort_options').show();
+        } else {
+            $('#sort_options').hide();
+        }
+    });
+
+    $('.option-help').tooltip({
+        placement: 'right'
+    });
+
+    // file selection
+    if (window.File && window.FileList && window.FileReader) {
+
+        $('#gpx').change(function(e) {
+
+            // fetch FileList object
+            var files = e.target.files || e.dataTransfer.files;
+
+            // process all File objects
+            for (var i = 0, f; f = files[i]; i++) {
+                if (f.size > 8 * 1024 * 1024) {
+                    $('#error').html('<p>"' + f.name + '" is too big, 8Mo Max.<p>').show();
+                    return false;
+                }
+                ParseFile(f);
+            }
+        });
+    } else {
+        $('#error').html('<p>Your browser doesn\'t support some features. Please, upgrade it.<br /> ' +
+            'If you are using Internet Explorer 9, you must install the version 10 at least.</p>').show();
+    }
+
+    // output file information
+
+    function ParseFile(file) {
+        var reader = new FileReader();
+        var fileinfo = [{
+            'name': file.name,
+            'size': file.size
+        }];
+
+        reader.onload = function(e) {
+            if (window.DOMParser) {
+                parser = new DOMParser();
+                doc = parser.parseFromString(e.target.result, 'text/xml');
+            } else {
+                doc = new ActiveXObject('Microsoft.XMLDOM');
+                doc.async = 'false';
+                doc.loadXML(e.target.result);
+            }
+
+            doc = parser.parseFromString(e.target.result, 'application/xml');
+            if (!doc || doc.documentElement.tagName != 'gpx') {
+                content_gpx = null;
+                $('#error').html('<p>"' + fileinfo[0]['name'] + '" in an invalid file.<p>').show().delay(3000).fadeOut();
+                return false;
+            }
+            content_gpx = e.target.result;
+        },
+        reader.readAsText(file, 'UTF-8');
+    }
+
+    $('input[type="submit"]').click(function() {
+        if (!content_gpx) {
+            $('#error').html('<p>GPX file is missing.</p>').show().delay(3000).fadeOut();
+            return false;
+        }
+        var btn = $(this);
+        btn.button('loading');
+
+        $.ajax({
+            url: "upload.php",
+            type: "POST",
+            data: {
+                gpx: content_gpx,
+                locale: $('#locale').attr('selected', 'selected').val(),
+                toc: !! $('input[name="toc"]:checked').val(),
+                note: !! $('input[name="note"]:checked').val(),
+                short_desc: !! $('input[name="short_desc"]:checked').val(),
+                long_desc: !! $('input[name="long_desc"]:checked').val(),
+                hint: !! $('input[name="hint"]:checked').val(),
+                hint_encrypted: !! parseInt($('input[name="hint_encrypted"]:checked').val()),
+                waypoints: !! $('input[name="waypoints"]:checked').val(),
+                spoilers: !! $('input[name="spoilers"]:checked').val(),
+                logs: !! $('input[name="logs"]:checked').val(),
+                sort_by: $('input[name="sort_by"]:checked').val(),
+                pagebreak: !! $('input[name="pagebreak"]:checked').val(),
+                images: !! $('input[name="images"]:checked').val()
+            },
+            success: function(data) {
+                if (!data || data === "" || typeof data !== 'object') {
+                    return
+                }
+                if (data && !data.success) {
+                    $('#error').html('<p>' + data.message + '</p>').show();
+                    btn.button('reset');
+                    return
+                }
+                $(location).attr('href', data.redirect);
+            },
+            failure: function() {}
+        });
+        return false;
+    });
+
+    $('a[data-dismiss="fileupload"]').click(function() {
+        content_gpx = null;
+    });
+
+    /**** Roadbook *****/
+    if (document.getElementById('editable') !== null) {
+        $().ready(function() {
+            // Config TinyMCE 4
+            tinymce.init({
+                selector: "#editable",
+                language: language,
+                height: "297mm",
+                plugins: [
+                    "advlist autolink link image lists charmap hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking",
+                    "table contextmenu paste textcolor"
+                ],
+                content_css: "../design/roadbook.css",
+                menubar: false,
+                toolbar1: "undo redo | formatselect fontselect fontsizeselect | forecolor backcolor | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify",
+                toolbar2: "bullist numlist outdent indent | link image hr table subscript superscript charmap pagebreak | code fullscreen",
+                browser_spellcheck: true,
+                pagebreak_separator: "<p class=\"pagebreak\"><!-- pagebreak --></p>",
+                width: "210mm",
+                height: "297mm",
+                schema: "html4",
+                apply_source_formatting: true,
+                setup: function(editor) {
+                    editor.on('change', function() {
+                        $('#btn_save').removeClass('disabled').prop('disabled', false);
+                    });
+                }
+            });
+        });
+    }
 
     $("#btn_delete").button().click(function() {
         if ($(this).hasClass('disabled')) {
@@ -41,10 +179,7 @@ $().ready(function() {
             success: function(data) {
                 ed.setProgressState(0);
 
-                if (!data || data === "") {
-                    return;
-                }
-                if (typeof data !== 'object') {
+                if (!data || data === "" || typeof data !== 'object') {
                     return;
                 }
                 if (data && data.success) {
@@ -86,10 +221,7 @@ $().ready(function() {
         if ($(this).hasClass('disabled')) {
             return false;
         }
-        var btn = $(this);
-        btn.button('loading');
         saveHtml();
-        btn.button('reset');
     });
 
     $("#apply").click(function() {
@@ -110,17 +242,19 @@ $().ready(function() {
         $("#footer_text").prop('disabled', !$("#footer_text").prop("disabled"));
     });
 
-    function saveHtml() {
+    var saveHtml = function() {
         var ed = tinyMCE.get('editable');
         ed.setProgressState(1);
         $.ajax({
             url: "/save.php",
             type: "POST",
-            async: false,
             datatype: 'json',
             data: {
                 id: roadbook_id,
                 content: ed.getContent()
+            },
+            beforeSend: function() {
+                $('#btn_save').button('loading');
             },
             success: function(data) {
                 if (data && data.success) {
@@ -129,13 +263,17 @@ $().ready(function() {
                     ed.isNotDirty = true;
                 }
             },
+            complete: function() {
+                $('#btn_save').addClass('disabled').prop('disabled', true).data('loading-text', 'Save').button('loading');
+            },
             failure: function() {}
         });
         ed.setProgressState(0);
-    }
+    };
 
-    function _ajax(real_export) {
-        tinymce.activeEditor.setProgressState(true);
+    var _ajax = function(real_export) {
+        var ed = tinyMCE.get('editable');
+        ed.setProgressState(1);
 
         $('#btn_save').addClass('disabled');
         $('#btn_export').addClass('disabled');
@@ -164,7 +302,7 @@ $().ready(function() {
             },
 
             success: function(data) {
-                tinymce.activeEditor.setProgressState(false);
+                ed.setProgressState(0);
 
                 $('#btn_save').removeClass('disabled');
                 $('#btn_export').removeClass('disabled');
@@ -186,7 +324,7 @@ $().ready(function() {
                 }
 
                 if (data && data.success) {
-                    tinymce.activeEditor.setProgressState(false);
+                    ed.setProgressState(0);
                     $('#dl_pdf').show();
                     $('#download_link').html(data.link + ' (' + data.size + 'Mo)');
                     $('#ui_exported').modal('show');
@@ -195,7 +333,7 @@ $().ready(function() {
                 }
             },
             failure: function() {
-                tinymce.activeEditor.setProgressState(false);
+                ed.setProgressState(0);
 
                 $('#btn_save').removeClass('disabled');
                 $('#btn_export').removeClass('disabled');
@@ -209,6 +347,6 @@ $().ready(function() {
                 alert('Error in exportation.');
             }
         });
-    }
+    };
 
-});
+}())

@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
-        <title>GeoRoadbook, create your geocaching roadbook</title>
+        <title>GeoRoadbook, create your geocaching roadbook ready-to-print</title>
         <meta name="description" content="GeoRoadbook is a free and open source web app to create your geocaching roadbook ready-to-print from your gpx file (Pocket queries, GSAK, GCTour, etc.)">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
@@ -89,8 +89,8 @@
                                             <label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label>
                                         </div>
 
-                                        {#<label for="spoilers" class="checkbox inline"><input type="checkbox" name="spoilers" id="spoilers" value="1" /> Spoilers <small><a href="http://spoilers4gpx.vaguelibre.net/#help" onclick="window.open(this.href);return false;">by Spoilers4gpx</a></small></label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display spoilers included by Spoilers4gpx. More infos on the link."></i><br />#}
+                                        <label for="spoilers" class="checkbox inline"><input type="checkbox" name="spoilers" id="spoilers" value="1" /> Spoilers <small><a href="http://spoilers4gpx.vaguelibre.net/#help" id="spoilers4gpx">by Spoilers4gpx</a></small></label>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display spoilers included by Spoilers4gpx. More infos on the link."></i><br />
 
                                         <label for="waypoints" class="checkbox inline"><input type="checkbox" name="waypoints" id="waypoints" value="1" /> Waypoints</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display additionnals waypoints like parking, stage, questions, etc."></i><br />
@@ -118,6 +118,6 @@
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{{ constant('JQUERY_VERSION') }}/jquery.min.js"></script>
         <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ constant('BOOTSTRAP_VERSION') }}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/bootstrap/js/bootstrap-fileupload.js"></script>
-        <script type="text/javascript" src="/js/upload.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
+        <script type="text/javascript" src="/js/georoadbook.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
     </body>
 </html>
