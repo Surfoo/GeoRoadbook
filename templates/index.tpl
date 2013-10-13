@@ -99,7 +99,7 @@
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display all logs from your GPX file."></i><br />
 
                                         <label for="pagebreak" class="checkbox inline"><input type="checkbox" name="pagebreak" id="pagebreak" value="1" /> Page break</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Insert a page break between each caches."></i>
+                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Insert a page break between each cache."></i>
                                     </div>
                                 </div>
                             </div>

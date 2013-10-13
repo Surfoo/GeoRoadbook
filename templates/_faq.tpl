@@ -21,7 +21,7 @@
 
             <dt>Why I can't see spoilers in the roadbook?</dt>
             <dd>Unfortunately, the links to spoilers aren't included in the gpx file, maybe one day Groundspeak will fix this, who knows?<br />
-                If you want spoilers in the roadbook, you should insert them manually with the image button.</dd>
+                If you want spoilers in the roadbook, you should insert them manually with the image button or use my web app <a href="http://spoilers4gpx.vaguelibre.net/" onclick="window.open(this.href);return false;">Spoilers4gpx</a>.</dd>
 
             <dt>Why is pagination missing in the table of contents?</dt>
             <dd>WebKit, the visual rendering engine used, doesn't implement this feature yet. You should make the pagination manually according to a first exportation in PDF.<br />
