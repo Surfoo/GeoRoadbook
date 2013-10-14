@@ -9,7 +9,7 @@ if (!array_key_exists('roadbook', $_GET)) {
 
 Twig_Autoloader::register();
 $loader = new Twig_Loader_Filesystem(TEMPLATE_DIR);
-$twig   = new Twig_Environment($loader, array('debug' => false, 'cache' => TEMPLATE_COMPILED_DIR));
+$twig   = new Twig_Environment($loader, array('debug' => false, 'cache' => false));
 
 $rdbk = new Georoadbook($_GET['roadbook']);
 

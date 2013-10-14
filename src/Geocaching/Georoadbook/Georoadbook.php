@@ -377,13 +377,22 @@ class Georoadbook
     {
         $dom = new \DomDocument();
         $dom->loadHTML($this->html);
+
         $finder = new \DomXPath($dom);
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheTitle ')]");
+
+        $nodes  = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheTitle ')]");
+        $gccodeNode = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheGCode ')]");
+
         $toc_content = array();
         foreach ($nodes as $node) {
-            $toc_content[] = array('icon'  => $node->firstChild->getAttribute('src'),
-                                   'title' => $node->textContent);
+            $toc_content[] = array('icon'   => $node->firstChild->getAttribute('src'),
+                                   'gccode' => false,
+                                   'title'  => $node->textContent);
         }
+        foreach ($gccodeNode as $key => $node) {
+            $toc_content[$key]['gccode'] = $node->textContent;
+        }
+
         if (!empty($toc_content)) {
             $toc = new \DomDocument();
             $toc->load(ROOT . '/locales/' . sprintf('%s.%s', $this->locale, 'xml'));
@@ -394,7 +403,7 @@ class Georoadbook
 
             \Twig_Autoloader::register();
             $loader = new \Twig_Loader_Filesystem(TEMPLATE_DIR);
-            $twig   = new \Twig_Environment($loader, array('cache' => TEMPLATE_COMPILED_DIR));
+            $twig   = new \Twig_Environment($loader, array('cache' => false));
 
             $toc_html = $twig->render('toc.tpl', array('i18n'    => $toc_i18n,
                                                        'content' => $toc_content));

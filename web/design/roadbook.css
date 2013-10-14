@@ -180,7 +180,7 @@ h1 img, .finder_name img {
 }
 
 #tocHeadNumber, #tocHeadName, #tocHeadFound, #tocHeadDnf,
-.tocNumber, .tocName, .tocFound, .tocDnf, .tocPage {
+.tocNumber, .tocGccode, .tocName, .tocFound, .tocDnf, .tocPage {
     border-right: 1px solid #000;
 }
 .tocNumber {
@@ -192,6 +192,10 @@ h1 img, .finder_name img {
 .tocIcon img {
     width: 16px;
     height: 16px;
+}
+.tocGccode {
+    width: 2cm;
+    font-weight: bold;
 }
 .tocPage {
     text-align: right;
