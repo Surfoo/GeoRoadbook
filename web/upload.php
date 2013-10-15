@@ -58,7 +58,7 @@ $options = array('display_note'       => $display_note,
                  'sort_by'            => $sort_by,
                  'pagebreak'          => $pagebreak,
                  );
-$rdbk->convertXmlToHtml($_POST['locale'], $options);
+$rdbk->convertXmlToHtml($_POST['locale'], $options)->cleanHtml();
 
 // Table of content
 if ($display_toc) {

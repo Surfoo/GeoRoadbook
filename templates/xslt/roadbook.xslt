@@ -43,14 +43,14 @@
                 </xsl:choose>
               </xsl:if>
 
-              <div class="cache" id="{gpx:name}">
+              <div class="cache" data-cache-id="{gpx:name}">
 
                 <!-- variables -->
                 <!-- Latitude conversion -->
                 <xsl:variable name="latitude_text">
                     <xsl:choose>
-                        <xsl:when test="number(substring-before(@lat, '.' )) &lt; 0"> S </xsl:when>
-                        <xsl:when test="number(substring-before(@lat, '.' )) &gt; 0"> N </xsl:when>
+                        <xsl:when test="number(substring-before(@lat, '.' )) &lt; 0">S</xsl:when>
+                        <xsl:when test="number(substring-before(@lat, '.' )) &gt; 0">N</xsl:when>
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="latitude_degrees">
@@ -63,8 +63,8 @@
                 <!-- Longitude conversion -->
                 <xsl:variable name="longitude_text">
                     <xsl:choose>
-                        <xsl:when test="number(substring-before(@lon, '.' )) &lt;= 0"> W </xsl:when>
-                        <xsl:when test="number(substring-before(@lon, '.' )) &gt; 0"> E </xsl:when>
+                        <xsl:when test="number(substring-before(@lon, '.' )) &lt;= 0">W</xsl:when>
+                        <xsl:when test="number(substring-before(@lon, '.' )) &gt; 0">E</xsl:when>
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="longitude_degrees">
@@ -74,8 +74,8 @@
                     </xsl:choose>
                 </xsl:variable>
 
-                <xsl:variable name="lat" select="concat($latitude_text, format-number($latitude_degrees, '00'),'° ', substring(format-number(number(concat('.', substring-after(@lat, '.' )) * 60), '00.000'), 0, 7))" />
-                <xsl:variable name="lon" select="concat($longitude_text, format-number($longitude_degrees, '000'),'° ', substring(format-number(number(concat('.', substring-after(@lon, '.' )) * 60), '00.000'), 0, 7))" />
+                <xsl:variable name="lat" select="concat($latitude_text, ' ', format-number($latitude_degrees, '00'),'° ', substring(format-number(number(concat('.', substring-after(@lat, '.' )) * 60), '00.000'), 0, 7))" />
+                <xsl:variable name="lon" select="concat($longitude_text, ' ', format-number($longitude_degrees, '000'),'° ', substring(format-number(number(concat('.', substring-after(@lon, '.' )) * 60), '00.000'), 0, 7))" />
 
                 <xsl:variable name="hidden_date">
                   <xsl:variable name="year" select="substring(gpx:time,1,4)" />

@@ -310,7 +310,7 @@ class Georoadbook
      * convertXmlToHtml
      * @param  string $locale
      * @param  array  $options
-     * @return void
+     * @return object $this
      */
     public function convertXmlToHtml($locale, $options)
     {
@@ -330,32 +330,34 @@ class Georoadbook
         $this->html = preg_replace('/<\?xml[^>]*\?>/i', '', $this->html);
         $this->html = htmlspecialchars_decode($this->html);
 
-        $this->cleanHtml();
-
         // Remove comments
         $this->html = preg_replace('#<!--.*-->#msU', '', $this->html);
 
         // Remove waypoints
         $this->html = preg_replace('#<p>Additional [Hidden\s]+?Waypoints</p>.*(</div>)#msU', '$1', $this->html);
+
+        return $this;
     }
 
     /**
      * cleanHtml
      * @return void
      */
-    protected function cleanHtml()
+    public function cleanHtml()
     {
         // http://tidy.sourceforge.net/docs/quickref.html
-        if (!is_null($this->html)) {
-            $config = array(
-                   'doctype'        => 'html',
-                   'output-xhtml'   => true,
-                   'wrap'           => 0);
-            $tidy = new \tidy;
-            $tidy->parseString($this->html, $config, 'utf8');
-            $tidy->cleanRepair();
-            $this->html = $tidy;
+        if (is_null($this->html)) {
+            return false;
         }
+
+        $config = array('doctype'      => 'html',
+                        'output-xhtml' => true,
+                        'wrap'         => 0);
+        $tidy = new \tidy;
+        $tidy->parseString($this->html, $config, 'utf8');
+        $tidy->cleanRepair();
+        //echo $tidy->errorBuffer . "\n";
+        $this->html = $tidy;
     }
 
     /**
@@ -395,7 +397,7 @@ class Georoadbook
 
         if (!empty($toc_content)) {
             $toc = new \DomDocument();
-            $toc->load(ROOT . '/locales/' . sprintf('%s.%s', $this->locale, 'xml'));
+            $toc->load(ROOT . '/locales/' . sprintf('%s.xml', $this->locale));
             $xPath = new \DOMXPath($toc);
             $toc_i18n['title'] = $xPath->query("text[@id='toc_title']")->item(0)->nodeValue;
             $toc_i18n['name']  = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
@@ -481,7 +483,7 @@ class Georoadbook
             if(preg_match_all('/<!-- Spoiler4Gpx \[([^]]*)\]\(([^)]*)\) -->/', $long_description->item(0)->nodeValue, $spoilers, PREG_SET_ORDER)) {
                 $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
                 foreach ($spoilers as $spoiler) {
-                    $nodes = $finder->query("//div[@id='".$gccode."']/div[@class='cacheSpoilers']");
+                    $nodes = $finder->query("//div[@data-cache-id='".$gccode."']/div[@class='cacheSpoilers']");
                     if(empty($nodes->length)) {
                         continue;
                     }
@@ -490,7 +492,7 @@ class Georoadbook
                     foreach($nodes as $node) {
                         $node->appendChild($frag);
                         $frag = $dom->createDocumentFragment();
-                        $frag->appendXML('<img src="' . $spoiler[2] . '" alt="' . $spoiler[1] . '"/><br />'."\n");
+                        $frag->appendXML('<![CDATA[<img src="' . $spoiler[2] . '" alt="' . $spoiler[1] . '"/><br />'."\n]]>");
                         $node->appendChild($frag);
                     }
                 }
@@ -525,25 +527,24 @@ class Georoadbook
             if(!$data) {
                 continue;
             }
+
             $details_waypoints = explode('<br />', $data);
             array_pop($details_waypoints);
-            $details_waypoints = array_chunk($details_waypoints, 3);
+            $details_waypoints = array_slice($details_waypoints, 0, 3);
 
             $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
-            $nodes = $finder->query("//div[@id='".$gccode."']/div[@class='cacheWaypoints']");
+            $nodes = $finder->query("//div[@data-cache-id='".$gccode."']/div[@class='cacheWaypoints']");
             $frag = $dom->createDocumentFragment();
             $frag->appendXML('<p>Waypoints</p>'."\n");
 
             foreach($nodes as $node) {
                 $node->appendChild($frag);
-                foreach($details_waypoints as $item) {
-                    $title = preg_replace('/ GC[\w]+/', ' ', $item[0]);
-                    $coordinates = strpos($item[1], 'N/S') === 0 ? '' : ' - ' . trim(html_entity_decode($item[1]));
-                    $comment = $item[2];
-                    $frag = $dom->createDocumentFragment();
-                    $frag->appendXML('<p><strong>'.$title . $coordinates . '</strong><br />' . $comment . "</p>\n");
-                    $node->appendChild($frag);
-                }
+                $title = preg_replace('/ GC[\w]+/', ' ', $details_waypoints[0]);
+                $coordinates = strpos($details_waypoints[1], 'N/S') === 0 ? '' : ' - ' . trim(html_entity_decode($details_waypoints[1]));
+                $comment = $details_waypoints[2];
+                $frag = $dom->createDocumentFragment();
+                $frag->appendXML('<![CDATA[<p><strong> ' . $title . $coordinates . '</strong><br />' . $comment . "</p>\n]]>");
+                $node->appendChild($frag);
             }
         }
         $this->html = $dom->saveHtml();
