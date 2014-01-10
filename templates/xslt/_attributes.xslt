@@ -47,7 +47,7 @@
             <li><img src="../img/attributes/scenic-no.gif" alt="" /></li>
         </xsl:when>
         <xsl:when test="@id = '9' and @inc = '1'">
-            <li><img src="../img/attributes/hiking-yes" alt="" /></li>
+            <li><img src="../img/attributes/hiking-yes.gif" alt="" /></li>
         </xsl:when>
         <xsl:when test="@id = '9' and @inc = '0'">
             <li><img src="../img/attributes/hiking-no.gif" alt="" /></li>
@@ -128,7 +128,7 @@
             <li><img src="../img/attributes/water-no.gif" alt="" /></li>
         </xsl:when>
         <xsl:when test="@id = '28' and @inc = '1'">
-            <li><img src="../img/attributes/restrooms-yes" alt="" /></li>
+            <li><img src="../img/attributes/restrooms-yes.gif" alt="" /></li>
         </xsl:when>
         <xsl:when test="@id = '28' and @inc = '0'">
             <li><img src="../img/attributes/restrooms-no.gif" alt="" /></li>
