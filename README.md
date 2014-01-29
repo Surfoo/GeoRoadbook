@@ -3,12 +3,12 @@ GeoRoadbook is a web app to create your geocaching roadbook ready-to-print from 
 It's hosted here : [http://georoadbook.vaguelibre.net/](http://georoadbook.vaguelibre.net/)
 
 Works with:
-* [jQuery](http://jquery.com/) 2.0.3
-* [TinyMCE](http://www.tinymce.com/) 4.0.3
-* [PhantomJS](http://phantomjs.org/) 1.9.2
-* [Bootstrap](http://twitter.github.io/bootstrap/) 2.3.2
-* [jBBCode](http://jbbcode.com/) 1.2.1
-* [Twig](http://twig.sensiolabs.org/) 1.13.2
+* [jQuery](http://jquery.com/)
+* [TinyMCE](http://www.tinymce.com/)
+* [PhantomJS](http://phantomjs.org/)
+* [Bootstrap](http://twitter.github.io/bootstrap/)
+* [jBBCode](http://jbbcode.com/)
+* [Twig](http://twig.sensiolabs.org/)
 * php5-xsl
 * php5-tidy
 * ttf-mscorefonts-installer
