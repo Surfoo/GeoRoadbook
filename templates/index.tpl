@@ -81,7 +81,7 @@
                                         <label for="long_desc" class="checkbox inline"><input type="checkbox" name="long_desc" id="long_desc" value="1" /> Long description</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the long description from caches."></i><br />
 
-                                        <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Additionnal hints</label>
+                                        <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Additional hints</label>
                                         <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the cache hints. Decrypted by default."></i><br />
 
                                         <div id="hint_options" class="hide">
