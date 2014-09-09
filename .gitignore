@@ -4,6 +4,8 @@
 *.sublime-project
 *.sublime-workspace
 TODO
+!web/roadbook/.gitkeep
+!web/roadbook/pdf/.gitkeep
 web/roadbook/*.*
-web/roadbook/pdf/*
+web/roadbook/pdf/*.*
 vendor

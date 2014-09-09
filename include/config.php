@@ -11,9 +11,9 @@ define('ICON_CACHE_DIR', '32x32');
 
 define('MAX_RETENTION', 3600*24*30);
 
-define('JQUERY_VERSION', '2.0.3');
+define('JQUERY_VERSION', '2.1.1');
 define('BOOTSTRAP_VERSION', '2.3.2');
-define('SUFFIX_CSS_JS', 20140128);
+define('SUFFIX_CSS_JS', 20140910);
 
 date_default_timezone_set('Europe/Paris');
 
@@ -32,7 +32,7 @@ $locales = array('cs' => 'Čeština',
                  'th' => 'ภาษาไทย');
 
 //TinyMCE
-$available_languages = array('cs', 'da', 'de', 'en', 'es', 'fr', 'it', 'nl');
+$available_languages = array('cs', 'da', 'de', 'en_GB', 'es', 'fr_FR', 'it', 'nl');
 
 $available_sorts = array('none', 'name', 'owner', 'difficulty', 'terrain');
 
