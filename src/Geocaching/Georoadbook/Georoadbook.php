@@ -540,7 +540,10 @@ class Georoadbook
 
             foreach($details_waypoints as $wpt_data) {
                 $title       = preg_replace('/ GC[\w]+/', ' ', $wpt_data[0]);
-                $coordinates = strpos($wpt_data[1], 'N/S') === 0 ? '' : ' - ' . trim(html_entity_decode($wpt_data[1]));
+                $coordinates = '';
+                if($wpt_data[1] !== '' && strpos($wpt_data[1], 'N/S') !== 0) {
+                    $coordinates = ' - ' . trim(html_entity_decode($wpt_data[1]));
+                }
                 $comment     = $wpt_data[2];
 
                 $frag_wpt = $dom->createDocumentFragment();
