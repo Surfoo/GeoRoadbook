@@ -6,7 +6,7 @@
         <meta name="description" content="GeoRoadbook is a free and open source web app to create your geocaching roadbook ready-to-print from your gpx file (Pocket queries, GSAK, GCTour, etc.)">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ constant('BOOTSTRAP_VERSION') }}/css/bootstrap.min.css" media="all" />
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css?{{ constant('SUFFIX_CSS_JS') }}" media="all" />
         <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="all" />
         <link rel="stylesheet" href="/design/design.css?{{ constant('SUFFIX_CSS_JS') }}" media="all" />
     </head>
@@ -115,8 +115,8 @@
 
         {% include '_footer.tpl' %}
 
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/{{ constant('JQUERY_VERSION') }}/jquery.min.js"></script>
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/{{ constant('BOOTSTRAP_VERSION') }}/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
+        <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
         <script type="text/javascript" src="/bootstrap/js/bootstrap-fileupload.js"></script>
         <script type="text/javascript" src="/js/georoadbook.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
     </body>

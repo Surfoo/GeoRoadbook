@@ -20,7 +20,6 @@
     "require": {
         "php": ">=5.3",
         "jbbcode/jbbcode": "1.2.*",
-        "twitter/bootstrap": "2.3.*",
         "twig/twig": "1.*",
         "tinymce/tinymce": "4.1.*"
     }
