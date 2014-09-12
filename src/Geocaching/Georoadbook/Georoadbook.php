@@ -533,10 +533,13 @@ class Georoadbook
             $details_waypoints = array_chunk($details_waypoints, 3);
 
             $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
-            $nodes  = $finder->query("//div[@data-cache-id='".$gccode."']/div[@class='cacheWaypoints']");
+            $nodes  = $finder->query("//div[@data-cache-id='".$gccode."']//*[@class='cacheWaypoints']");
             $frag   = $dom->createDocumentFragment();
             $frag->appendXML('<p>Waypoints</p>'."\n");
-            $nodes->item(0)->appendChild($frag);
+
+            if(!empty($nodes->length)) {
+                $nodes->item(0)->appendChild($frag);
+            }
 
             foreach($details_waypoints as $wpt_data) {
                 $title       = preg_replace('/ GC[\w]+/', ' ', $wpt_data[0]);
@@ -548,7 +551,10 @@ class Georoadbook
 
                 $frag_wpt = $dom->createDocumentFragment();
                 $frag_wpt->appendXML('<![CDATA[<p><strong>' . $title . $coordinates . '</strong><br />' . $comment . "</p>\n]]>");
-                $nodes->item(0)->appendChild($frag_wpt);
+
+                if(!empty($nodes->length)) {
+                    $nodes->item(0)->appendChild($frag_wpt);
+                }
             }
         }
         $this->html = $dom->saveHtml();
