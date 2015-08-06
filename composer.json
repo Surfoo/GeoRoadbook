@@ -21,6 +21,6 @@
         "php": ">=5.3",
         "jbbcode/jbbcode": "1.2.*",
         "twig/twig": "1.*",
-        "tinymce/tinymce": "4.1.*"
+        "tinymce/tinymce": "4.*"
     }
 }
