@@ -87,7 +87,7 @@ if($display_waypoints) {
 
 // Parse logs
 if ($display_logs) {
-    $rdbk->parseBBcode();
+    $rdbk->parseMarkdown()->parseBBcode();
 }
 
 $rdbk->getOnlyBody();
