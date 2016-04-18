@@ -1,6 +1,4 @@
 <?php
-error_reporting(-1);
-ini_set('display_errors','1');
 
 define('ROOT',          dirname(__DIR__));
 define('ROADBOOKS_DIR', ROOT . '/web/roadbook/');
