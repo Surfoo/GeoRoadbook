@@ -1,10 +1,9 @@
 {
-    "name": "Geocaching/Georoadbook",
-    "license": "Apache-2.0",
+    "name": "surfoo/georoadbook",
+    "license": "MIT",
     "type": "project",
     "keywords": ["geocaching", "georoadbook", "geocache", "roadbook"],
     "homepage": "http://georoadbook.vaguelibre.net/",
-    "version": "1.0",
     "time": "2013-09-13",
     "description": "Create your geocaching roadbook ready-to-print from your gpx file.",
     "authors": [{
@@ -21,6 +20,7 @@
         "php": ">=5.3",
         "jbbcode/jbbcode": "1.2.*",
         "twig/twig": "1.*",
-        "tinymce/tinymce": "4.*"
+        "tinymce/tinymce": "4.*",
+        "cebe/markdown": "~1.0"
     }
 }

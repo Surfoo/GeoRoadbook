@@ -261,7 +261,7 @@ class Georoadbook
         $zip->addFromString('roadbook/' . basename($this->html_file), $twig->render('raw.tpl', $twig_vars));
 
         $zip->addFile(ROOT . '/web/design/roadbook.css', 'design/roadbook.css');
-        recurse_zip(ROOT . '/web/img', $zip);
+        $this->recurse_zip(ROOT . '/web/img', $zip);
         $zip->close();
 
         header('Content-Description: File Transfer');
@@ -277,6 +277,27 @@ class Georoadbook
         readfile($filename_zip);
         unlink($filename_zip);
         exit(0);
+    }
+
+    /**
+     * recurseZip
+     * @param  string     $src
+     * @param  ZipArchive &$zip
+     * @return void
+     */
+    private function recurseZip($src, ZipArchive &$zip)
+    {
+        $dir = opendir($src);
+        while (false !== ($file=readdir($dir))) {
+            if (($file != '.') && ($file != '..')) {
+                if (is_dir($src . '/' . $file)) {
+                    $this->recurseZip($src . '/' . $file, $zip);
+                } else {
+                    $zip->addFile($src . '/' . $file, substr($src . '/' . $file, strlen(dirname(__DIR__) . '/web/')));
+                }
+            }
+        }
+        closedir($dir);
     }
 
     /**
@@ -589,6 +610,33 @@ class Georoadbook
             $node->nodeValue = implode('', $chars);
         }
         $this->html = $dom->saveHtml();
+    }
+
+    /**
+     * parseMarkdown
+     * @return object
+     */
+    public function parseMarkdown()
+    {
+        $dom = new \DomDocument();
+        $dom->loadHTML($this->html);
+
+        $finder = new \DomXPath($dom);
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
+
+
+        $MdParser = new \cebe\markdown\Markdown();
+        foreach ($nodes as $node) {
+            $raw_log = $node->ownerDocument->saveHTML($node);
+            $raw_log = trim(str_replace(array('<td class="cacheLogText" colspan="2">', '</td>'), '', $raw_log));
+            $log = preg_replace('/<br>$/', '', $raw_log);
+            
+            $node->nodeValue = $MdParser->parse($log);
+        }
+
+        $this->html = htmlspecialchars_decode($dom->saveHtml());
+
+        return $this;
     }
 
     /**
