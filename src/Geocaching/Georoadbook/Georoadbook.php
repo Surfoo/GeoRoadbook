@@ -10,7 +10,7 @@
 
 class Georoadbook
 {
-    const ID_LENGTH = 16;
+    const ID_LENGTH = 7;
 
     public $id     = null;
 
