@@ -1,3 +1,5 @@
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/80fa5b35-6411-463d-9378-d23c7febdfc0/big.png)](https://insight.sensiolabs.com/projects/80fa5b35-6411-463d-9378-d23c7febdfc0)
+
 GeoRoadbook is a web app to create your geocaching roadbook ready-to-print from your gpx file (pocket query, gsak).
 
 It's hosted here : [http://georoadbook.vaguelibre.net/](http://georoadbook.vaguelibre.net/)
