@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "hash": "8e100e752c632fdfb7bc20f8e5653fd9",
+    "content-hash": "92bf4d01ca210218296939508274a4fb",
     "packages": [
         {
             "name": "jbbcode/jbbcode",
@@ -54,16 +55,16 @@
         },
         {
             "name": "tinymce/tinymce",
-            "version": "4.2.3",
+            "version": "4.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "1dac1eba2f84f52710b30c68ae2f571f739d01a2"
+                "reference": "ee747f1bc97ec8380e7fd8a1ce827be5e735a10b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/1dac1eba2f84f52710b30c68ae2f571f739d01a2",
-                "reference": "1dac1eba2f84f52710b30c68ae2f571f739d01a2",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/ee747f1bc97ec8380e7fd8a1ce827be5e735a10b",
+                "reference": "ee747f1bc97ec8380e7fd8a1ce827be5e735a10b",
                 "shasum": ""
             },
             "type": "component",
@@ -96,29 +97,33 @@
                 "tinymce",
                 "wysiwyg"
             ],
-            "time": "2015-07-30 06:56:12"
+            "time": "2016-04-12 13:26:22"
         },
         {
             "name": "twig/twig",
-            "version": "v1.19.0",
+            "version": "v1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "edbeaf43b0a606cdaadc32a11d2673614a377b90"
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/edbeaf43b0a606cdaadc32a11d2673614a377b90",
-                "reference": "edbeaf43b0a606cdaadc32a11d2673614a377b90",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.7"
             },
+            "require-dev": {
+                "symfony/debug": "~2.7",
+                "symfony/phpunit-bridge": "~2.7"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.19-dev"
+                    "dev-master": "1.24-dev"
                 }
             },
             "autoload": {
@@ -153,7 +158,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-07-31 13:45:26"
+            "time": "2016-01-25 21:22:18"
         }
     ],
     "packages-dev": [],
