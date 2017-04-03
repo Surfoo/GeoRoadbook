@@ -1,6 +1,5 @@
 *~
 *.swp
-*.gpx
 *.sublime-project
 *.sublime-workspace
 TODO
@@ -9,3 +8,4 @@ TODO
 web/roadbook/*.*
 web/roadbook/pdf/*.*
 vendor
+samples
