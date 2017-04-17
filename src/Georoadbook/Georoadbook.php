@@ -1,49 +1,57 @@
 <?php
+
 /**
- * Georoadbook Class
+ * Georoadbook Class.
  *
  * @author  Surfoo <surfooo@gmail.com>
+ *
  * @link    https://github.com/Surfoo/georoadbook
+ *
  * @license http://opensource.org/licenses/eclipse-2.0.php
- * @package georoadbook
  */
+
+namespace Georoadbook;
+
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Georoadbook
 {
+    protected $app = null;
+
     const ID_LENGTH = 7;
 
-    public $id     = null;
+    public $id = null;
 
-    public $gpx    = null;
+    public $gpx = null;
 
-    public $html   = null;
+    public $html = null;
 
     public $locale = null;
 
-    public $debug  = false;
-
-    protected $bbcode_smileys = array(':)'  => 'icon_smile.gif',
-                                      ':D'  => 'icon_smile_big.gif',
-                                      '8D'  => 'icon_smile_cool.gif',
-                                      ':I'  => 'icon_smile_blush.gif',
-                                      ':P'  => 'icon_smile_tongue.gif',
+    protected $bbcode_smileys = [':)' => 'icon_smile.gif',
+                                      ':D' => 'icon_smile_big.gif',
+                                      '8D' => 'icon_smile_cool.gif',
+                                      ':I' => 'icon_smile_blush.gif',
+                                      ':P' => 'icon_smile_tongue.gif',
                                       '}:)' => 'icon_smile_evil.gif',
-                                      ';)'  => 'icon_smile_wink.gif',
+                                      ';)' => 'icon_smile_wink.gif',
                                       ':o)' => 'icon_smile_clown.gif',
-                                      'B)'  => 'icon_smile_blackeye.gif',
-                                      '8'   => 'icon_smile_8ball.gif',
-                                      ':('  => 'icon_smile_sad.gif',
-                                      '8)'  => 'icon_smile_shy.gif',
-                                      ':O'  => 'icon_smile_shock.gif',
+                                      'B)' => 'icon_smile_blackeye.gif',
+                                      '8' => 'icon_smile_8ball.gif',
+                                      ':(' => 'icon_smile_sad.gif',
+                                      '8)' => 'icon_smile_shy.gif',
+                                      ':O' => 'icon_smile_shock.gif',
                                       ':(!' => 'icon_smile_angry.gif',
                                       'xx(' => 'icon_smile_dead.gif',
-                                      '|)'  => 'icon_smile_sleepy.gif',
-                                      ':X'  => 'icon_smile_kisses.gif',
-                                      '^'   => 'icon_smile_approve.gif',
-                                      'V'   => 'icon_smile_dissapprove.gif',
-                                      '?'   => 'icon_smile_question.gif',
-                                );
-    protected $bbcode_colors = array('black',
+                                      '|)' => 'icon_smile_sleepy.gif',
+                                      ':X' => 'icon_smile_kisses.gif',
+                                      '^' => 'icon_smile_approve.gif',
+                                      'V' => 'icon_smile_dissapprove.gif',
+                                      '?' => 'icon_smile_question.gif',
+                                ];
+    protected $bbcode_colors = ['black',
                                      'blue',
                                      'gold',
                                      'green',
@@ -56,32 +64,21 @@ class Georoadbook
                                      'teal',
                                      'white',
                                      'yellow',
-                                );
+                                ];
 
     /**
-     * ajaxRequestOnly
-     * @return void
+     * @param Application $app
+     * @param string      $id
      */
-    public static function ajaxRequestOnly()
+    public function __construct(Application $app, $id = null)
     {
-        if (!array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
-            header("HTTP/1.0 400 Bad Request");
-            exit(0);
-        }
-    }
+        $this->app = $app;
 
-    /**
-     * __construct
-     * @param string $id
-     */
-    public function __construct($id = '')
-    {
         if (empty($id)) {
             $this->id = self::setId();
         } else {
             if (!ctype_alnum($id)) {
-                header("HTTP/1.0 404 Not Found");
-                exit();
+                return new Response('Not found', 404);
             }
             $this->id = basename($id);
         }
@@ -89,24 +86,48 @@ class Georoadbook
         if (empty($this->id)) {
             return false;
         }
-        $this->gpx_file  = ROADBOOKS_DIR . sprintf('%s.%s', $this->id, 'gpx');
-        $this->html_file = ROADBOOKS_DIR . sprintf('%s.%s', $this->id, 'html');
-        $this->json_file = ROADBOOKS_DIR . sprintf('%s.%s', $this->id, 'json');
-        $this->pdf_file  = ROADBOOKS_DIR . 'pdf/' . sprintf('%s.%s', $this->id, 'pdf');
+    }
+
+    /**
+     * @return string
+     */
+    public function getGpxFile() {
+        return $this->app['roadbook_dir'] . sprintf('/%s.gpx', $this->id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getHtmlFile() {
+        return $this->app['roadbook_dir'] . sprintf('/%s.html', $this->id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getJsonFile() {
+        return $this->app['roadbook_dir'] . sprintf('/%s.json', $this->id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getPdfFile() {
+        return $this->app['roadbook_dir'] . '/pdf/' . sprintf('/%s.pdf', $this->id);
     }
 
     /**
      * create
-     * @param  string  $gpx
-     * @return boolean
+     *
+     * @param string $gpx
+     *
+     * @return bool
      */
     public function create($gpx)
     {
-        self::ajaxRequestOnly();
-
         $this->gpx = $gpx;
 
-        if (!$this->saveFile($this->gpx_file, $this->gpx)) {
+        if (!$this->saveFile($this->getGpxFile(), $this->gpx)) {
             return false;
         }
 
@@ -114,43 +135,42 @@ class Georoadbook
     }
 
     /**
-     * delete
-     * @return boolean
+     * delete.
+     *
+     * @return bool
      */
     public function delete()
     {
-        self::ajaxRequestOnly();
-
-        $pattern = ROADBOOKS_DIR . $this->id . '.*';
+        $pattern = $this->app['roadbook_dir'] . '/' . $this->id . '.*';
 
         foreach (glob($pattern) as $file) {
             @unlink($file);
         }
 
-        @unlink($this->pdf_file);
+        @unlink($this->getPdfFile());
 
         return true;
     }
 
     /**
-     * getLastSavedDate
+     * getLastSavedDate.
+     *
      * @return string
      */
     public function getLastSavedDate()
     {
-        return date('Y-m-d H:i:s', filemtime($this->html_file));
+        return date('Y-m-d H:i:s', filemtime($this->getHtmlFile()));
     }
 
     /**
-     * export
-     * @return boolean
+     * export.
+     *
+     * @return bool
      */
     public function export()
     {
-        self::ajaxRequestOnly();
-
-        $cmd = escapeshellcmd('/usr/bin/phantomjs ' . ROOT . '/html2pdf.js ' . $this->id . ' ' . $_SERVER['HTTP_HOST']);
-        if ($this->debug) {
+        $cmd = escapeshellcmd('/usr/bin/phantomjs ' . $this->app['root'] . '/html2pdf.js ' . $this->id . ' ' . $_SERVER['HTTP_HOST']);
+        if ($this->app['debug']) {
             $cmd .= ' 2>&1';
         }
         $this->result = shell_exec($cmd);
@@ -162,52 +182,53 @@ class Georoadbook
     }
 
     /**
-     * getCustomCss
+     * getCustomCss.
+     *
      * @return string
      */
     public function getCustomCss()
     {
-        $this->options_css = json_decode(file_get_contents($this->json_file), true);
+        $this->options_css = json_decode(file_get_contents($this->getJsonFile()), true);
         if (is_null($this->options_css)) {
             return false;
         }
 
         $this->options_css = array_map('trim', $this->options_css);
 
-        $customCSS_format = "@page{%s}";
+        $customCSS_format = '@page{%s}';
         $customHeaderFooter = '@%s{%s:"%s"}';
         $pageOptions = '';
 
         $globalOptions['size'] = sprintf('%s %s', $this->options_css['page_size'], $this->options_css['orientation']);
-        $globalOptions['margin'] = (int) $this->options_css['margin_top'] . 'mm ' .
-                                   (int) $this->options_css['margin_right'] . 'mm ' .
-                                   (int) $this->options_css['margin_bottom'] . 'mm ' .
-                                   (int) $this->options_css['margin_left'] . 'mm';
+        $globalOptions['margin'] = (int) $this->options_css['margin_top'].'mm '.
+                                   (int) $this->options_css['margin_right'].'mm '.
+                                   (int) $this->options_css['margin_bottom'].'mm '.
+                                   (int) $this->options_css['margin_left'].'mm';
         foreach ($globalOptions as $key => $value) {
-            $pageOptions.= sprintf('%s: %s;', $key, $value);
+            $pageOptions .= sprintf('%s: %s;', $key, $value);
         }
 
         if (!empty($this->options_css['header_text'])) {
-            $pageOptions.= sprintf($customHeaderFooter, 'top-' . $this->options_css['header_align'], 'content', htmlspecialchars($this->options_css['header_text']));
+            $pageOptions .= sprintf($customHeaderFooter, 'top-'.$this->options_css['header_align'], 'content', htmlspecialchars($this->options_css['header_text']));
         }
         if (!empty($this->options_css['footer_text'])) {
-            $pageOptions.= sprintf($customHeaderFooter, 'bottom-' . $this->options_css['footer_align'], 'content', htmlspecialchars($this->options_css['footer_text']));
+            $pageOptions .= sprintf($customHeaderFooter, 'bottom-'.$this->options_css['footer_align'], 'content', htmlspecialchars($this->options_css['footer_text']));
         }
 
         return sprintf($customCSS_format, $pageOptions);
     }
 
     /**
-     * saveOptions
-     * @param  string  $options
-     * @return boolean
+     * saveOptions.
+     *
+     * @param string $options
+     *
+     * @return bool
      */
     public function saveOptions($options)
     {
-        self::ajaxRequestOnly();
-
         $this->options_css = $options;
-        $hd = fopen($this->json_file, 'w');
+        $hd = fopen($this->getJsonFile(), 'w');
         if (!$hd) {
             return false;
         }
@@ -218,8 +239,7 @@ class Georoadbook
     }
 
     /**
-     * downloadPdf
-     * @return void
+     * downloadPdf.
      */
     public function downloadPdf()
     {
@@ -230,38 +250,34 @@ class Georoadbook
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
-        header('Content-Length: ' . filesize($this->pdf_file));
+        header('Content-Length: '.filesize($this->getPdfFile()));
         ob_clean();
         flush();
-        readfile($this->pdf_file);
+        readfile($this->getPdfFile());
         exit(0);
     }
 
     /**
-     * downloadZip
-     * @return void
+     * downloadZip.
      */
     public function downloadZip()
     {
-        if(!class_exists('ZipArchive')) {
+        if (!class_exists('ZipArchive')) {
             return false;
         }
         $zip = new \ZipArchive();
-        $filename_zip = sprintf('%s.%s', $this->id, 'zip');
+        $filename_zip = sprintf($this->app['root'] . '/web/roadbook/zip/%s.%s', $this->id, 'zip');
 
         if ($zip->open($filename_zip, \ZIPARCHIVE::CREATE) !== true) {
-            exit('Unable to open ' . basename($filename_zip));
+            exit('Unable to open '.basename($filename_zip));
         }
 
-        Twig_Autoloader::register();
-        $loader = new \Twig_Loader_Filesystem(TEMPLATE_DIR);
-        $twig   = new \Twig_Environment($loader, array('debug' => false, 'cache' => TEMPLATE_COMPILED_DIR));
-        $twig_vars = array('style' => $this->getCustomCss(),
-                           'content' => file_get_contents($this->html_file));
-        $zip->addFromString('roadbook/' . basename($this->html_file), $twig->render('raw.tpl', $twig_vars));
+        $params = ['style' => $this->getCustomCss(),
+                        'content' => file_get_contents($this->getHtmlFile()), ];
+        $zip->addFromString('roadbook/'.basename($this->getHtmlFile()), $this->app['twig']->render('raw.twig.html', $params));
 
-        $zip->addFile(ROOT . '/web/design/roadbook.css', 'design/roadbook.css');
-        $this->recurse_zip(ROOT . '/web/img', $zip);
+        $zip->addFile($this->app['root'] . '/web/design/roadbook.css', 'design/roadbook.css');
+        $this->recurseZip($this->app['root'] . '/web/img', $zip);
         $zip->close();
 
         header('Content-Description: File Transfer');
@@ -271,7 +287,7 @@ class Georoadbook
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
-        header('Content-Length: ' . filesize($filename_zip));
+        header('Content-Length: '.filesize($filename_zip));
         ob_clean();
         flush();
         readfile($filename_zip);
@@ -280,20 +296,20 @@ class Georoadbook
     }
 
     /**
-     * recurseZip
-     * @param  string     $src
-     * @param  ZipArchive &$zip
-     * @return void
+     * recurseZip.
+     *
+     * @param string     $src
+     * @param ZipArchive &$zip
      */
-    private function recurseZip($src, ZipArchive &$zip)
+    private function recurseZip($src, \ZipArchive &$zip)
     {
         $dir = opendir($src);
-        while (false !== ($file=readdir($dir))) {
+        while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
-                if (is_dir($src . '/' . $file)) {
-                    $this->recurseZip($src . '/' . $file, $zip);
+                if (is_dir($src.'/'.$file)) {
+                    $this->recurseZip($src.'/'.$file, $zip);
                 } else {
-                    $zip->addFile($src . '/' . $file, substr($src . '/' . $file, strlen(dirname(__DIR__) . '/web/')));
+                    $zip->addFile($src.'/'.$file, substr($src.'/'.$file, strlen(dirname(__DIR__).'/web/roadbook/zip')));
                 }
             }
         }
@@ -301,7 +317,8 @@ class Georoadbook
     }
 
     /**
-     * setId
+     * setId.
+     *
      * @return string
      */
     protected static function setId()
@@ -310,10 +327,12 @@ class Georoadbook
     }
 
     /**
-     * saveFile
-     * @param  string  $filename
-     * @param  string  $content
-     * @return boolean
+     * saveFile.
+     *
+     * @param string $filename
+     * @param string $content
+     *
+     * @return bool
      */
     public function saveFile($filename, $content = '')
     {
@@ -328,9 +347,11 @@ class Georoadbook
     }
 
     /**
-     * convertXmlToHtml
-     * @param  string $locale
-     * @param  array  $options
+     * convertXmlToHtml.
+     *
+     * @param string $locale
+     * @param array  $options
+     *
      * @return object $this
      */
     public function convertXmlToHtml($locale, $options)
@@ -338,11 +359,11 @@ class Georoadbook
         $this->locale = $locale;
 
         $xsldoc = new \DOMDocument();
-        $xsldoc->load(ROOT . '/templates/xslt/roadbook.xslt');
+        $xsldoc->load($this->app['root'] . '/app/templates/xslt/roadbook.xslt');
         $xsl = new \XSLTProcessor();
         $xsl->importStyleSheet($xsldoc);
-        $xsl->setParameter('', 'locale_filename', ROOT . '/locales/' . sprintf('%s.%s', $this->locale, 'xml'));
-        $xsl->setParameter('', 'icon_cache_dir', ICON_CACHE_DIR);
+        $xsl->setParameter('', 'locale_filename', $this->app['root'] . '/locales/'.sprintf('%s.%s', $this->locale, 'xml'));
+        $xsl->setParameter('', 'icon_cache_dir', $this->app['icon_cache_dir']);
         $xsl->setParameter('', $options);
 
         $xml = new \DOMDocument();
@@ -361,8 +382,7 @@ class Georoadbook
     }
 
     /**
-     * cleanHtml
-     * @return void
+     * cleanHtml.
      */
     public function cleanHtml()
     {
@@ -371,10 +391,10 @@ class Georoadbook
             return false;
         }
 
-        $config = array('doctype'      => 'html',
-                        'output-xhtml' => true,
-                        'wrap'         => 0);
-        $tidy = new \tidy;
+        $config = ['doctype' => 'html',
+                   'output-xhtml' => true,
+                   'wrap' => 0, ];
+        $tidy = new \tidy();
         $tidy->parseString($this->html, $config, 'utf8');
         $tidy->cleanRepair();
         //echo $tidy->errorBuffer . "\n";
@@ -382,35 +402,36 @@ class Georoadbook
     }
 
     /**
-     * getOnlyBody
-     * @return void
+     * getOnlyBody.
      */
     public function getOnlyBody()
     {
-        if(preg_match('/<body>(.*)<\/body>/msU', $this->html, $match)) {
+        if (preg_match('/<body>(.*)<\/body>/msU', $this->html, $match)) {
             $this->html = $match[1];
         }
     }
 
     /**
-     * addToC
-     * @return void
+     * addToC.
      */
     public function addToC()
     {
         $dom = new \DomDocument();
+
+        libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
+        libxml_clear_errors();
 
         $finder = new \DomXPath($dom);
 
-        $nodes  = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheTitle ')]");
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheTitle ')]");
         $gccodeNode = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheGCode ')]");
 
-        $toc_content = array();
+        $toc_content = [];
         foreach ($nodes as $node) {
-            $toc_content[] = array('icon'   => $node->firstChild->getAttribute('src'),
+            $toc_content[] = ['icon' => $node->firstChild->getAttribute('src'),
                                    'gccode' => false,
-                                   'title'  => $node->textContent);
+                                   'title' => $node->textContent, ];
         }
         foreach ($gccodeNode as $key => $node) {
             $toc_content[$key]['gccode'] = $node->textContent;
@@ -418,18 +439,14 @@ class Georoadbook
 
         if (!empty($toc_content)) {
             $toc = new \DomDocument();
-            $toc->load(ROOT . '/locales/' . sprintf('%s.xml', $this->locale));
+            $toc->load($this->app['root'] . '/locales/'.sprintf('%s.xml', $this->locale));
             $xPath = new \DOMXPath($toc);
             $toc_i18n['title'] = $xPath->query("text[@id='toc_title']")->item(0)->nodeValue;
-            $toc_i18n['name']  = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
-            $toc_i18n['page']  = $xPath->query("text[@id='toc_page']")->item(0)->nodeValue;
+            $toc_i18n['name'] = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
+            $toc_i18n['page'] = $xPath->query("text[@id='toc_page']")->item(0)->nodeValue;
 
-            \Twig_Autoloader::register();
-            $loader = new \Twig_Loader_Filesystem(TEMPLATE_DIR);
-            $twig   = new \Twig_Environment($loader, array('cache' => false));
-
-            $toc_html = $twig->render('toc.tpl', array('i18n'    => $toc_i18n,
-                                                       'content' => $toc_content));
+            $toc_html = $this->app['twig']->render('toc.twig.html', ['i18n' => $toc_i18n,
+                                                                   'content' => $toc_content, ]);
 
             $frag = $dom->createDocumentFragment();
             $frag->appendXML($toc_html);
@@ -443,8 +460,7 @@ class Georoadbook
     }
 
     /**
-     * removeImages
-     * @return void
+     * removeImages.
      */
     public function removeImages($display_short_desc)
     {
@@ -456,7 +472,7 @@ class Georoadbook
             $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' short_description ')]");
             foreach ($nodes as $node) {
                 $imagesNodeList = $node->getElementsByTagName('img');
-                $domElemsToRemove = array();
+                $domElemsToRemove = [];
                 foreach ($imagesNodeList as $domElement) {
                     $domElemsToRemove[] = $domElement;
                 }
@@ -472,7 +488,7 @@ class Georoadbook
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' long_description ')]");
         foreach ($nodes as $node) {
             $imagesNodeList = $node->getElementsByTagName('img');
-            $domElemsToRemove = array();
+            $domElemsToRemove = [];
             foreach ($imagesNodeList as $domElement) {
                 $domElemsToRemove[] = $domElement;
             }
@@ -485,8 +501,7 @@ class Georoadbook
     }
 
     /**
-     * addSpoilers
-     * @return void
+     * addSpoilers.
      */
     public function addSpoilers()
     {
@@ -496,24 +511,24 @@ class Georoadbook
         $dom = new \DomDocument();
         $dom->loadHTML($this->html);
         $finder = new \DomXPath($dom);
-        foreach($waypoints as $waypoint) {
+        foreach ($waypoints as $waypoint) {
             $long_description = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
-            if(empty($long_description->length)) {
+            if (empty($long_description->length)) {
                 continue;
             }
-            if(preg_match_all('/<!-- Spoiler4Gpx \[([^]]*)\]\(([^)]*)\) -->/', $long_description->item(0)->nodeValue, $spoilers, PREG_SET_ORDER)) {
+            if (preg_match_all('/<!-- Spoiler4Gpx \[([^]]*)\]\(([^)]*)\) -->/', $long_description->item(0)->nodeValue, $spoilers, PREG_SET_ORDER)) {
                 $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
                 foreach ($spoilers as $spoiler) {
                     $nodes = $finder->query("//div[@data-cache-id='".$gccode."']/div[@class='cacheSpoilers']");
-                    if(empty($nodes->length)) {
+                    if (empty($nodes->length)) {
                         continue;
                     }
                     $frag = $dom->createDocumentFragment();
                     $frag->appendXML('<p>Spoilers</p>'."\n");
-                    foreach($nodes as $node) {
+                    foreach ($nodes as $node) {
                         $node->appendChild($frag);
                         $frag = $dom->createDocumentFragment();
-                        $frag->appendXML('<![CDATA[<img src="' . $spoiler[2] . '" alt="' . $spoiler[1] . '"/><br />'."\n]]>");
+                        $frag->appendXML('<![CDATA[<img src="'.$spoiler[2].'" alt="'.$spoiler[1].'"/><br />'."\n]]>");
                         $node->appendChild($frag);
                     }
                 }
@@ -523,8 +538,7 @@ class Georoadbook
     }
 
     /**
-     * addWaypoints
-     * @return void
+     * addWaypoints.
      */
     public function addWaypoints()
     {
@@ -534,18 +548,18 @@ class Georoadbook
         $dom = new \DomDocument();
         $dom->loadHTML($this->html);
         $finder = new \DomXPath($dom);
-        foreach($waypoints as $waypoint) {
+        foreach ($waypoints as $waypoint) {
             $long_description = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
-            if(empty($long_description->length)) {
+            if (empty($long_description->length)) {
                 continue;
             }
 
-            if(!preg_match('#<p>Additional [Hidden\s]+?Waypoints</p>#i', $long_description->item(0)->nodeValue, $matches, PREG_OFFSET_CAPTURE)) {
+            if (!preg_match('#<p>Additional [Hidden\s]+?Waypoints</p>#i', $long_description->item(0)->nodeValue, $matches, PREG_OFFSET_CAPTURE)) {
                 continue;
             }
 
             $data = substr($long_description->item(0)->nodeValue, $matches[0][1] + strlen($matches[0][0]));
-            if(!$data) {
+            if (!$data) {
                 continue;
             }
 
@@ -554,26 +568,26 @@ class Georoadbook
             $details_waypoints = array_chunk($details_waypoints, 3);
 
             $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
-            $nodes  = $finder->query("//div[@data-cache-id='".$gccode."']//*[@class='cacheWaypoints']");
-            $frag   = $dom->createDocumentFragment();
+            $nodes = $finder->query("//div[@data-cache-id='".$gccode."']//*[@class='cacheWaypoints']");
+            $frag = $dom->createDocumentFragment();
             $frag->appendXML('<p>Waypoints</p>'."\n");
 
-            if(!empty($nodes->length)) {
+            if (!empty($nodes->length)) {
                 $nodes->item(0)->appendChild($frag);
             }
 
-            foreach($details_waypoints as $wpt_data) {
-                $title       = preg_replace('/ GC[\w]+/', ' ', $wpt_data[0]);
+            foreach ($details_waypoints as $wpt_data) {
+                $title = preg_replace('/ GC[\w]+/', ' ', $wpt_data[0]);
                 $coordinates = '';
-                if($wpt_data[1] !== '' && strpos($wpt_data[1], 'N/S') !== 0) {
-                    $coordinates = ' - ' . trim(html_entity_decode($wpt_data[1]));
+                if ($wpt_data[1] !== '' && strpos($wpt_data[1], 'N/S') !== 0) {
+                    $coordinates = ' - '.trim(html_entity_decode($wpt_data[1]));
                 }
-                $comment     = $wpt_data[2];
+                $comment = $wpt_data[2];
 
                 $frag_wpt = $dom->createDocumentFragment();
-                $frag_wpt->appendXML('<![CDATA[<p><strong>' . $title . $coordinates . '</strong><br />' . $comment . "</p>\n]]>");
+                $frag_wpt->appendXML('<![CDATA[<p><strong>'.$title.$coordinates.'</strong><br />'.$comment."</p>\n]]>");
 
-                if(!empty($nodes->length)) {
+                if (!empty($nodes->length)) {
                     $nodes->item(0)->appendChild($frag_wpt);
                 }
             }
@@ -582,8 +596,7 @@ class Georoadbook
     }
 
     /**
-     * encryptHints
-     * @return void
+     * encryptHints.
      */
     public function encryptHints()
     {
@@ -594,16 +607,16 @@ class Georoadbook
         foreach ($nodes as $node) {
             $chars = str_split($node->textContent);
             $encode = true;
-            foreach($chars as &$char) {
-                if(in_array($char, array('['))) {
+            foreach ($chars as &$char) {
+                if (in_array($char, ['['])) {
                     $encode = false;
                     continue;
                 }
-                if(in_array($char, array(']'))) {
+                if (in_array($char, [']'])) {
                     $encode = true;
                     continue;
                 }
-                if($encode) {
+                if ($encode) {
                     $char = str_rot13($char);
                 }
             }
@@ -613,7 +626,8 @@ class Georoadbook
     }
 
     /**
-     * parseMarkdown
+     * parseMarkdown.
+     *
      * @return object
      */
     public function parseMarkdown()
@@ -624,13 +638,12 @@ class Georoadbook
         $finder = new \DomXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
 
-
         $MdParser = new \cebe\markdown\Markdown();
         foreach ($nodes as $node) {
             $raw_log = $node->ownerDocument->saveHTML($node);
-            $raw_log = trim(str_replace(array('<td class="cacheLogText" colspan="2">', '</td>'), '', $raw_log));
+            $raw_log = trim(str_replace(['<td class="cacheLogText" colspan="2">', '</td>'], '', $raw_log));
             $log = preg_replace('/<br>$/', '', $raw_log);
-            
+
             $node->nodeValue = $MdParser->parse($log);
         }
 
@@ -640,8 +653,7 @@ class Georoadbook
     }
 
     /**
-     * parseBBcode
-     * @return void
+     * parseBBcode.
      */
     public function parseBBcode()
     {
@@ -651,33 +663,33 @@ class Georoadbook
         $finder = new \DomXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
 
-        $parser = new JBBCode\Parser();
-        $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
+        $parser = new \JBBCode\Parser();
+        $parser->addCodeDefinitionSet(new \JBBCode\DefaultCodeDefinitionSet());
 
         foreach ($this->bbcode_colors as $color) {
-            $builder = new JBBCode\CodeDefinitionBuilder($color, '<span style="color: '.$color.';">{param}</span>');
+            $builder = new \JBBCode\CodeDefinitionBuilder($color, '<span style="color: '.$color.';">{param}</span>');
             $parser->addCodeDefinition($builder->build());
         }
 
         foreach ($nodes as $node) {
             $raw_log = $node->ownerDocument->saveHTML($node);
-            $raw_log = trim(str_replace(array('<td class="cacheLogText" colspan="2">', '</td>'), '', $raw_log));
+            $raw_log = trim(str_replace(['<td class="cacheLogText" colspan="2">', '</td>'], '', $raw_log));
             $log = preg_replace('/<br>$/', '', $raw_log);
             $parser->parse($log);
             $node->nodeValue = $parser->getAsHtml();
         }
 
-        //$smileyVisitor = new JBBCode\visitors\SmileyVisitor();
+        //$smileyVisitor = new \JBBCode\visitors\SmileyVisitor();
         //$parser->accept($smileyVisitor);
         $this->html = htmlspecialchars_decode($dom->saveHtml());
 
         $bbcodes = array_keys($this->bbcode_smileys);
-        $images  = array_values($this->bbcode_smileys);
-        foreach ($images as $k=>&$image) {
-            $image = '<img src="../images/icons/' . $image . '" alt="' . $bbcodes[$k] . '" />';
+        $images = array_values($this->bbcode_smileys);
+        foreach ($images as $k => &$image) {
+            $image = '<img src="../images/icons/'.$image.'" alt="'.$bbcodes[$k].'" />';
         }
         foreach ($bbcodes as &$bbcode) {
-            $bbcode = '[' . $bbcode . ']';
+            $bbcode = '['.$bbcode.']';
         }
 
         $this->html = str_replace($bbcodes, $images, $this->html);

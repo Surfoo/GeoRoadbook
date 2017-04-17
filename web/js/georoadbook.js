@@ -89,7 +89,7 @@
         btn.button('loading');
 
         $.ajax({
-            url: "upload.php",
+            url: "/upload",
             type: "POST",
             data: {
                 gpx: content_gpx,
@@ -170,7 +170,7 @@
         ed.setProgressState(1);
 
         $.ajax({
-            url: "/delete.php",
+            url: "/delete",
             type: "POST",
             datatype: 'json',
             data: {
@@ -246,7 +246,7 @@
         var ed = tinyMCE.get('editable');
         ed.setProgressState(1);
         $.ajax({
-            url: "/save.php",
+            url: "/save",
             type: "POST",
             datatype: 'json',
             data: {
@@ -282,7 +282,7 @@
         $('#btn_delete').addClass('disabled');
 
         $.ajax({
-            url: "/export.php",
+            url: "/export",
             type: "POST",
             data: {
                 real_export: real_export,

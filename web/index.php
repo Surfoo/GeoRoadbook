@@ -1,19 +1,16 @@
 <?php
 
-require dirname(__DIR__) . '/include/config.php';
+// if you don't want to setup permissions the proper way, just uncomment the following PHP line
+umask(0000);
 
-Twig_Autoloader::register();
-$loader = new Twig_Loader_Filesystem(TEMPLATE_DIR);
-$twig   = new Twig_Environment($loader, array('debug' => false, 'cache' => false));
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-header('Content-type: text/html; charset=utf-8');
+$app = new Silex\Application();
 
-$twig_vars = array('locales'           => $locales,
-                   'language'          => $language,
-                   );
+$app['debug']           = true;
+$app['monolog.level']   = \Monolog\Logger::ERROR;
 
-if (array_key_exists('deleted', $_GET)) {
-    $twig_vars['deleted'] = true;
-}
+require dirname(__DIR__) . '/app/config.php';
+require dirname(__DIR__) . '/app/app.php';
 
-echo $twig->render('index.tpl', $twig_vars);
+$app->run();

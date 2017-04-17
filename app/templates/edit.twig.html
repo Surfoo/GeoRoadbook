@@ -5,10 +5,10 @@
         <title>GeoRoadbook, create your geocaching roadbook</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
-        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css?{{ constant('SUFFIX_CSS_JS') }}" media="all" />
-        <link rel="stylesheet" href="/design/design.css?{{ constant('SUFFIX_CSS_JS') }}" media="all">
-        <script type="text/javascript" src="/js/jquery.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
-        <script type="text/javascript" src="/js/tinymce/tinymce.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css?{{ suffix_css_js }}" media="all" />
+        <link rel="stylesheet" href="/design/design.css?{{ suffix_css_js }}" media="all">
+        <script type="text/javascript" src="/js/jquery.min.js?{{ suffix_css_js }}"></script>
+        <script type="text/javascript" src="/js/tinymce/tinymce.min.js?{{ suffix_css_js }}"></script>
         <script type="text/javascript">
             var roadbook_id = '{{ roadbook_id|e('js') }}', language = '{{ language|e('js') }}';
         </script>
@@ -16,7 +16,7 @@
     <body>
         <div class="container">
             <div class="hero-unit">
-                {% include '_header.tpl' %}
+                {% include '_header.twig.html' %}
                 <div id="ui_edition">
                     <div id="actions">
                         <div class="pull-right">
@@ -43,21 +43,21 @@
                         <div class="btn-group" title="Delete your roadbook">
                             <button type="submit" id="btn_delete" class="btn btn-warning"><i class="icon-trash icon-white"></i> Delete</button>
                         </div>
-                        {% include '_export.tpl' %}
+                        {% include '_export.twig.html' %}
                     </div>
                     <div id="tinymce">
                         <textarea id="editable" cols="100" rows="100">{{ roadbook_content }}</textarea>
                     </div>
                 </div>
-                {% include '_faq.tpl' %}
-                {% include '_about.tpl' %}
-                {% include '_help.tpl' %}
+                {% include '_faq.twig.html' %}
+                {% include '_about.twig.html' %}
+                {% include '_help.twig.html' %}
             </div>
         </div>
 
-        {% include '_footer.tpl' %}
+        {% include '_footer.twig.html' %}
 
-        <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
-        <script type="text/javascript" src="/js/georoadbook.min.js?{{ constant('SUFFIX_CSS_JS') }}"></script>
+        <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js?{{ suffix_css_js }}"></script>
+        <script type="text/javascript" src="/js/georoadbook.min.js?{{ suffix_css_js }}"></script>
     </body>
 </html>
