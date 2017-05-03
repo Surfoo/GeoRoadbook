@@ -26,7 +26,7 @@ if (!array_key_exists(1, $matche)) {
 }
 if ($matche[1] == '1/0') {
     renderAjax(array('success' => false, 'message' => 'GPX version 1/0 is not supported, please use version 1/0/1. '.
-                                                      '<a href="http://www.geocaching.com/account/ManagePreferences.aspx">Check your preferences</a>'));
+                                                      '<a href="https://www.geocaching.com/account/settings/preferences">Check your preferences</a>'));
 }
 
 $display_toc        = isset($_POST['toc']) && $_POST['toc']   == "true"                     ? true : false;
