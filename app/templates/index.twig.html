@@ -1,112 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>GeoRoadbook, create your geocaching roadbook ready-to-print</title>
         <meta name="description" content="GeoRoadbook is a free and open source web app to create your geocaching roadbook ready-to-print from your gpx file (Pocket queries, GSAK, GCTour, etc.)">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
-        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css?{{ suffix_css_js }}" media="all" />
-        <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="all" />
-        <link rel="stylesheet" href="/design/design.css?{{ suffix_css_js }}" media="all" />
+        <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css?{{ suffix_css_js }}" media="all" />
+        <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap-theme.min.css?{{ suffix_css_js }}" media="all">
+        <link rel="stylesheet" href="/assets/bootstrap-fileinput/css/fileinput.min.css" media="all" type="text/css" />
+        <!-- <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="all" /> -->
+        <link rel="stylesheet" href="/app.min.css?{{ suffix_css_js }}" media="all" />
     </head>
     <body>
-        <div class="container">
-            <div class="hero-unit">
-                {% include '_header.twig.html' %}
 
-                {% if deleted is defined %}
+        {% include '_header.twig.html' %}
+
+        <div class="container" role="main">
+
+            <div class="jumbotron">
+                <p>GeoRoadbook allow you to create your geocaching roadbook from a GPX (GSAK, Pocket Queries...). You can customize it with several options, and then edit the content in your browser. Export is available in HTML, PDF or Zip.<br />
+                Your roadbook is secret and private, but you can share the URL for team working.</p>
+            </div>
+
+            <div class="row">
+
+                {% for deleted in app.session.flashbag.get('deleted') %}
                     <div class="alert alert-success fade in">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        Your roadbook has been deleted!
+                        {{ deleted }}
                     </div>
-                {% endif %}
+                {% endfor %}
+
                 <form action="#" method="post" class="form-horizontal">
-                    <fieldset>
-                        <div id="error" class="alert alert-block hide"></div>
-                        <div class="fileupload fileupload-new" data-provides="fileupload">
-                            <div class="input-append">
-                                <div class="uneditable-input span3">
-                                    <i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span>
-                                </div>
-                                <span class="btn btn-file">
-                                    <span class="fileupload-new">Browse to GPX File</span>
-                                    <span class="fileupload-exists">Change</span><input type="file" name="gpx" id="gpx" />
-                                </span>
-                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
-                            </div> <i class="icon-question-sign option-help" data-toggle="tooltip" title="Choose a GPX file and upload it. 8Mo maximum."></i>
+                        <div id="error" class="alert alert-warning hidden" role="alert"></div>
+
+                        <div class="col-md-6">
+                            <p>Choose a GPX file{% if pocketqueryList is defined %} or a Pocket Query{% endif %}:</p>
+
+                            <input id="gpx" type="file" class="file" aria-describedby="helpBlockGpx">
+                            <span id="helpBlockGpx" class="help-block"><i class="glyphicon glyphicon-question-sign"></i> 8Mb maximum</span>
+
+                            {% if pocketqueryList is defined %}
+                                <label for="pocket_list">Your Pocket Queries:
+                                    <select name="pocket_guid" class="form-control" id="pocket_list">
+                                        <option value=""></option>
+                                        {% for pocket in pocketqueryList %}
+                                            <option value="{{ pocket.GUID }}">{{ pocket.Name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            {% endif %}
                         </div>
-                        <p><label for="locale">Roadbook language:<br />
-                            <select name="locale" id="locale">
+
+                        <div class="col-md-6">
+                            <label for="locale"><p>Roadbook language:</p>
+                            <select name="locale" class="form-control" id="locale" aria-describedby="helpBlockLanguage">
                                 <option value=""></option>
                                 {% for code, name in locales %}
                                 <option value="{{ code|e }}"{% if language == code %} selected="selected"{% endif %}>{{ name|e }}</option>
                                 {% endfor %}
-                            </select> <i class="icon-question-sign option-help" data-toggle="tooltip" title="Choose the language of your roadbook."></i></label>
-                        </p>
+                            </select>
+                            <span id="helpBlockLanguage" class="help-block"><i class="glyphicon glyphicon-question-sign"></i> Choose the language of your roadbook</span>
+                        </div>
+                        <div class="col-md-12">
                         <fieldset id="options">
                             <legend class="small">Options:</legend>
 
-                            <div class="row">
-                                <div class="span5">
-                                    <div class="control-group">
-                                        <p class="small">General:</p>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <p class="small">General:</p>
 
-                                        <label for="sort" class="checkbox inline"><input type="checkbox" name="sort" id="sort" value="1" /> Sort caches by</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Choose how to sort caches. Sorted according to your GPX file by default."></i><br />
-                                        <div id="sort_options" class="hide">
-                                            <label for="sort1" class="radio inline"><input type="radio" name="sort_by" id="sort1" value="name" /> Name</label>
-                                            <label for="sort2" class="radio inline"><input type="radio" name="sort_by" id="sort2" value="owner" /> Owner</label>
-                                            <label for="sort3" class="radio inline"><input type="radio" name="sort_by" id="sort3" value="difficulty" /> Difficulty</label>
-                                            <label for="sort4" class="radio inline"><input type="radio" name="sort_by" id="sort4" value="terrain" /> Terrain</label>
-                                        </div>
-
-                                        <label for="toc" class="checkbox inline"><input type="checkbox" name="toc" id="toc" value="1" /> Table of contents</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the summary of caches, in 6 columns : Number, Type, Name, Found, Didn't Find and Page."></i><br />
+                                    <label for="sort" class="checkbox inline"><input type="checkbox" name="sort" id="sort" value="1" /> Sort caches by</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Choose how to sort caches. Sorted according to your GPX file by default."></i><br />
+                                    <div id="sort_options" class="hidden">
+                                        <ul class="list-inline form-inline">
+                                            <li><label for="sort1" class="radio inline"><input type="radio" name="sort_by" id="sort1" value="name" /> Name</label></li>
+                                            <li><label for="sort2" class="radio inline"><input type="radio" name="sort_by" id="sort2" value="owner" /> Owner</label></li>
+                                            <li><label for="sort3" class="radio inline"><input type="radio" name="sort_by" id="sort3" value="difficulty" /> Difficulty</label></li>
+                                            <li><label for="sort4" class="radio inline"><input type="radio" name="sort_by" id="sort4" value="terrain" /> Terrain</label></li>
+                                        </ul>
                                     </div>
+
+                                    <label for="toc" class="checkbox inline"><input type="checkbox" name="toc" id="toc" value="1" /> Table of contents</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Display the summary of caches, in 6 columns : Number, Type, Name, Found, Didn't Find and Page."></i><br />
                                 </div>
-                                <div class="span5">
-                                    <div class="control-group">
-                                        <p class="small">Geocaches:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <p class="small">Geocaches:</p>
 
-                                        <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Cache note area</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display a writing area for notes, calculations..."></i><br />
+                                    <label for="note" class="checkbox inline"><input type="checkbox" name="note" id="note" value="1" /> Cache note area</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Display a writing area for notes, calculations..."></i><br />
 
-                                        <label for="images" class="checkbox inline"><input type="checkbox" name="images" id="images" value="1" /> Remove images</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Remove images from the short and long description."></i><br />
+                                    <label for="images" class="checkbox inline"><input type="checkbox" name="images" id="images" value="1" /> Remove images</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Remove images from the short and long description."></i><br />
 
-                                        <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Short description</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the short description from caches."></i><br />
+                                    <label for="short_desc" class="checkbox inline"><input type="checkbox" name="short_desc" id="short_desc" value="1" /> Short description</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Display the short description from caches."></i><br />
 
-                                        <label for="long_desc" class="checkbox inline"><input type="checkbox" name="long_desc" id="long_desc" value="1" /> Long description</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the long description from caches."></i><br />
+                                    <label for="long_desc" class="checkbox inline"><input type="checkbox" name="long_desc" id="long_desc" value="1" /> Long description</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Display the long description from caches."></i><br />
 
-                                        <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Additional hints</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display the cache hints. Decrypted by default."></i><br />
+                                    <label for="hint" class="checkbox inline"><input type="checkbox" name="hint" id="hint" value="1" /> Additional hints</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Display the cache hints. Decrypted by default."></i><br />
 
-                                        <div id="hint_options" class="hide">
-                                            <label for="hint_decrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_decrypted" value="0" checked="checked" /> Decrypted</label>
-                                            <label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label>
-                                        </div>
-
-                                        <label for="spoilers" class="checkbox inline"><input type="checkbox" name="spoilers" id="spoilers" value="1" /> Spoilers <small><a href="http://spoilers4gpx.vaguelibre.net/#help" id="spoilers4gpx">by Spoilers4gpx</a></small></label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display spoilers included by Spoilers4gpx. More infos on the link."></i><br />
-
-                                        <label for="waypoints" class="checkbox inline"><input type="checkbox" name="waypoints" id="waypoints" value="1" /> Waypoints</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display additionnals waypoints like parking, stage, questions, etc."></i><br />
-
-                                        <label for="logs" class="checkbox inline"><input type="checkbox" name="logs" id="logs" value="1" /> Logs</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Display all logs from your GPX file."></i><br />
-
-                                        <label for="pagebreak" class="checkbox inline"><input type="checkbox" name="pagebreak" id="pagebreak" value="1" /> Page break</label>
-                                        <i class="icon-question-sign option-help" data-toggle="tooltip" title="Insert a page break between each cache."></i>
+                                    <div id="hint_options" class="hidden">
+                                        <ul class="list-inline form-inline">
+                                            <li><label for="hint_decrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_decrypted" value="0" checked="checked" /> Decrypted</label></li>
+                                            <li><label for="hint_encrypted" class="radio inline"><input type="radio" name="hint_encrypted" id="hint_encrypted" value="1" /> Encrypted</label></li>
+                                        </ul>
                                     </div>
+
+                                    <label for="spoilers" class="checkbox inline"><input type="checkbox" name="spoilers" id="spoilers" value="1" /> Spoilers <small><a href="http://spoilers4gpx.vaguelibre.net/#help" id="spoilers4gpx">by Spoilers4gpx</a></small></label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Display spoilers included by Spoilers4gpx. More infos on the link."></i><br />
+
+                                    <label for="waypoints" class="checkbox inline"><input type="checkbox" name="waypoints" id="waypoints" value="1" /> Waypoints</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Display additionnals waypoints like parking, stage, questions, etc."></i><br />
+
+                                    <label for="logs" class="checkbox inline"><input type="checkbox" name="logs" id="logs" value="1" /> Logs</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Display all logs from your GPX file."></i><br />
+
+                                    <label for="pagebreak" class="checkbox inline"><input type="checkbox" name="pagebreak" id="pagebreak" value="1" /> Page break</label>
+                                    <i class="glyphicon glyphicon-question-sign option-help" data-toggle="tooltip" title="Insert a page break between each cache."></i>
                                 </div>
                             </div>
                         </fieldset>
-
-                        <input type="submit" id="create" name="send" value="Create your roadbook" data-loading-text="Creating..." class="btn btn-large btn-primary pull-right" />
-                    </fieldset>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="submit" id="create" name="send" value="Create your roadbook" data-loading-text="Creating..." class="btn btn-large btn-primary pull-right" />
+                        </div>
                 </form>
                 {% include '_faq.twig.html' %}
                 {% include '_about.twig.html' %}
@@ -115,9 +139,13 @@
 
         {% include '_footer.twig.html' %}
 
-        <script type="text/javascript" src="/js/jquery.min.js?{{ suffix_css_js }}"></script>
-        <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js?{{ suffix_css_js }}"></script>
-        <script type="text/javascript" src="/bootstrap/js/bootstrap-fileupload.js"></script>
-        <script type="text/javascript" src="/js/georoadbook.min.js?{{ suffix_css_js }}"></script>
+        <script type="text/javascript" src="/assets/jquery/jquery.min.js?{{ suffix_css_js }}"></script>
+        <script type="text/javascript" src="/assets/bootstrap-fileinput/js/fileinput.min.js?{{ suffix_css_js }}"></script>
+        <script type="text/javascript" src="/assets/bootstrap/dist/js/bootstrap.min.js?{{ suffix_css_js }}"></script>
+        <script type="text/javascript" src="/app.min.js?{{ suffix_css_js }}"></script>
+
+        <script type="text/javascript">
+            require('app');
+        </script>
     </body>
 </html>

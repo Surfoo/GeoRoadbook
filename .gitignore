@@ -6,9 +6,13 @@
 TODO
 app/logs/
 app/cache/
+app/config.php
+node_modules
 !web/roadbook/.gitkeep
 !web/roadbook/pdf/.gitkeep
-web/roadbook/*.*
-web/roadbook/pdf/*.*
+!web/assets/.gitkeep
+web/assets
+web/roadbook
+web/roadbook/pdf
 vendor
 samples

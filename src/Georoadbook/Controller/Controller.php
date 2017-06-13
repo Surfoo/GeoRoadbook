@@ -2,13 +2,16 @@
 
 namespace Georoadbook\Controller;
 
+use Georoadbook\Georoadbook;
+use Georoadbook\Process\Login;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Georoadbook\Georoadbook;
+use Georoadbook\Api as GeocachingApi;
 
 class Controller
 {
+
     /**
      * @param Application $app
      * @param Request     $request
@@ -18,15 +21,34 @@ class Controller
     public function indexAction(Application $app, Request $request)
     {
         $params = [
-            'locales' => $app['locales'],
+            'locales'  => $app['locales'],
             'language' => $app['language'],
         ];
 
-        if ($request->get('deleted', null) !== null) {
-            $params['deleted'] = true;
+        if ($this->checkLogout($app, $request)) {
+            return $app->redirect('/');
+        }
+
+        if ($app['session']->get('access_token')) {
+            $api = new GeocachingApi($app);
+            $params['pocketqueryList'] = $api->getPocketQueryList();
         }
 
         return $app['twig']->render('index.twig.html', $params);
+    }
+
+    /**
+     * @param Application $app
+     * @param Request     $request
+     *
+     * @return mixed
+     */
+    public function loginAction(Application $app, Request $request)
+    {
+        $login = new Login($app, $request);
+        $login->authenticate();
+
+        return $app->redirect('/');
     }
 
     /**
@@ -41,11 +63,13 @@ class Controller
             return $app->json(['success' => false]);
         }
 
-        $gpx = $request->get('gpx', null);
+        $gpx = $request->get('gpx', '');
+        $pocket_guid = $request->get('pocket_guid', '');
+
         $locale = $request->get('locale', null);
 
-        if (is_null($gpx)) {
-            return $app->json(['success' => false, 'message' => 'GPX file is missing.']);
+        if (empty($gpx) && empty($pocket_guid)) {
+            return $app->json(['success' => false, 'message' => 'A GPX file or a Pocket Query is missing.']);
         }
 
         if (is_null($locale)) {
@@ -53,6 +77,11 @@ class Controller
         }
         if (!in_array($locale, array_keys($app['locales']))) {
             return $app->json(['success' => false, 'message' => 'Roadbook language is invalid.', 'lang' => $app['locales']]);
+        }
+
+        if ($app['session']->get('access_token') && !empty($pocket_guid)) {
+            $api = new GeocachingApi($app);
+            $gpx = $api->getPocketQueryZippedFile($pocket_guid);
         }
 
         try {
@@ -94,15 +123,15 @@ class Controller
         }
 
         $options = ['display_note' => $display_note,
-                         'display_short_desc' => $display_short_desc,
-                         'display_long_desc' => $display_long_desc,
-                         'display_hint' => $display_hint,
-                         'display_logs' => $display_logs,
-                         'display_waypoints' => $display_waypoints,
-                         'display_spoilers' => $display_spoilers,
-                         'sort_by' => $sort_by,
-                         'pagebreak' => $pagebreak,
-                         ];
+                    'display_short_desc' => $display_short_desc,
+                    'display_long_desc' => $display_long_desc,
+                    'display_hint' => $display_hint,
+                    'display_logs' => $display_logs,
+                    'display_waypoints' => $display_waypoints,
+                    'display_spoilers' => $display_spoilers,
+                    'sort_by' => $sort_by,
+                    'pagebreak' => $pagebreak,
+                ];
         $roadbook->convertXmlToHtml($locale, $options)->cleanHtml();
 
         // Table of content
@@ -152,6 +181,10 @@ class Controller
      */
     public function editAction(Application $app, Request $request, $id)
     {
+        if ($this->checkLogout($app, $request)) {
+            return $app->redirect('/');
+        }
+
         $roadbook = new Georoadbook($app, $id);
 
         if (!file_exists($roadbook->getHtmlFile()) || !is_readable($roadbook->getHtmlFile())) {
@@ -159,8 +192,9 @@ class Controller
         }
 
         if (!is_null($request->get('raw'))) {
-            $params = ['style' => $roadbook->getCustomCss(),
-                       'content' => file_get_contents($roadbook->getHtmlFile()), ];
+            $params = ['style'   => $roadbook->getCustomCss(),
+                       'content' => file_get_contents($roadbook->getHtmlFile())
+                    ];
 
             return $app['twig']->render('raw.twig.html', $params);
         }
@@ -177,12 +211,13 @@ class Controller
             'roadbook_id' => $id,
             'language' => $app['language'],
             'roadbook_content' => file_get_contents($roadbook->getHtmlFile()),
-            'last_modification' => 'Last saved: '.$roadbook->getLastSavedDate(),
+            'last_modification' => 'Last saved: ' . $roadbook->getLastSavedDate(),
         ];
 
         if (class_exists('ZipArchive')) {
             $params['available_zip'] = true;
         }
+
         if (file_exists($roadbook->getPdfFile())) {
             $params['available_pdf'] = true;
         }
@@ -235,6 +270,7 @@ class Controller
         }
 
         $roadbook_id = $request->get('id', null);
+        $real_export = $request->get('real_export', null);
 
         if (is_null($roadbook_id)) {
             return $app->json(['success' => false]);
@@ -247,33 +283,35 @@ class Controller
         }
 
         $options_css = ['page_size' => $request->get('page-size', null),
-                             'orientation' => $request->get('orientation', null),
-                             'margin_left' => (int) $request->get('margin-left', 0),
-                             'margin_right' => (int) $request->get('margin-right', 0),
-                             'margin_top' => (int) $request->get('margin-top', 0),
-                             'margin_bottom' => (int) $request->get('margin-bottom', 0),
-                             'header_align' => $request->get('header-align', null),
-                             'header_text' => $request->get('header-text', null),
-                             'header_pagination' => ($request->get('header-pagination') === 'true') ? 1 : 0,
-                             'footer_align' => $request->get('footer-align', null),
-                             'footer_text' => $request->get('footer-text', null),
-                             'footer_pagination' => ($request->get('footer-pagination') === 'true') ? 1 : 0,
-                        ];
+                        'orientation' => $request->get('orientation', null),
+                        'margin_left' => (int) $request->get('margin-left', 0),
+                        'margin_right' => (int) $request->get('margin-right', 0),
+                        'margin_top' => (int) $request->get('margin-top', 0),
+                        'margin_bottom' => (int) $request->get('margin-bottom', 0),
+                        'header_align' => $request->get('header-align', null),
+                        'header_text' => $request->get('header-text', null),
+                        'header_pagination' => ($request->get('header-pagination') === 'true') ? 1 : 0,
+                        'footer_align' => $request->get('footer-align', null),
+                        'footer_text' => $request->get('footer-text', null),
+                        'footer_pagination' => ($request->get('footer-pagination') === 'true') ? 1 : 0,
+                    ];
 
         $roadbook->saveOptions($options_css);
 
-        if (array_key_exists('real_export', $_POST) && $_POST['real_export'] == 'false') {
-            $app->json(['success' => true]);
+        if (!$real_export) {
+            return $app->json(['success' => true]);
         }
 
         if (!$roadbook->export()) {
             return $app->json(['success' => false, 'error' => $roadbook->result]);
         }
 
-        return $app->json(['success' => true,
+        return $app->json([
+                         'success' => true,
                          'size' => round(filesize($roadbook->getPdfFile()) / 1024 / 1024, 2),
                          // 'command'=> $pdf->command,
-                         'link' => '<a href="/roadbook/'.basename($roadbook->getHtmlFile()).'?pdf">Download your roadbook now</a>', ]);
+                         'link' => '<a href="/roadbook/'.basename($roadbook->getHtmlFile()).'?pdf">Download your roadbook now</a>',
+                        ]);
     }
 
     /**
@@ -284,7 +322,6 @@ class Controller
      */
     public function deleteAction(Application $app, Request $request)
     {
-
         if (!$request->isXmlHttpRequest()) {
             return $app->json(['success' => false]);
         }
@@ -296,7 +333,19 @@ class Controller
         }
 
         (new Georoadbook($app, $id))->delete();
+        $app['session']->getFlashBag()->add('deleted', 'Your roadbook has been deleted!');
 
-        return $app->json(['success' => true]);
+        return $app['url_generator']->generate('index');
+    }
+
+    protected function checkLogout(Application $app, Request $request)
+    {
+        if ($request->get('logout') === '') {
+            $login = new Login($app, $request);
+            $login->logout();
+            return true;
+        }
+
+        return false;
     }
 }

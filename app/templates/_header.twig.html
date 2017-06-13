@@ -1,3 +1,19 @@
-<header>
-    <h1>GeoRoadbook<small>, create your geocaching roadbook ready-to-print</small></h1>
-</header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse">
+          <div class="container">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="/">GeoRoadbook</a>
+            </div>
+            <div id="navbar">
+              {% if app.session.get('user') is not defined or app.session.get('user') is null %}
+                <button type="button" id="btn_geocaching" class="btn btn-primary navbar-btn navbar-right">Login with Geocaching.com</button>
+              {% else %}
+                    <div class="hello-user navbar-right navbar-text">
+                        <span><img src="{{ app.session.get('user').AvatarUrl }}" width="30" alt="" /></span>
+                        <span>Hello {{ app.session.get('user').UserName }}!</span>
+                        <span class="btn btn-default" role="button"><a href="?logout">Sign Out</a></span>
+                    </div>
+              {% endif %}
+            </div>
+          </div>
+        </nav>

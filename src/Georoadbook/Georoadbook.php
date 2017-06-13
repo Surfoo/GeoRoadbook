@@ -30,40 +30,40 @@ class Georoadbook
 
     public $locale = null;
 
-    protected $bbcode_smileys = [':)' => 'icon_smile.gif',
-                                      ':D' => 'icon_smile_big.gif',
-                                      '8D' => 'icon_smile_cool.gif',
-                                      ':I' => 'icon_smile_blush.gif',
-                                      ':P' => 'icon_smile_tongue.gif',
-                                      '}:)' => 'icon_smile_evil.gif',
-                                      ';)' => 'icon_smile_wink.gif',
-                                      ':o)' => 'icon_smile_clown.gif',
-                                      'B)' => 'icon_smile_blackeye.gif',
-                                      '8' => 'icon_smile_8ball.gif',
-                                      ':(' => 'icon_smile_sad.gif',
-                                      '8)' => 'icon_smile_shy.gif',
-                                      ':O' => 'icon_smile_shock.gif',
-                                      ':(!' => 'icon_smile_angry.gif',
-                                      'xx(' => 'icon_smile_dead.gif',
-                                      '|)' => 'icon_smile_sleepy.gif',
-                                      ':X' => 'icon_smile_kisses.gif',
-                                      '^' => 'icon_smile_approve.gif',
-                                      'V' => 'icon_smile_dissapprove.gif',
-                                      '?' => 'icon_smile_question.gif',
+    protected $bbcode_smileys = [':)'  => 'icon_smile.gif',
+                                 ':D'  => 'icon_smile_big.gif',
+                                 '8D'  => 'icon_smile_cool.gif',
+                                 ':I'  => 'icon_smile_blush.gif',
+                                 ':P'  => 'icon_smile_tongue.gif',
+                                 '}:)' => 'icon_smile_evil.gif',
+                                 ';)'  => 'icon_smile_wink.gif',
+                                 ':o)' => 'icon_smile_clown.gif',
+                                 'B)'  => 'icon_smile_blackeye.gif',
+                                 '8'   => 'icon_smile_8ball.gif',
+                                 ':('  => 'icon_smile_sad.gif',
+                                 '8)'  => 'icon_smile_shy.gif',
+                                 ':O'  => 'icon_smile_shock.gif',
+                                 ':(!' => 'icon_smile_angry.gif',
+                                 'xx(' => 'icon_smile_dead.gif',
+                                 '|)'  => 'icon_smile_sleepy.gif',
+                                 ':X'  => 'icon_smile_kisses.gif',
+                                 '^'   => 'icon_smile_approve.gif',
+                                 'V'   => 'icon_smile_dissapprove.gif',
+                                 '?'   => 'icon_smile_question.gif',
                                 ];
     protected $bbcode_colors = ['black',
-                                     'blue',
-                                     'gold',
-                                     'green',
-                                     'maroon',
-                                     'navy',
-                                     'orange',
-                                     'pink',
-                                     'purple',
-                                     'red',
-                                     'teal',
-                                     'white',
-                                     'yellow',
+                                'blue',
+                                'gold',
+                                'green',
+                                'maroon',
+                                'navy',
+                                'orange',
+                                'pink',
+                                'purple',
+                                'red',
+                                'teal',
+                                'white',
+                                'yellow',
                                 ];
 
     /**
@@ -91,28 +91,32 @@ class Georoadbook
     /**
      * @return string
      */
-    public function getGpxFile() {
+    public function getGpxFile()
+    {
         return $this->app['roadbook_dir'] . sprintf('/%s.gpx', $this->id);
     }
 
     /**
      * @return string
      */
-    public function getHtmlFile() {
+    public function getHtmlFile()
+    {
         return $this->app['roadbook_dir'] . sprintf('/%s.html', $this->id);
     }
 
     /**
      * @return string
      */
-    public function getJsonFile() {
+    public function getJsonFile()
+    {
         return $this->app['roadbook_dir'] . sprintf('/%s.json', $this->id);
     }
 
     /**
      * @return string
      */
-    public function getPdfFile() {
+    public function getPdfFile()
+    {
         return $this->app['roadbook_dir'] . '/pdf/' . sprintf('/%s.pdf', $this->id);
     }
 
@@ -169,7 +173,7 @@ class Georoadbook
      */
     public function export()
     {
-        $cmd = escapeshellcmd('/usr/bin/phantomjs ' . $this->app['root'] . '/html2pdf.js ' . $this->id . ' ' . $_SERVER['HTTP_HOST']);
+        $cmd = escapeshellcmd('/usr/bin/phantomjs ' . $this->app['root_directory'] . '/html2pdf.js ' . $this->id . ' ' . $_SERVER['HTTP_HOST']);
         if ($this->app['debug']) {
             $cmd .= ' 2>&1';
         }
@@ -266,7 +270,7 @@ class Georoadbook
             return false;
         }
         $zip = new \ZipArchive();
-        $filename_zip = sprintf($this->app['root'] . '/web/roadbook/zip/%s.%s', $this->id, 'zip');
+        $filename_zip = sprintf($this->app['root_directory'] . '/web/roadbook/zip/%s.%s', $this->id, 'zip');
 
         if ($zip->open($filename_zip, \ZIPARCHIVE::CREATE) !== true) {
             exit('Unable to open '.basename($filename_zip));
@@ -276,8 +280,8 @@ class Georoadbook
                         'content' => file_get_contents($this->getHtmlFile()), ];
         $zip->addFromString('roadbook/'.basename($this->getHtmlFile()), $this->app['twig']->render('raw.twig.html', $params));
 
-        $zip->addFile($this->app['root'] . '/web/design/roadbook.css', 'design/roadbook.css');
-        $this->recurseZip($this->app['root'] . '/web/img', $zip);
+        $zip->addFile($this->app['root_directory'] . '/web/design/roadbook.css', 'design/roadbook.css');
+        $this->recurseZip($this->app['root_directory'] . '/web/img', $zip);
         $zip->close();
 
         header('Content-Description: File Transfer');
@@ -359,10 +363,10 @@ class Georoadbook
         $this->locale = $locale;
 
         $xsldoc = new \DOMDocument();
-        $xsldoc->load($this->app['root'] . '/app/templates/xslt/roadbook.xslt');
+        $xsldoc->load($this->app['root_directory'] . '/app/templates/xslt/roadbook.xslt');
         $xsl = new \XSLTProcessor();
         $xsl->importStyleSheet($xsldoc);
-        $xsl->setParameter('', 'locale_filename', $this->app['root'] . '/locales/'.sprintf('%s.%s', $this->locale, 'xml'));
+        $xsl->setParameter('', 'locale_filename', $this->getLocaleFile());
         $xsl->setParameter('', 'icon_cache_dir', $this->app['icon_cache_dir']);
         $xsl->setParameter('', $options);
 
@@ -439,7 +443,7 @@ class Georoadbook
 
         if (!empty($toc_content)) {
             $toc = new \DomDocument();
-            $toc->load($this->app['root'] . '/locales/'.sprintf('%s.xml', $this->locale));
+            $toc->load($this->getLocaleFile());
             $xPath = new \DOMXPath($toc);
             $toc_i18n['title'] = $xPath->query("text[@id='toc_title']")->item(0)->nodeValue;
             $toc_i18n['name'] = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
@@ -693,5 +697,14 @@ class Georoadbook
         }
 
         $this->html = str_replace($bbcodes, $images, $this->html);
+    }
+
+    /**
+     * Return the path of the locale file
+     * @return string
+     */
+    protected function getLocaleFile()
+    {
+        return $this->app['root_directory'] . '/app/locales/' . sprintf('%s.%s', $this->locale, 'xml');
     }
 }

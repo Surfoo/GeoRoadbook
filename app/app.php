@@ -1,13 +1,14 @@
 <?php
 
+//use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
+use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\RoutingServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
-use Silex\Provider\WebProfilerServiceProvider;
-//use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\VarDumperServiceProvider;
-use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\WebProfilerServiceProvider;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 
@@ -15,10 +16,11 @@ use Symfony\Component\Debug\ExceptionHandler;
 ErrorHandler::register();
 ExceptionHandler::register();
 
+$app->register(new HttpFragmentServiceProvider());
 $app->register(new MonologServiceProvider());
 $app->register(new RoutingServiceProvider());
-$app->register(new HttpFragmentServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
+$app->register(new SessionServiceProvider());
 
 // Routing
 $app->get('/', 'Georoadbook\Controller\Controller::indexAction')
@@ -39,15 +41,16 @@ $app->post('/delete', 'Georoadbook\Controller\Controller::deleteAction')
 $app->post('/export', 'Georoadbook\Controller\Controller::exportAction')
     ->bind('export');
 
+$app->get('/login', 'Georoadbook\Controller\Controller::loginAction')
+    ->bind('login');
+
 $app['monolog.name']    = 'georoadbook';
 $app['monolog.logfile'] = __DIR__ . '/logs/' . $app['monolog.name'] . '.log';
 
 //header('Content-type: text/html; charset=utf-8');
 
-$app['template_dir'] = __DIR__ . '/templates';
-
 $app->register(new TwigServiceProvider(), array(
-    'twig.path' => $app['template_dir'],
+    'twig.path' => __DIR__ . '/templates',
     'twig.options' => [
         'cache' => false,
         'debug' => $app['debug']

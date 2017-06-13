@@ -1,12 +1,14 @@
-<div id="faq" class="modal hide fade">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+<div id="faq" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h3>FAQ</h3>
-    </div>
-    <div class="modal-body">
+      </div>
+      <div class="modal-body">
         <dl>
             <dt>My language isn't in the list, how to get it?</dt>
-            <dd>You can translate <a href="https://github.com/Surfoo/georoadbook/blob/master/locales/en.xml" onclick="window.open(this.href);return false;">this file</a> and make a pull request on github or send it by email. I'll add it quickly then.</dd>
+            <dd>You can translate <a href="https://github.com/Surfoo/georoadbook/blob/master/app/locales/en.xml" onclick="window.open(this.href);return false;">this file</a> and make a pull request on github or send it by email. I'll add it quickly then.</dd>
 
             <dt>Why does my roadbook no longer exist?</dt>
             <dd>All roadbooks are kept 1 month after the last modification date. You can know the date with a hover on the "Save" button, and if you save it, it'll be kept again.</dd>
@@ -16,7 +18,7 @@
             Your roadbook can't be found with tests on the URL, there are 16<sup>16</sup> possibilities.</dd>
 
             <dt>Why doesn't my GPX file work?</dt>
-            <dd>Only GPX files with the version 1.0.1 are managed, if you don't know the version, <a href="http://www.geocaching.com/account/ManagePreferences.aspx" onclick="window.open(this.href);return false;">check your preferences</a>.<br />
+            <dd>Only GPX files with the version 1.0.1 are managed, if you don't know the version, <a href="https://www.geocaching.com/account/settings/preferences" onclick="window.open(this.href);return false;">check your preferences</a>.<br />
                 GPX with tracks are not supported. If your file always doesn't work, it's may be corrupted.</dd>
 
             <dt>Why I can't see spoilers in the roadbook?</dt>
@@ -33,5 +35,7 @@
             <dt>I have a problem with GeoRoadbook, what can I do ?</dt>
             <dd>If you find bugs, please <a href="https://github.com/Surfoo/georoadbook/issues" onclick="window.open(this.href);return false;">open a bug issue on github</a>, or <a href="#about" data-toggle="modal">contact me</a>.</dd>
         </dl>
+      </div>
     </div>
+  </div>
 </div>
