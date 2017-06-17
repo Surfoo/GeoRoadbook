@@ -310,7 +310,7 @@ class Controller
                          'success' => true,
                          'size' => round(filesize($roadbook->getPdfFile()) / 1024 / 1024, 2),
                          // 'command'=> $pdf->command,
-                         'link' => '<a href="/roadbook/'.basename($roadbook->getHtmlFile()).'?pdf">Download your roadbook now</a>',
+                         'link' => '<a href="/roadbook/'.basename($roadbook->getRoadbookPath()).'?pdf">Download your roadbook now</a>',
                         ]);
     }
 
