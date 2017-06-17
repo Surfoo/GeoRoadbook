@@ -4,8 +4,10 @@
 *.sublime-workspace
 .php_cs.cache
 TODO
-app/logs/
-app/cache/
+!app/logs/.gitkeep
+!app/cache/.gitkeep
+app/logs
+app/cache
 app/config.php
 node_modules
 !web/roadbook/.gitkeep
