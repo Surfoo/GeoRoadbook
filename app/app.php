@@ -29,7 +29,7 @@ $app->get('/', 'Georoadbook\Controller\Controller::indexAction')
 $app->post('/upload', 'Georoadbook\Controller\Controller::uploadAction')
     ->bind('/upload');
 
-$app->get('/roadbook/{id}.html', 'Georoadbook\Controller\Controller::editAction')
+$app->get('/roadbook/{id}', 'Georoadbook\Controller\Controller::editAction')
     ->bind('edit');
 
 $app->post('/save', 'Georoadbook\Controller\Controller::saveAction')
