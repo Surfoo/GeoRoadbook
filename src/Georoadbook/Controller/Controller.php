@@ -169,7 +169,7 @@ class Controller
         $roadbook->saveFile($roadbook->getHtmlFile(), $roadbook->html);
         $roadbook->saveFile($roadbook->getJsonFile());
 
-        return $app->json(['success' => true, 'redirect' => 'roadbook/'. basename($roadbook->getHtmlFile())]);
+        return $app->json(['success' => true, 'redirect' => 'roadbook/'. basename($roadbook->getRoadbookPath())]);
     }
 
     /**

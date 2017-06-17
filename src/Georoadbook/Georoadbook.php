@@ -91,6 +91,14 @@ class Georoadbook
     /**
      * @return string
      */
+    public function getRoadbookPath()
+    {
+        return $this->app['roadbook_dir'] . sprintf('/%s', $this->id);
+    }
+
+    /**
+     * @return string
+     */
     public function getGpxFile()
     {
         return $this->app['roadbook_dir'] . sprintf('/%s.gpx', $this->id);
