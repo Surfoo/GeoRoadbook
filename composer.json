@@ -2,8 +2,8 @@
     "name": "surfoo/georoadbook",
     "license": "MIT",
     "type": "project",
-    "keywords": ["geocaching", "georoadbook", "geocache", "roadbook"],
-    "homepage": "http://georoadbook.vaguelibre.net/",
+    "keywords": ["groundspeak", "geocaching", "georoadbook", "geocache", "roadbook"],
+    "homepage": "https://georoadbook.vaguelibre.net/",
     "time": "2013-09-13",
     "description": "Create your geocaching roadbook ready-to-print from your gpx file.",
     "authors": [{
@@ -12,15 +12,36 @@
         "role": "Developer"
     }],
     "autoload": {
-        "psr-0": {
-            "Georoadbook": "src/Geocaching/Georoadbook"
+        "psr-4": {
+            "Georoadbook\\": "src/Georoadbook/"
         }
     },
     "require": {
-        "php": ">=5.3",
+        "php": ">=5.6",
         "jbbcode/jbbcode": "1.2.*",
         "twig/twig": "1.*",
-        "tinymce/tinymce": "4.*",
-        "cebe/markdown": "~1.0"
+        "tinymce/tinymce": "~4.0",
+        "cebe/markdown": "~1.0",
+        "silex/silex": "~2.0",
+        "symfony/console": "^3.2",
+        "monolog/monolog": "^1.22",
+        "symfony/twig-bridge": "^3.2",
+        "symfony/translation": "^3.2",
+        "symfony/asset": "^3.2",
+        "silex/web-profiler": "^2.0",
+        "symfony/var-dumper": "^3.2",
+        "twbs/bootstrap": "^3.3",
+        "kartik-v/bootstrap-fileinput": "~4.3.0",
+        "geocaching/api": "^2.0",
+        "components/jquery": "~2.2"
+    },
+   "scripts": {
+      "post-update-cmd": [
+            "cp -rf vendor/components/jquery vendor/twbs/bootstrap vendor/tinymce/tinymce vendor/kartik-v/bootstrap-fileinput web/assets"
+      ],
+      "post-install-cmd": [
+            "cp -n app/config.php.dist app/config.php",
+            "cp -nrf vendor/components/jquery vendor/twbs/bootstrap vendor/tinymce/tinymce vendor/kartik-v/bootstrap-fileinput web/assets"
+      ]
     }
 }

@@ -7,7 +7,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 $app = new Silex\Application();
 
-$app['debug']           = false;
+$app['debug']           = true;
 $app['monolog.level']   = \Monolog\Logger::ERROR;
 
 require dirname(__DIR__) . '/app/config.php';

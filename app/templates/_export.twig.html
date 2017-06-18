@@ -1,0 +1,153 @@
+<div id="ui_export" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <div class="tabbable">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#format" aria-controls="format" role="tab" data-toggle="tab">Format</a></li>
+                        <li role="presentation"><a href="#header" aria-controls="header" role="header" data-toggle="tab">Header & Footer</a></li>
+                    </ul>
+                    <form>
+                        <div class="tab-content">
+                            <div class="tab-pane active form-horizontal" id="format">
+                                <div class="form-group">
+                                    <label for="page_size" class="col-sm-2 control-label">Page size</label>
+                                    <div class="col-sm-10">
+                                        <select name="page_size" id="page_size" class="form-control">
+                                            <option value="A4">A4</option>
+                                            <option value="A5">A5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="orientation" class="col-sm-2 control-label">Orientation</label>
+                                    <div class="col-sm-10">
+                                        <select name="orientation" id="orientation" class="form-control">
+                                            <option value="portrait">Portrait</option>
+                                            <option value="landscape">Landscape</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <fieldset>
+                                    <legend>Margins</legend>
+                                    <div class="form-horizontal">
+                                        <div class="form-inline form-group">
+                                            <label for="margin_left" class="col-sm-2 control-label">Left</label>
+                                            <div class="controls col-sm-10">
+                                                <input name="margin_left" class="form-control" type="number" min="0" max="50" id="margin_left" value="10" style="width:60px;" /> <small>mm</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline form-group">
+                                            <label for="margin_right" class="col-sm-2 control-label">Right</label>
+                                            <div class="controls col-sm-10">
+                                                <input name="margin_right" class="form-control" type="number" min="0" max="50" id="margin_right" value="10" style="width:60px;" /> <small>mm</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-inline form-group">
+                                            <label for="margin_top" class="col-sm-2 control-label">Top</label>
+                                            <div class="controls col-sm-10">
+                                                <input name="margin_top" class="form-control" type="number" min="0" max="50" id="margin_top" value="10" style="width:60px;" /> <small>mm</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-inline form-group">
+                                            <label for="margin_bottom" class="col-sm-2 control-label">Bottom</label>
+                                            <div class="controls col-sm-10">
+                                                <input name="margin_bottom" class="form-control" type="number" min="0" max="50" id="margin_bottom" value="10" style="width:60px;" /> <small>mm</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="tab-pane form-horizontal" id="header">
+                                <p>You can choose to write a text or display the pagination in the header or footer.</p>
+
+                                <fieldset>
+                                    <legend>Header Text</legend>
+                                        <div class="form-group">
+                                            <label for="header_align" class="col-sm-2 control-label">Alignment</label>
+                                            <div class="col-sm-10">
+                                                <select name="header_align" id="header_align" class="form-control">
+                                                    <option value="left">Left</option>
+                                                    <option value="center">Center</option>
+                                                    <option value="right">Right</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="header_text" class="col-sm-2 control-label">Text</label>
+                                            <div class="col-sm-10">
+                                                <input name="header_text" class="form-control" type="text" id="header_text" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="header_pagination" class="col-sm-2 control-label">Pagination</label>
+                                            <div class="col-sm-10">
+                                                <input type="checkbox" name="header_pagination" value="1" id="header_pagination" />
+                                            </div>
+                                        </div>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Footer Text</legend>
+                                        <div class="form-group">
+                                            <label for="footer_align" class="col-sm-2 control-label">Alignment</label>
+                                            <div class="col-sm-10">
+                                                <select name="footer_align" id="footer_align" class="form-control">
+                                                    <option value="left">Left</option>
+                                                    <option value="center">Center</option>
+                                                    <option value="right">Right</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="footer_text" class="col-sm-2 control-label">Text</label>
+                                            <div class="col-sm-10">
+                                                <input name="footer_text" class="form-control" type="text" id="footer_text" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="footer_pagination" class="col-sm-2 control-label">Pagination</label>
+                                            <div class="col-sm-10">
+                                                <input type="checkbox" name="footer_pagination" value="1" id="footer_pagination" />
+                                            </div>
+                                        </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button id="apply" class="btn btn-primary">Apply</button>
+                <button id="export" class="btn btn-primary">Export</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="ui_exported" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3>Your roadbook has been exported successfully!</h3>
+            </div>
+            <div class="modal-body">
+                <p id="download_link"></p>
+                <small>You can also download your roadbook later with the "Download as" button.</small>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

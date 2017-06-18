@@ -1,0 +1,18 @@
+{
+  "name": "georoadbook",
+  "description": "Create your geocaching roadbook ready-to-print from your gpx file.",
+  "scripts": {
+    "start": "brunch w",
+    "build": "brunch build --production"
+  },
+  "devDependencies": {
+    "auto-reload-brunch": "~2.7",
+    "babel-brunch": "~6.1",
+    "brunch": "~2.10",
+    "clean-css-brunch": "~2.10",
+    "css-brunch": "~2.10",
+    "javascript-brunch": "~2.10",
+    "jshint-brunch": "~2.0",
+    "uglify-js-brunch": "~2.10"
+  }
+}
