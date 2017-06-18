@@ -45,7 +45,7 @@ $app->get('/login', 'Georoadbook\Controller\Controller::loginAction')
     ->bind('login');
 
 $app['monolog.name']    = 'georoadbook';
-$app['monolog.logfile'] = __DIR__ . '/logs/' . $app['monolog.name'] . '.log';
+$app['monolog.logfile'] = __DIR__ . '/logs/' . $app['monolog.name'] . '-' . date('Ymd') . '.log';
 
 //header('Content-type: text/html; charset=utf-8');
 
