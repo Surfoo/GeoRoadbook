@@ -113,7 +113,7 @@ class Controller
         if (!in_array($sort_by, $app['available_sorts'])) {
             $sort_by = $app['available_sorts'][0];
         }
-        $pagebreak = $request->get('pagebreak');
+        $pagebreak = ($request->get('pagebreak') === 'true') ? true : false;
         $images = ($request->get('images') === 'true') ? true : false;
 
         $roadbook = new Georoadbook($app);
