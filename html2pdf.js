@@ -89,7 +89,7 @@ page.paperSize = {
   }
 };
 
-page.open('http://' + host + '/roadbook/' + id + '.html?raw', function(status) {
+page.open('http://' + host + '/roadbook/' + id + '?raw', function(status) {
   page.render('roadbook/pdf/' + id + '.pdf');
   phantom.exit();
 });
