@@ -1,7 +1,7 @@
 'use strict';
 
 exports.config = {
-    optimize: false,
+    optimize: true,
     paths: {
         watched: ["app"],
         public: "web"
@@ -13,6 +13,15 @@ exports.config = {
         javascripts: {
             "joinTo": "app.min.js"
         }
+    },
+    conventions: {
+        ignored: [
+            /^app\/cache/,
+            /^app\/logs/,
+            /^app\/tmp/,
+            /^app\/assets/,
+            /^app\/locales/,
+        ],
     },
     overrides: {
         production: {

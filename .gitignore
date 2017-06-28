@@ -3,6 +3,7 @@
 *.sublime-project
 *.sublime-workspace
 .php_cs.cache
+npm-debug.log
 TODO
 !app/tmp/.gitkeep
 !app/logs/.gitkeep

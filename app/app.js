@@ -164,8 +164,8 @@
         });
     });
 
-    $('#ui_export').on('show', function() {
-        if ($('#btn_export').hasClass('disabled')) {
+    $('#ui_export,#ui_export_exp').on('show', function() {
+        if ($('#btn_export_title').hasClass('disabled')) {
             return false;
         }
         $.getJSON('/roadbook/' + roadbook_id + '.json', function(data) {
@@ -202,6 +202,15 @@
         saveHtml();
         $('#ui_export').modal('hide');
         _ajax(true);
+    });
+
+    $("#apply_exp").click(function() {
+        _ajax_exp(false);
+    });
+    $("#export_exp").click(function() {
+        saveHtml();
+        $('#ui_export_exp').modal('hide');
+        _ajax_exp(true);
     });
 
     $("#header_pagination").click(function() {
@@ -247,6 +256,7 @@
         real_export = +real_export;
 
         $('#btn_save').addClass('disabled');
+        $('#btn_export_title').addClass('disabled');
         $('#btn_export').addClass('disabled');
         $('#btn_download_title').addClass('disabled');
         $('#btn_download').addClass('disabled');
@@ -276,6 +286,7 @@
                 ed.setProgressState(0);
 
                 $('#btn_save').removeClass('disabled');
+                $('#btn_export_title').removeClass('disabled');
                 $('#btn_export').removeClass('disabled');
                 $('#btn_download_title').removeClass('disabled');
                 $('#btn_download').removeClass('disabled');
@@ -307,6 +318,84 @@
                 ed.setProgressState(0);
 
                 $('#btn_save').removeClass('disabled');
+                $('#btn_export_title').removeClass('disabled');
+                $('#btn_export').removeClass('disabled');
+                $('#btn_download_title').removeClass('disabled');
+                $('#btn_download').removeClass('disabled');
+                $('#btn_delete').removeClass('disabled');
+
+                if (!real_export) {
+                    return;
+                }
+                alert('Error in exportation.');
+            }
+        });
+    };
+
+    var _ajax_exp = function(real_export) {
+        var ed = tinyMCE.get('editable');
+        ed.setProgressState(1);
+        real_export = +real_export;
+
+        $('#btn_save').addClass('disabled');
+        $('#btn_export_title').addClass('disabled');
+        $('#btn_export').addClass('disabled');
+        $('#btn_download_title').addClass('disabled');
+        $('#btn_download').addClass('disabled');
+        $('#btn_delete').addClass('disabled');
+
+        $.ajax({
+            url: "/export",
+            type: "POST",
+            data: {
+                real_export: real_export,
+                id: roadbook_id,
+                experimental: true,
+                'page-size': document.forms[1].page_size.value,
+                'orientation': document.forms[1].orientation.value,
+                'margin-left': document.forms[1].margin_left.value,
+                'margin-right': document.forms[1].margin_right.value,
+                'margin-top': document.forms[1].margin_top.value,
+                'margin-bottom': document.forms[1].margin_bottom.value,
+            },
+
+            success: function(data) {
+                ed.setProgressState(0);
+
+                $('#btn_save').removeClass('disabled');
+                $('#btn_export_title').removeClass('disabled');
+                $('#btn_export').removeClass('disabled');
+                $('#btn_download_title').removeClass('disabled');
+                $('#btn_download').removeClass('disabled');
+                $('#btn_delete').removeClass('disabled');
+
+                if (!real_export) {
+                    return;
+                }
+
+                if (!data || data === "") {
+                    alert('Conversion failed :-(');
+                    return;
+                }
+                if (typeof data !== 'object') {
+                    alert('Conversion failed :-(\nMessage:\n' + data);
+                    return;
+                }
+
+                if (data && data.success) {
+                    ed.setProgressState(0);
+                    $('#dl_pdf').show();
+                    $('#download_link').html(data.link + ' (' + data.size + 'Mb)');
+                    $('#ui_exported').modal('show');
+                } else {
+                    alert('Conversion failed :-(\nMessage:\n' + data.error);
+                }
+            },
+            failure: function() {
+                ed.setProgressState(0);
+
+                $('#btn_save').removeClass('disabled');
+                $('#btn_export_title').removeClass('disabled');
                 $('#btn_export').removeClass('disabled');
                 $('#btn_download_title').removeClass('disabled');
                 $('#btn_download').removeClass('disabled');

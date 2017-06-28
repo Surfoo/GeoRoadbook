@@ -271,6 +271,7 @@ class Controller
 
         $roadbook_id = $request->get('id', null);
         $real_export = $request->get('real_export', null);
+        $experimental = $request->get('experimental', null);
 
         if (is_null($roadbook_id)) {
             return $app->json(['success' => false]);
@@ -302,7 +303,7 @@ class Controller
             return $app->json(['success' => true]);
         }
 
-        if (!$roadbook->export()) {
+        if (!$roadbook->handleExport($experimental)) {
             return $app->json(['success' => false, 'error' => $roadbook->result]);
         }
 

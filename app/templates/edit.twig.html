@@ -30,7 +30,17 @@
 
                         <div class="btn-group" role="group">
                             <button type="submit" id="btn_save" class="btn btn-primary disabled" data-loading-text="Saving..." title="{{ last_modification|e }}">Save</button>
-                            <a href="#ui_export" id="btn_export" role="button" class="btn btn-primary" data-toggle="modal" title="Export as PDF file">Export as PDF</a>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-primary" title="Export as PDF" id="btn_export_title"><i class="icon-download icon-white"></i> Export as PDF</button>
+                            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="btn_export">
+                                <span class="caret"></span>
+                            </button>
+
+                            <ul id="export_pdf" class="dropdown-menu">
+                                <li><a href="#ui_export" id="btn_export" class="" data-toggle="modal" title="Export as PDF file"><img src="/design/icon-pdf.png" alt="" /> Normal export</a></li>
+                                <li><a href="#ui_export_exp" id="btn_export_exp" data-toggle="modal" title="Export as PDF file (experimental)"><img src="/design/icon-pdf-exp.png" alt="" /> Experimental export</a></li>
+                            </ul>
                         </div>
 
                         <div class="btn-group" role="group">
@@ -49,6 +59,8 @@
                             <button type="submit" id="btn_delete" class="btn btn-warning"><i class="icon-trash icon-white"></i> Delete</button>
                         </div>
                         {% include '_export.twig.html' %}
+                        {% include '_export_exp.twig.html' %}
+                        {% include '_exported.twig.html' %}
                     </div>
                     <div id="tinymce">
                         <textarea id="editable" cols="100" rows="100">{{ roadbook_content }}</textarea>

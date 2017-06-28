@@ -175,11 +175,21 @@ class Georoadbook
     }
 
     /**
-     * export.
-     *
+     * @param  boolean $experimental
+     * @return void
+     */
+    public function handleExport($experimental = false) {
+        if (!$experimental) {
+            return $this->phantomJSexport();
+        } else {
+            return $this->chromeExport();
+        }
+    }
+
+    /**
      * @return bool
      */
-    public function export()
+    protected function phantomJSexport()
     {
         $cmd = escapeshellcmd('/usr/bin/phantomjs ' . $this->app['root_directory'] . '/html2pdf.js ' . $this->id . ' ' . $_SERVER['HTTP_HOST']);
         if ($this->app['debug']) {
@@ -190,6 +200,34 @@ class Georoadbook
             return false;
         }
 
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function chromeExport()
+    {
+        $tempDirectory = $this->app['root_directory'] . '/app/tmp/' . $this->id;
+        if(!file_exists($tempDirectory)) {
+            mkdir($tempDirectory);
+        }
+        chdir($tempDirectory);
+
+        $cmd = escapeshellcmd('/usr/bin/google-chrome-stable --headless --disable-gpu --print-to-pdf http://' . $_SERVER['HTTP_HOST'] . '/roadbook/' . $this->id . '?raw');
+        if ($this->app['debug']) {
+            $cmd .= ' 2>&1';
+        }
+        exec($cmd, $output);
+
+        $tempOutput = $tempDirectory . '/output.pdf';
+        if (!file_exists($tempOutput)) {
+            rmdir($tempDirectory);
+            return false;
+        }
+
+        rename($tempOutput, $this->app['root_directory'] . '/web/roadbook/pdf/' . $this->id . '.pdf');
+        rmdir($tempDirectory);
         return true;
     }
 
