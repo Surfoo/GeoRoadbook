@@ -515,7 +515,10 @@ class Georoadbook
     public function removeImages($display_short_desc)
     {
         $dom = new \DomDocument();
+
+        libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
+        libxml_clear_errors();
 
         if ($display_short_desc) {
             $finder = new \DomXPath($dom);
@@ -559,7 +562,11 @@ class Georoadbook
         $xml->loadXML($this->gpx);
         $waypoints = $xml->getElementsByTagName('wpt');
         $dom = new \DomDocument();
+
+        libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
+        libxml_clear_errors();
+
         $finder = new \DomXPath($dom);
         foreach ($waypoints as $waypoint) {
             $long_description = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
@@ -596,7 +603,11 @@ class Georoadbook
         $xml->loadXML($this->gpx);
         $waypoints = $xml->getElementsByTagName('wpt');
         $dom = new \DomDocument();
+
+        libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
+        libxml_clear_errors();
+
         $finder = new \DomXPath($dom);
         foreach ($waypoints as $waypoint) {
             $long_description = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
@@ -651,7 +662,11 @@ class Georoadbook
     public function encryptHints()
     {
         $dom = new \DomDocument();
+
+        libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
+        libxml_clear_errors();
+
         $finder = new \DomXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheHintContent ')]");
         foreach ($nodes as $node) {
@@ -683,7 +698,10 @@ class Georoadbook
     public function parseMarkdown()
     {
         $dom = new \DomDocument();
+
+        libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
+        libxml_clear_errors();
 
         $finder = new \DomXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
@@ -708,7 +726,10 @@ class Georoadbook
     public function parseBBcode()
     {
         $dom = new \DomDocument();
+
+        libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
+        libxml_clear_errors();
 
         $finder = new \DomXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
