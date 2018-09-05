@@ -30,10 +30,9 @@ class Login
                 $this->getToken();
             }
         } catch (GeocachingOAuthException $e) {
-            echo $e->getMessage();
-            return false;
+            $this->app['monolog']->error($e->getMessage());
+            throw $e;
         }
-        return true;
     }
 
     public function logout()

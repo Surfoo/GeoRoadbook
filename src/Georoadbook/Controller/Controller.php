@@ -26,7 +26,8 @@ class Controller
         ];
 
         if ($this->checkLogout($app, $request)) {
-            return $app->redirect('/');
+            $redirect = !empty($request->headers->get('referer')) ? $request->headers->get('referer') : '/';
+            return $app->redirect($redirect);
         }
 
         if ($app['session']->get('access_token')) {
@@ -45,10 +46,17 @@ class Controller
      */
     public function loginAction(Application $app, Request $request)
     {
-        $login = new Login($app, $request);
-        $login->authenticate();
-
-        return $app->redirect('/');
+        try {
+            if (is_null($request->get('oauth_verifier')) && is_null($request->get('oauth_token'))) {
+                $app['session']->set('loginRedirect', !empty($request->headers->get('referer')) ? $request->headers->get('referer') : '/');
+            }
+            (new Login($app, $request))->authenticate();
+            $redirect = !is_null($app['session']->get('loginRedirect')) ? $app['session']->get('loginRedirect') : '/';
+            return $app->redirect($redirect);
+        }
+        catch(GeocachingOAuthException $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -182,7 +190,8 @@ class Controller
     public function editAction(Application $app, Request $request, $id)
     {
         if ($this->checkLogout($app, $request)) {
-            return $app->redirect('/');
+            $redirect = !empty($request->headers->get('referer')) ? $request->headers->get('referer') : '/';
+            return $app->redirect($redirect);
         }
 
         $roadbook = new Georoadbook($app, $id);
@@ -342,8 +351,7 @@ class Controller
     protected function checkLogout(Application $app, Request $request)
     {
         if ($request->get('logout') === '') {
-            $login = new Login($app, $request);
-            $login->logout();
+            (new Login($app, $request))->logout();
             return true;
         }
 
