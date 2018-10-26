@@ -11,6 +11,7 @@ use Silex\Provider\VarDumperServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
+use Monolog\Logger;
 
 // Register global error and exception handlers
 ErrorHandler::register();
@@ -44,10 +45,17 @@ $app->post('/export', 'Georoadbook\Controller\Controller::exportAction')
 $app->get('/login', 'Georoadbook\Controller\Controller::loginAction')
     ->bind('login');
 
+$app->get('/logout', 'Georoadbook\Controller\Controller::logoutAction')
+    ->bind('logout');
+
+$app->get('/callback', 'Georoadbook\Controller\Controller::callbackAction')
+    ->bind('callback');
+
 $app['monolog.name']    = 'georoadbook';
 $app['monolog.logfile'] = __DIR__ . '/logs/' . $app['monolog.name'] . '-' . date('Ymd') . '.log';
+$app['monolog.level']    = Logger::WARNING;
 
-//header('Content-type: text/html; charset=utf-8');
+header('Content-type: text/html; charset=utf-8');
 
 $app->register(new TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/templates',
@@ -60,9 +68,9 @@ $app->register(new TwigServiceProvider(), array(
 $app->extend('twig', function($twig, $app) {
     $twig->addGlobal('suffix_css_js', $app['suffix_css_js']);
 
-    if ($app['debug']) {
-        $twig->addExtension(new Twig_Extension_Debug());
-    }
+    // if ($app['debug']) {
+    //     $twig->addExtension(new Twig_Extension_Debug());
+    // }
     return $twig;
 });
 

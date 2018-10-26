@@ -7,7 +7,12 @@ use Georoadbook\Process\Login;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Georoadbook\Api as GeocachingApi;
+//use Georoadbook\Api as GeocachingApi;
+
+use Geocaching\GeocachingFactory;
+use Geocaching\Exception\GeocachingSdkException;
+use League\OAuth2\Client\Provider\Geocaching as GeocachingProvider;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 
 class Controller
 {
@@ -25,14 +30,25 @@ class Controller
             'language' => $app['language'],
         ];
 
-        if ($this->checkLogout($app, $request)) {
-            $redirect = !empty($request->headers->get('referer')) ? $request->headers->get('referer') : '/';
-            return $app->redirect($redirect);
-        }
+        if ($app['session']->get('accessToken')) {
 
-        if ($app['session']->get('access_token')) {
-            $api = new GeocachingApi($app);
-            $params['pocketqueryList'] = $api->getPocketQueryList();
+            $geocachingApi = GeocachingFactory::createSdk($app['session']->get('accessToken'), $app['environment'], 
+                                                    [
+                                                        'debug'   => false,
+                                                        'timeout' => 10,
+                                                    ]);
+            try {
+                if (!$app['session']->get('user')) {
+                    $profileResponse = $geocachingApi->getUser('me', ['fields' => 'referenceCode,username,hideCount,findCount,favoritePoints,membershipLevelId,avatarUrl,bannerUrl,url,homeCoordinates,geocacheLimits']);
+                    $profile = $profileResponse->getBody();
+                    
+                    $app['session']->set('user', ['username' => $profile->username, 'avatarUrl' => $profile->avatarUrl]);
+                }
+                $params['pocketqueryList'] = $geocachingApi->getUserLists('me', ['types' => 'pq', 'fields' => 'referenceCode,name'])->getBody();
+            } catch(GeocachingSdkException $e) {
+                $app['monolog']->error($e->getMessage());
+                $twig_vars['exception'] = $e->getMessage();
+            }
         }
 
         return $app['twig']->render('index.twig.html', $params);
@@ -46,18 +62,70 @@ class Controller
      */
     public function loginAction(Application $app, Request $request)
     {
-        try {
-            if (is_null($request->get('oauth_verifier')) && is_null($request->get('oauth_token'))) {
-                $app['session']->set('loginRedirect', !empty($request->headers->get('referer')) ? $request->headers->get('referer') : '/');
-            }
-            (new Login($app, $request))->authenticate();
-            $redirect = !is_null($app['session']->get('loginRedirect')) ? $app['session']->get('loginRedirect') : '/';
-            return $app->redirect($redirect);
-        }
-        catch(GeocachingOAuthException $e) {
-            echo $e->getMessage();
-        }
+    	$provider = $this->getProvider($app);
+        $authorizationUrl = $provider->getAuthorizationUrl();
+
+        // Get the state generated for you and store it to the session.
+        $_SESSION['oauth2state'] = $provider->getState();
+    
+        // Redirect the user to the authorization URL.
+        return $app->redirect($authorizationUrl);
     }
+
+    /**
+     * @param Application $app
+     * @param Request     $request
+     *
+     * @return Response
+     */
+    public function logoutAction(Application $app, Request $request)
+    {
+        $app['session']->clear();
+        $redirect = !empty($request->headers->get('referer')) ? $request->headers->get('referer') : '/';
+        return $app->redirect($redirect);
+    }
+
+    /**
+     * @param Application $app
+     * @param Request     $request
+     *
+     * @return Response
+     */
+	public function callbackAction(Application $app, Request $request)
+ 	{
+        $provider = $this->getProvider($app);
+        $state = $request->get('state');
+
+        $code = $request->get('code');
+        if (!$app['session']->get('accessToken') && !is_null($state)) {
+
+            $oauth2state = $app['session']->get('oauth2state');
+            if (isset($oauth2state) && $state !== $oauth2state) {
+                $app['session']->forget('oauth2state');
+                //die('state error');
+            } else {
+                try {
+                    // Try to get an access token using the authorization code grant.
+                    $accessToken = $provider->getAccessToken('authorization_code', [
+                        'code' => $code
+                    ]);
+                    // We have an access token, which we may use in authenticated
+                    // requests against the service provider's API.
+                    $app['session']->set('accessToken', $accessToken->getToken());
+                    $app['session']->set('refreshToken', $accessToken->getRefreshToken());
+                    $app['session']->set('expiredTimestamp', $accessToken->getExpires());
+                    $app['session']->set('object', serialize($accessToken));
+
+                } catch (IdentityProviderException $e) {
+                    // Failed to get the access token or user details.
+                    //echo $e->getMessage();
+                    $app['monolog']->error($e->getMessage());
+                    //die;
+                }
+            }
+        }
+        return $app->redirect('/');
+	}
 
     /**
      * @param Application $app
@@ -72,24 +140,31 @@ class Controller
         }
 
         $gpx = $request->get('gpx', '');
-        $pocket_guid = $request->get('pocket_guid', '');
+        $referenceCode = $request->get('referenceCode', '');
 
         $locale = $request->get('locale', null);
 
-        if (empty($gpx) && empty($pocket_guid)) {
+        if (empty($gpx) && empty($referenceCode)) {
             return $app->json(['success' => false, 'message' => 'A GPX file or a Pocket Query is missing.']);
         }
 
         if (is_null($locale)) {
             return $app->json(['success' => false, 'message' => 'Roadbook language is missing.']);
         }
+
         if (!in_array($locale, array_keys($app['locales']))) {
             return $app->json(['success' => false, 'message' => 'Roadbook language is invalid.', 'lang' => $app['locales']]);
         }
 
-        if ($app['session']->get('access_token') && !empty($pocket_guid)) {
-            $api = new GeocachingApi($app);
-            $gpx = $api->getPocketQueryZippedFile($pocket_guid);
+        if ($app['session']->get('access_token') && !empty($referenceCode)) {
+
+            $geocachingApi = GeocachingFactory::createSdk($app['session']->get('accessToken'), $app['environment'], 
+                                                    [
+                                                        'debug'   => false,
+                                                        'timeout' => 10,
+                                                    ]);
+            $response = $geocachingApi->getZippedPocketQuery($referenceCode);
+            $gpx = base64_decode($response->getBody());
         }
 
         try {
@@ -351,10 +426,22 @@ class Controller
     protected function checkLogout(Application $app, Request $request)
     {
         if ($request->get('logout') === '') {
-            (new Login($app, $request))->logout();
+            $app['session']->clear();
             return true;
         }
 
         return false;
+    }
+
+    private function getProvider(Application $app): GeocachingProvider
+    {
+        return new GeocachingProvider([
+        	'clientId'       => $app['oauth_key'],
+        	'clientSecret'   => $app['oauth_secret'],
+        	'redirectUri'    => $app['callback_url'],
+        	'response_type'  => 'code',
+        	'scope'          => '*',
+        	'environment'    => $app['environment'],
+        ]);
     }
 }

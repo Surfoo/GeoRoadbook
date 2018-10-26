@@ -6,13 +6,15 @@
     "build": "brunch build --production"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.1.0",
     "auto-reload-brunch": "~2.7",
-    "babel-brunch": "~6.1",
-    "brunch": "~2.10",
+    "babel-brunch": "^7.0.0",
+    "brunch": "^2.10.17",
     "clean-css-brunch": "~2.10",
     "css-brunch": "~2.10",
+    "eslint": "^5.7.0",
+    "eslint-brunch": "^3.12.0",
     "javascript-brunch": "~2.10",
-    "jshint-brunch": "~2.0",
     "uglify-js-brunch": "~2.10"
   }
 }

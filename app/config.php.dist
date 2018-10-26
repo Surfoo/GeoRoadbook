@@ -3,10 +3,10 @@
 date_default_timezone_set('Europe/Paris');
 
 // Geocaching API Access
-$app['oauth_key']          = '';
-$app['oauth_secret']       = '';
-$app['oauth_url']          = 'live';
-$app['oauth_callback_url'] = '';
+$app['oauth_key']    = '';
+$app['oauth_secret'] = '';
+$app['callback_url'] = '';
+$app['environment']  = 'production';
 
 // Locales for the roadbook
 $app['locales'] = [
