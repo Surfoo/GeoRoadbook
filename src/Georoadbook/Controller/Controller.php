@@ -2,18 +2,16 @@
 
 namespace Georoadbook\Controller;
 
+use Geocaching\Exception\GeocachingSdkException;
+use Geocaching\GeocachingFactory;
 use Georoadbook\Georoadbook;
-use Georoadbook\Process\Login;
+use League\OAuth2\Client\Provider\Exception\GeocachingIdentityProviderException;
+use League\OAuth2\Client\Provider\Geocaching as GeocachingProvider;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-//use Georoadbook\Api as GeocachingApi;
-
-use Geocaching\GeocachingFactory;
-use Geocaching\Exception\GeocachingSdkException;
-use League\OAuth2\Client\Provider\Geocaching as GeocachingProvider;
-use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-
 class Controller
 {
 
@@ -21,9 +19,9 @@ class Controller
      * @param Application $app
      * @param Request     $request
      *
-     * @return mixed
+     * @return string       
      */
-    public function indexAction(Application $app, Request $request)
+    public function indexAction(Application $app, Request $request): string 
     {
         $params = [
             'locales'  => $app['locales'],
@@ -58,9 +56,9 @@ class Controller
      * @param Application $app
      * @param Request     $request
      *
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function loginAction(Application $app, Request $request)
+    public function loginAction(Application $app, Request $request): RedirectResponse
     {
     	$provider = $this->getProvider($app);
         $authorizationUrl = $provider->getAuthorizationUrl();
@@ -76,9 +74,9 @@ class Controller
      * @param Application $app
      * @param Request     $request
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function logoutAction(Application $app, Request $request)
+    public function logoutAction(Application $app, Request $request): RedirectResponse
     {
         $app['session']->clear();
         $redirect = !empty($request->headers->get('referer')) ? $request->headers->get('referer') : '/';
@@ -89,9 +87,9 @@ class Controller
      * @param Application $app
      * @param Request     $request
      *
-     * @return Response
+     * @return RedirectResponse
      */
-	public function callbackAction(Application $app, Request $request)
+	public function callbackAction(Application $app, Request $request): RedirectResponse
  	{
         $provider = $this->getProvider($app);
         $state = $request->get('state');
@@ -116,7 +114,7 @@ class Controller
                     $app['session']->set('expiredTimestamp', $accessToken->getExpires());
                     $app['session']->set('object', serialize($accessToken));
 
-                } catch (IdentityProviderException $e) {
+                } catch (GeocachingIdentityProviderException $e) {
                     // Failed to get the access token or user details.
                     //echo $e->getMessage();
                     $app['monolog']->error($e->getMessage());
@@ -131,9 +129,9 @@ class Controller
      * @param Application $app
      * @param Request     $request
      *
-     * @return mixed
+     * @return JsonResponse
      */
-    public function uploadAction(Application $app, Request $request)
+    public function uploadAction(Application $app, Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return $app->json(['success' => false]);
@@ -262,7 +260,7 @@ class Controller
      *
      * @return string
      */
-    public function editAction(Application $app, Request $request, $id)
+    public function editAction(Application $app, Request $request, $id): string
     {
         if ($this->checkLogout($app, $request)) {
             $redirect = !empty($request->headers->get('referer')) ? $request->headers->get('referer') : '/';
@@ -313,9 +311,9 @@ class Controller
      * @param Application $app
      * @param Request     $request
      *
-     * @return mixed
+     * @return JsonResponse
      */
-    public function saveAction(Application $app, Request $request)
+    public function saveAction(Application $app, Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return $app->json(['success' => false]);
@@ -345,9 +343,9 @@ class Controller
      * @param Application $app
      * @param Request     $request
      *
-     * @return mixed
+     * @return JsonResponse
      */
-    public function exportAction(Application $app, Request $request)
+    public function exportAction(Application $app, Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return $app->json(['success' => false]);
@@ -423,7 +421,13 @@ class Controller
         return $app['url_generator']->generate('index');
     }
 
-    protected function checkLogout(Application $app, Request $request)
+    /**
+     * @param Application $app
+     * @param Request $request
+     * 
+     * @return bool
+     */
+    protected function checkLogout(Application $app, Request $request): bool
     {
         if ($request->get('logout') === '') {
             $app['session']->clear();
@@ -433,6 +437,11 @@ class Controller
         return false;
     }
 
+    /**
+     * @param Application $app
+     * 
+     * @return GeocachingProvider
+     */
     private function getProvider(Application $app): GeocachingProvider
     {
         return new GeocachingProvider([

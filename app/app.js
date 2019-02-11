@@ -86,7 +86,7 @@
                 sort_by: $("input[name=\"sort_by\"]:checked").val(),
                 pagebreak: !!$("input[name=\"pagebreak\"]:checked").val(),
                 images: !!$("input[name=\"images\"]:checked").val(),
-                pocket_guid: $("#pocket_list").attr("selected", "selected").val()
+                referenceCode: $("#pocket_list").attr("selected", "selected").val()
             },
             success: function(data) {
                 if (!data || data === "" || typeof data !== "object") {
