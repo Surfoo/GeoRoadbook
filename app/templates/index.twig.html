@@ -40,14 +40,14 @@
                             <p>Choose a GPX file{% if pocketqueryList is defined %} or a Pocket Query{% endif %}:</p>
 
                             <input id="gpx" type="file" class="file" aria-describedby="helpBlockGpx">
-                            <span id="helpBlockGpx" class="help-block"><i class="glyphicon glyphicon-question-sign"></i> 8Mb maximum</span>
+                            <span id="helpBlockGpx" class="help-block"><i class="glyphicon glyphicon-question-sign"></i> v1.0.1 only, 8Mb max.</span>
 
                             {% if pocketqueryList is defined %}
                                 <label for="pocket_list">Your Pocket Queries:
-                                    <select name="pocket_guid" class="form-control" id="pocket_list">
+                                    <select name="referenceCode" class="form-control" id="pocket_list">
                                         <option value=""></option>
-                                        {% for pocket in pocketqueryList %}
-                                            <option value="{{ pocket.GUID }}">{{ pocket.Name }}</option>
+                                        {% for pq in pocketqueryList %}
+                                            <option value="{{ pq.referenceCode }}">{{ pq.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </label>

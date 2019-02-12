@@ -11,8 +11,6 @@ class Api
     protected $api = null;
     protected $app = null;
 
-    protected $profile = null;
-    protected $pocketqueryList = null;
 
     public function __construct(Application $app)
     {
@@ -20,24 +18,6 @@ class Api
         if ($this->app['session']->get('access_token')) {
             $this->api = new GeocachingApi(new Client(), $this->app['session']->get('access_token'), true);
         }
-    }
-
-    public function getGeocachingProfile()
-    {
-        if (is_null($this->profile)) {
-            $profile = $this->api->getYourUserProfile(['GeocacheData' => false, 'PublicProfileData' => false]);
-            $this->profile = $profile->Profile->User;
-        }
-        return $this->profile;
-    }
-
-    public function getPocketQueryList()
-    {
-        if (is_null($this->pocketqueryList)) {
-            $pocketqueryList = $this->api->getPocketQueryList();
-            $this->pocketqueryList = $pocketqueryList->PocketQueryList;
-        }
-        return $this->pocketqueryList;
     }
 
     public function getPocketQueryZippedFile($guid)

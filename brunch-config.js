@@ -1,7 +1,7 @@
 'use strict';
 
 exports.config = {
-    optimize: true,
+    optimize: false,
     paths: {
         watched: ["app"],
         public: "web"
