@@ -32,7 +32,7 @@
         "symfony/asset": "^3.2",
         "twbs/bootstrap": "^3.3",
         "kartik-v/bootstrap-fileinput": "~4.3.0",
-        "surfoo/geocaching-php-sdk": "~3.1",
+        "surfoo/geocaching-php-sdk": "dev-develop",
         "components/jquery": "~2.2"
     },
    "require-dev": {

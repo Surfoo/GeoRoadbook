@@ -46,6 +46,7 @@ class Controller
             } catch(GeocachingSdkException $e) {
                 $app['monolog']->error($e->getMessage());
                 $twig_vars['exception'] = $e->getMessage();
+                $app['session']->clear();
             }
         }
 
@@ -154,15 +155,30 @@ class Controller
             return $app->json(['success' => false, 'message' => 'Roadbook language is invalid.', 'lang' => $app['locales']]);
         }
 
-        if ($app['session']->get('access_token') && !empty($referenceCode)) {
+        if ($app['session']->get('accessToken') && !empty($referenceCode)) {
 
             $geocachingApi = GeocachingFactory::createSdk($app['session']->get('accessToken'), $app['environment'], 
                                                     [
                                                         'debug'   => false,
                                                         'timeout' => 10,
                                                     ]);
-            $response = $geocachingApi->getZippedPocketQuery($referenceCode);
-            $gpx = base64_decode($response->getBody());
+            try {
+                $tmpDirectory = $app['root_directory'] . '/app/tmp';
+                $zipFilePath = sprintf('%s/%s.zip', $tmpDirectory, $referenceCode);
+
+                $geocachingApi->getZippedPocketQuery($referenceCode, $tmpDirectory);
+                $zip = new \ZipArchive;
+                if (($res = $zip->open($zipFilePath))) {
+                    $gpxFileName = $zip->statIndex(1)['name'];
+                    $zip->extractTo(sprintf('%s/%s', $tmpDirectory, $referenceCode), [$gpxFileName]);
+                    $zip->close();
+                    $gpx = file_get_contents(sprintf('%s/%s/%s', $tmpDirectory, $referenceCode, $gpxFileName));
+                } else {
+                    throw new \Exception('unzipping archive failed, code:' . $res);
+                }
+            } catch(\Throwable $e) {
+                return $app->json(['success' => false, 'message' => $e->getMessage()]);
+            }
         }
 
         try {
