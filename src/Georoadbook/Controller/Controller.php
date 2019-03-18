@@ -43,6 +43,11 @@ class Controller
                     $app['session']->set('user', ['username' => $profile->username, 'avatarUrl' => $profile->avatarUrl]);
                 }
                 $params['pocketqueryList'] = $geocachingApi->getUserLists('me', ['types' => 'pq', 'fields' => 'referenceCode,name'])->getBody();
+
+                usort($params['pocketqueryList'], function ($k,$v) {
+                    return $k->name <=> $v->name;
+                });
+
             } catch(GeocachingSdkException $e) {
                 $app['monolog']->error($e->getMessage());
                 $twig_vars['exception'] = $e->getMessage();
@@ -183,7 +188,7 @@ class Controller
 
         try {
             $sxe = new \SimpleXMLElement($gpx);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $app->json(['success' => false, 'message' => 'Not a XML file.']);
         }
         $schemaLocation = (string) $sxe->attributes('xsi', true)->schemaLocation;

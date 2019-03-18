@@ -15,8 +15,8 @@ class Api
     public function __construct(Application $app)
     {
         $this->app = $app;
-        if ($this->app['session']->get('access_token')) {
-            $this->api = new GeocachingApi(new Client(), $this->app['session']->get('access_token'), true);
+        if ($this->app['session']->get('accessToken')) {
+            $this->api = new GeocachingApi(new Client(), $this->app['session']->get('accessToken'), true);
         }
     }
 
