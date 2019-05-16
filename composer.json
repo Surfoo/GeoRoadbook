@@ -20,7 +20,7 @@
         "ext-dom": "*",
         "ext-zip": "*",
         "ext-tidy": "*",
-        "jbbcode/jbbcode": "1.2.*",
+        "jbbcode/jbbcode": "~1.2",
         "twig/twig": "~2.0",
         "tinymce/tinymce": "~4.0",
         "cebe/markdown": "~1.0",
@@ -31,14 +31,14 @@
         "symfony/translation": "^3.2",
         "symfony/asset": "^3.2",
         "twbs/bootstrap": "^3.3",
-        "kartik-v/bootstrap-fileinput": "~4.3.0",
-        "surfoo/geocaching-php-sdk": "~3.2.2",
+        "kartik-v/bootstrap-fileinput": "~4.3",
+        "surfoo/geocaching-php-sdk": "~3.2",
         "components/jquery": "~2.2"
     },
    "require-dev": {
         "silex/web-profiler": "^2.0",
         "symfony/var-dumper": "^3.2",
-        "phpstan/phpstan": "^0.10.5"
+        "phpstan/phpstan": "*"
    },
    "scripts": {
       "assets": [

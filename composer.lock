@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd08d3aebde9c5c2aa78302040db0665",
+    "content-hash": "eb7577001ae57c6d9d053dc4c5d6c877",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -293,23 +293,25 @@
         },
         {
             "name": "jbbcode/jbbcode",
-            "version": "v1.2.1",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jbowens/jBBCode.git",
-                "reference": "ffd9ab7a22da3c0ef651a7bf8e2a40938c9c2512"
+                "reference": "740092873a687e61b980d2a094f6323b0d3b273c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jbowens/jBBCode/zipball/ffd9ab7a22da3c0ef651a7bf8e2a40938c9c2512",
-                "reference": "ffd9ab7a22da3c0ef651a7bf8e2a40938c9c2512",
+                "url": "https://api.github.com/repos/jbowens/jBBCode/zipball/740092873a687e61b980d2a094f6323b0d3b273c",
+                "reference": "740092873a687e61b980d2a094f6323b0d3b273c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "friendsofphp/php-cs-fixer": "^2.1",
+                "phpunit/phpunit": "4.5.*",
+                "satooshi/php-coveralls": "0.6.*"
             },
             "type": "library",
             "autoload": {
@@ -335,26 +337,26 @@
                 "BB",
                 "bbcode"
             ],
-            "time": "2013-08-09T07:46:28+00:00"
+            "time": "2019-02-22T23:54:11+00:00"
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
-            "version": "v4.3.9",
+            "version": "v4.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "4aec9b00de25b4b3cca1f11ffbaa823c67c33590"
+                "reference": "64e083b0414d294d99329fa94194f24345fc334a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/4aec9b00de25b4b3cca1f11ffbaa823c67c33590",
-                "reference": "4aec9b00de25b4b3cca1f11ffbaa823c67c33590",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/64e083b0414d294d99329fa94194f24345fc334a",
+                "reference": "64e083b0414d294d99329fa94194f24345fc334a",
                 "shasum": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.3.x-dev"
+                    "dev-master": "4.5.x-dev"
                 }
             },
             "autoload": {
@@ -388,7 +390,7 @@
                 "progress",
                 "upload"
             ],
-            "time": "2017-04-02T18:38:08+00:00"
+            "time": "2019-03-21T11:44:25+00:00"
         },
         {
             "name": "league/oauth2-client",
@@ -905,16 +907,16 @@
         },
         {
             "name": "surfoo/geocaching-php-sdk",
-            "version": "3.2.2",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Surfoo/geocaching-php-sdk.git",
-                "reference": "3a5901a312cefd4dff779d5b577bfa3fc965d99e"
+                "reference": "ebcbe0c87a0db4a5f29c891b083181c13c66a3af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Surfoo/geocaching-php-sdk/zipball/3a5901a312cefd4dff779d5b577bfa3fc965d99e",
-                "reference": "3a5901a312cefd4dff779d5b577bfa3fc965d99e",
+                "url": "https://api.github.com/repos/Surfoo/geocaching-php-sdk/zipball/ebcbe0c87a0db4a5f29c891b083181c13c66a3af",
+                "reference": "ebcbe0c87a0db4a5f29c891b083181c13c66a3af",
                 "shasum": ""
             },
             "require": {
@@ -954,7 +956,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2019-02-12T21:49:28+00:00"
+            "time": "2019-03-27T07:39:58+00:00"
         },
         {
             "name": "surfoo/oauth2-geocaching",
@@ -1919,16 +1921,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.9.0",
+            "version": "v2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "82a1c055c8ed4c4705023bfd0405f3c74db6e3ae"
+                "reference": "5240e21982885b76629552d83b4ebb6d41ccde6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/82a1c055c8ed4c4705023bfd0405f3c74db6e3ae",
-                "reference": "82a1c055c8ed4c4705023bfd0405f3c74db6e3ae",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/5240e21982885b76629552d83b4ebb6d41ccde6b",
+                "reference": "5240e21982885b76629552d83b4ebb6d41ccde6b",
                 "shasum": ""
             },
             "require": {
@@ -1944,7 +1946,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.9-dev"
+                    "dev-master": "2.10-dev"
                 }
             },
             "autoload": {
@@ -1982,7 +1984,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-04-28T06:57:38+00:00"
+            "time": "2019-05-14T12:03:52+00:00"
         }
     ],
     "packages-dev": [
@@ -2754,16 +2756,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.10.8",
+            "version": "0.11.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "4f828460a0276180da76c670a0a6e592e7c38b71"
+                "reference": "7af8b9d02b3ab36444dbf4e1b9ca1c1bd5044d81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4f828460a0276180da76c670a0a6e592e7c38b71",
-                "reference": "4f828460a0276180da76c670a0a6e592e7c38b71",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7af8b9d02b3ab36444dbf4e1b9ca1c1bd5044d81",
+                "reference": "7af8b9d02b3ab36444dbf4e1b9ca1c1bd5044d81",
                 "shasum": ""
             },
             "require": {
@@ -2786,17 +2788,17 @@
                 "brianium/paratest": "^2.0",
                 "consistence/coding-standard": "^3.5",
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
-                "ext-gd": "*",
                 "ext-intl": "*",
                 "ext-mysqli": "*",
+                "ext-soap": "*",
                 "ext-zip": "*",
                 "jakub-onderka/php-parallel-lint": "^1.0",
-                "localheinz/composer-normalize": "~0.9.0",
+                "localheinz/composer-normalize": "^1.1.0",
                 "phing/phing": "^2.16.0",
-                "phpstan/phpstan-deprecation-rules": "^0.10.2",
-                "phpstan/phpstan-php-parser": "^0.10",
-                "phpstan/phpstan-phpunit": "^0.10",
-                "phpstan/phpstan-strict-rules": "^0.10",
+                "phpstan/phpstan-deprecation-rules": "^0.11",
+                "phpstan/phpstan-php-parser": "^0.11",
+                "phpstan/phpstan-phpunit": "^0.11",
+                "phpstan/phpstan-strict-rules": "^0.11",
                 "phpunit/phpunit": "^7.0",
                 "slevomat/coding-standard": "^4.7.2",
                 "squizlabs/php_codesniffer": "^3.3.2"
@@ -2807,7 +2809,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.10-dev"
+                    "dev-master": "0.11-dev"
                 }
             },
             "autoload": {
@@ -2823,7 +2825,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-01-08T09:51:19+00:00"
+            "time": "2019-05-08T16:33:56+00:00"
         },
         {
             "name": "silex/web-profiler",

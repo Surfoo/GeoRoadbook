@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 class Controller
 {
 
@@ -19,9 +20,9 @@ class Controller
      * @param Application $app
      * @param Request     $request
      *
-     * @return string       
+     * @return string
      */
-    public function indexAction(Application $app, Request $request): string 
+    public function indexAction(Application $app, Request $request): string
     {
         $params = [
             'locales'  => $app['locales'],
@@ -29,12 +30,14 @@ class Controller
         ];
 
         if ($app['session']->get('accessToken')) {
-
-            $geocachingApi = GeocachingFactory::createSdk($app['session']->get('accessToken'), $app['environment'], 
-                                                    [
+            $geocachingApi = GeocachingFactory::createSdk(
+                $app['session']->get('accessToken'),
+                $app['environment'],
+                [
                                                         'debug'   => false,
                                                         'timeout' => 10,
-                                                    ]);
+                                                    ]
+            );
             try {
                 if (!$app['session']->get('user')) {
                     $profileResponse = $geocachingApi->getUser('me', ['fields' => 'referenceCode,username,hideCount,findCount,favoritePoints,membershipLevelId,avatarUrl,bannerUrl,url,homeCoordinates,geocacheLimits']);
@@ -44,11 +47,10 @@ class Controller
                 }
                 $params['pocketqueryList'] = $geocachingApi->getUserLists('me', ['types' => 'pq', 'fields' => 'referenceCode,name'])->getBody();
 
-                usort($params['pocketqueryList'], function ($k,$v) {
+                usort($params['pocketqueryList'], function ($k, $v) {
                     return $k->name <=> $v->name;
                 });
-
-            } catch(GeocachingSdkException $e) {
+            } catch (GeocachingSdkException $e) {
                 $app['monolog']->error($e->getMessage());
                 $twig_vars['exception'] = $e->getMessage();
                 $app['session']->clear();
@@ -66,7 +68,7 @@ class Controller
      */
     public function loginAction(Application $app, Request $request): RedirectResponse
     {
-    	$provider = $this->getProvider($app);
+        $provider = $this->getProvider($app);
         $authorizationUrl = $provider->getAuthorizationUrl();
 
         // Get the state generated for you and store it to the session.
@@ -95,18 +97,17 @@ class Controller
      *
      * @return RedirectResponse
      */
-	public function callbackAction(Application $app, Request $request): RedirectResponse
- 	{
+    public function callbackAction(Application $app, Request $request): RedirectResponse
+    {
         $provider = $this->getProvider($app);
         $state = $request->get('state');
 
         $code = $request->get('code');
         if (!$app['session']->get('accessToken') && !is_null($state)) {
-
             $oauth2state = $app['session']->get('oauth2state');
             if (isset($oauth2state) && $state !== $oauth2state) {
                 $app['session']->forget('oauth2state');
-                //die('state error');
+            //die('state error');
             } else {
                 try {
                     // Try to get an access token using the authorization code grant.
@@ -119,7 +120,6 @@ class Controller
                     $app['session']->set('refreshToken', $accessToken->getRefreshToken());
                     $app['session']->set('expiredTimestamp', $accessToken->getExpires());
                     $app['session']->set('object', serialize($accessToken));
-
                 } catch (GeocachingIdentityProviderException $e) {
                     // Failed to get the access token or user details.
                     //echo $e->getMessage();
@@ -129,7 +129,7 @@ class Controller
             }
         }
         return $app->redirect('/');
-	}
+    }
 
     /**
      * @param Application $app
@@ -161,12 +161,14 @@ class Controller
         }
 
         if ($app['session']->get('accessToken') && !empty($referenceCode)) {
-
-            $geocachingApi = GeocachingFactory::createSdk($app['session']->get('accessToken'), $app['environment'], 
-                                                    [
+            $geocachingApi = GeocachingFactory::createSdk(
+                $app['session']->get('accessToken'),
+                $app['environment'],
+                [
                                                         'debug'   => false,
                                                         'timeout' => 10,
-                                                    ]);
+                                                    ]
+            );
             try {
                 $tmpDirectory = $app['root_directory'] . '/app/tmp';
                 $zipFilePath = sprintf('%s/%s.zip', $tmpDirectory, $referenceCode);
@@ -181,7 +183,7 @@ class Controller
                 } else {
                     throw new \Exception('unzipping archive failed, code:' . $res);
                 }
-            } catch(\Throwable $e) {
+            } catch (\Throwable $e) {
                 return $app->json(['success' => false, 'message' => $e->getMessage()]);
             }
         }
@@ -445,7 +447,7 @@ class Controller
     /**
      * @param Application $app
      * @param Request $request
-     * 
+     *
      * @return bool
      */
     protected function checkLogout(Application $app, Request $request): bool
@@ -460,18 +462,18 @@ class Controller
 
     /**
      * @param Application $app
-     * 
+     *
      * @return GeocachingProvider
      */
     private function getProvider(Application $app): GeocachingProvider
     {
         return new GeocachingProvider([
-        	'clientId'       => $app['oauth_key'],
-        	'clientSecret'   => $app['oauth_secret'],
-        	'redirectUri'    => $app['callback_url'],
-        	'response_type'  => 'code',
-        	'scope'          => '*',
-        	'environment'    => $app['environment'],
+            'clientId'       => $app['oauth_key'],
+            'clientSecret'   => $app['oauth_secret'],
+            'redirectUri'    => $app['callback_url'],
+            'response_type'  => 'code',
+            'scope'          => '*',
+            'environment'    => $app['environment'],
         ]);
     }
 }
