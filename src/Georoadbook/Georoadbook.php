@@ -176,9 +176,11 @@ class Georoadbook
 
     /**
      * @param  boolean $experimental
-     * @return void
+     * 
+     * @return bool
      */
-    public function handleExport($experimental = false) {
+    public function handleExport($experimental = false): bool
+    {
         if (!$experimental) {
             return $this->phantomJSexport();
         } else {
@@ -195,8 +197,8 @@ class Georoadbook
         if ($this->app['debug']) {
             $cmd .= ' 2>&1';
         }
-        $this->result = shell_exec($cmd);
-        if (!is_null($this->result)) {
+        $result = shell_exec($cmd);
+        if (!is_null($result)) {
             return false;
         }
 
@@ -209,7 +211,7 @@ class Georoadbook
     protected function chromeExport()
     {
         $tempDirectory = $this->app['root_directory'] . '/app/tmp/' . $this->id;
-        if(!file_exists($tempDirectory)) {
+        if (!file_exists($tempDirectory)) {
             mkdir($tempDirectory);
         }
         chdir($tempDirectory);
@@ -238,31 +240,31 @@ class Georoadbook
      */
     public function getCustomCss()
     {
-        $this->options_css = json_decode(file_get_contents($this->getJsonFile()), true);
-        if (is_null($this->options_css)) {
-            return false;
+        $cssOptions = json_decode(file_get_contents($this->getJsonFile()), true);
+        if (is_null($cssOptions)) {
+            return '';
         }
 
-        $this->options_css = array_map('trim', $this->options_css);
+        $cssOptions = array_map('trim', $cssOptions);
 
         $customCSS_format = '@page{%s}';
         $customHeaderFooter = '@%s{%s:"%s"}';
         $pageOptions = '';
 
-        $globalOptions['size'] = sprintf('%s %s', $this->options_css['page_size'], $this->options_css['orientation']);
-        $globalOptions['margin'] = (int) $this->options_css['margin_top'].'mm '.
-                                   (int) $this->options_css['margin_right'].'mm '.
-                                   (int) $this->options_css['margin_bottom'].'mm '.
-                                   (int) $this->options_css['margin_left'].'mm';
+        $globalOptions['size'] = sprintf('%s %s', $cssOptions['page_size'], $cssOptions['orientation']);
+        $globalOptions['margin'] = (int) $cssOptions['margin_top'].'mm '.
+                                   (int) $cssOptions['margin_right'].'mm '.
+                                   (int) $cssOptions['margin_bottom'].'mm '.
+                                   (int) $cssOptions['margin_left'].'mm';
         foreach ($globalOptions as $key => $value) {
             $pageOptions .= sprintf('%s: %s;', $key, $value);
         }
 
-        if (!empty($this->options_css['header_text'])) {
-            $pageOptions .= sprintf($customHeaderFooter, 'top-'.$this->options_css['header_align'], 'content', htmlspecialchars($this->options_css['header_text']));
+        if (!empty($cssOptions['header_text'])) {
+            $pageOptions .= sprintf($customHeaderFooter, 'top-'.$cssOptions['header_align'], 'content', htmlspecialchars($cssOptions['header_text']));
         }
-        if (!empty($this->options_css['footer_text'])) {
-            $pageOptions .= sprintf($customHeaderFooter, 'bottom-'.$this->options_css['footer_align'], 'content', htmlspecialchars($this->options_css['footer_text']));
+        if (!empty($cssOptions['footer_text'])) {
+            $pageOptions .= sprintf($customHeaderFooter, 'bottom-'.$cssOptions['footer_align'], 'content', htmlspecialchars($cssOptions['footer_text']));
         }
 
         return sprintf($customCSS_format, $pageOptions);
@@ -277,12 +279,12 @@ class Georoadbook
      */
     public function saveOptions($options)
     {
-        $this->options_css = $options;
+        $cssOptions = $options;
         $hd = fopen($this->getJsonFile(), 'w');
         if (!$hd) {
             return false;
         }
-        fwrite($hd, json_encode($this->options_css));
+        fwrite($hd, json_encode($cssOptions));
         fclose($hd);
 
         return true;
@@ -318,7 +320,7 @@ class Georoadbook
         $zip = new \ZipArchive();
         $filename_zip = sprintf($this->app['root_directory'] . '/web/roadbook/zip/%s.%s', $this->id, 'zip');
 
-        if ($zip->open($filename_zip, \ZIPARCHIVE::CREATE) !== true) {
+        if ($zip->open($filename_zip, \ZipArchive::CREATE) !== true) {
             exit('Unable to open '.basename($filename_zip));
         }
 
@@ -349,7 +351,7 @@ class Georoadbook
      * recurseZip.
      *
      * @param string     $src
-     * @param ZipArchive &$zip
+     * @param \ZipArchive $zip
      */
     private function recurseZip($src, \ZipArchive &$zip)
     {
@@ -371,9 +373,9 @@ class Georoadbook
      *
      * @return string
      */
-    protected static function setId()
+    protected static function setId(): string
     {
-        return substr(md5(uniqid(mt_rand(), true)), 0, self::ID_LENGTH);
+        return substr(md5(uniqid((string) mt_rand(), true)), 0, self::ID_LENGTH);
     }
 
     /**
@@ -466,13 +468,13 @@ class Georoadbook
      */
     public function addToC()
     {
-        $dom = new \DomDocument();
+        $dom = new \DOMDocument();
 
         libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
         libxml_clear_errors();
 
-        $finder = new \DomXPath($dom);
+        $finder = new \DOMXPath($dom);
 
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheTitle ')]");
         $gccodeNode = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheGCode ')]");
@@ -488,7 +490,7 @@ class Georoadbook
         }
 
         if (!empty($toc_content)) {
-            $toc = new \DomDocument();
+            $toc = new \DOMDocument();
             $toc->load($this->getLocaleFile());
             $xPath = new \DOMXPath($toc);
             $toc_i18n['title'] = $xPath->query("text[@id='toc_title']")->item(0)->nodeValue;
@@ -514,14 +516,14 @@ class Georoadbook
      */
     public function removeImages($display_short_desc)
     {
-        $dom = new \DomDocument();
+        $dom = new \DOMDocument();
 
         libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
         libxml_clear_errors();
 
         if ($display_short_desc) {
-            $finder = new \DomXPath($dom);
+            $finder = new \DOMXPath($dom);
             $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' short_description ')]");
             foreach ($nodes as $node) {
                 $imagesNodeList = $node->getElementsByTagName('img');
@@ -537,7 +539,7 @@ class Georoadbook
             $this->html = $dom->saveHtml();
         }
 
-        $finder = new \DomXPath($dom);
+        $finder = new \DOMXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' long_description ')]");
         foreach ($nodes as $node) {
             $imagesNodeList = $node->getElementsByTagName('img');
@@ -561,13 +563,13 @@ class Georoadbook
         $xml = new \DOMDocument();
         $xml->loadXML($this->gpx);
         $waypoints = $xml->getElementsByTagName('wpt');
-        $dom = new \DomDocument();
+        $dom = new \DOMDocument();
 
         libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
         libxml_clear_errors();
 
-        $finder = new \DomXPath($dom);
+        $finder = new \DOMXPath($dom);
         foreach ($waypoints as $waypoint) {
             $long_description = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
             if (empty($long_description->length)) {
@@ -602,13 +604,13 @@ class Georoadbook
         $xml = new \DOMDocument();
         $xml->loadXML($this->gpx);
         $waypoints = $xml->getElementsByTagName('wpt');
-        $dom = new \DomDocument();
+        $dom = new \DOMDocument();
 
         libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
         libxml_clear_errors();
 
-        $finder = new \DomXPath($dom);
+        $finder = new \DOMXPath($dom);
         foreach ($waypoints as $waypoint) {
             $long_description = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
             if (empty($long_description->length)) {
@@ -661,13 +663,13 @@ class Georoadbook
      */
     public function encryptHints()
     {
-        $dom = new \DomDocument();
+        $dom = new \DOMDocument();
 
         libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
         libxml_clear_errors();
 
-        $finder = new \DomXPath($dom);
+        $finder = new \DOMXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheHintContent ')]");
         foreach ($nodes as $node) {
             $chars = str_split($node->textContent);
@@ -697,13 +699,13 @@ class Georoadbook
      */
     public function parseMarkdown()
     {
-        $dom = new \DomDocument();
+        $dom = new \DOMDocument();
 
         libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
         libxml_clear_errors();
 
-        $finder = new \DomXPath($dom);
+        $finder = new \DOMXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
 
         $MdParser = new \cebe\markdown\Markdown();
@@ -725,13 +727,13 @@ class Georoadbook
      */
     public function parseBBcode()
     {
-        $dom = new \DomDocument();
+        $dom = new \DOMDocument();
 
         libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
         libxml_clear_errors();
 
-        $finder = new \DomXPath($dom);
+        $finder = new \DOMXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
 
         $parser = new \JBBCode\Parser();
