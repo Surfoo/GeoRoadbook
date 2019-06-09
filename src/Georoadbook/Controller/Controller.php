@@ -45,7 +45,7 @@ class Controller
                     
                     $app['session']->set('user', ['username' => $profile->username, 'avatarUrl' => $profile->avatarUrl]);
                 }
-                $params['pocketqueryList'] = $geocachingApi->getUserLists('me', ['types' => 'pq', 'fields' => 'referenceCode,name'])->getBody();
+                $params['pocketqueryList'] = $geocachingApi->getUserLists('me', ['types' => 'pq', 'take' => 50, 'fields' => 'referenceCode,name'])->getBody();
 
                 usort($params['pocketqueryList'], function ($k, $v) {
                     return $k->name <=> $v->name;
