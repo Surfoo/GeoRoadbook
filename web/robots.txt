@@ -1,6 +1,0 @@
-User-agent: *
-Disallow: /bootstrap/
-Disallow: /design/
-Disallow: /img/
-Disallow: /js/
-Disallow: /roadbook/

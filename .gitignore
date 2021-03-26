@@ -1,23 +1,16 @@
-*~
-*.swp
-*.sublime-project
-*.sublime-workspace
-.php_cs.cache
-npm-debug.log
-TODO
-!app/tmp/.gitkeep
-!app/logs/.gitkeep
-!app/cache/.gitkeep
-app/tmp
-app/logs
-app/cache
-app/config.php
-node_modules
-!web/roadbook/.gitkeep
-!web/roadbook/pdf/.gitkeep
-!web/assets/.gitkeep
-web/assets
-web/roadbook
-web/roadbook/pdf
-vendor
-samples
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###

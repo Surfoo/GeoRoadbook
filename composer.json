@@ -1,56 +1,98 @@
 {
-    "name": "surfoo/georoadbook",
-    "license": "MIT",
     "type": "project",
-    "keywords": ["groundspeak", "geocaching", "georoadbook", "geocache", "roadbook"],
-    "homepage": "https://georoadbook.vaguelibre.net/",
-    "description": "Create your geocaching roadbook ready-to-print from your gpx file.",
-    "authors": [{
-        "name": "Surfoo",
-        "email": "surfooo@gmail.com",
-        "role": "Developer"
-    }],
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.2.5",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "composer/package-versions-deprecated": "1.11.99.1",
+        "doctrine/annotations": "^1.0",
+        "doctrine/doctrine-bundle": "^2.3",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
+        "doctrine/orm": "^2.8",
+        "phpdocumentor/reflection-docblock": "^5.2",
+        "sensio/framework-extra-bundle": "^5.1",
+        "symfony/asset": "5.2.*",
+        "symfony/console": "5.2.*",
+        "symfony/dotenv": "5.2.*",
+        "symfony/expression-language": "5.2.*",
+        "symfony/flex": "^1.3.1",
+        "symfony/form": "5.2.*",
+        "symfony/framework-bundle": "5.2.*",
+        "symfony/http-client": "5.2.*",
+        "symfony/intl": "5.2.*",
+        "symfony/mailer": "5.2.*",
+        "symfony/mime": "5.2.*",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/notifier": "5.2.*",
+        "symfony/process": "5.2.*",
+        "symfony/property-access": "5.2.*",
+        "symfony/property-info": "5.2.*",
+        "symfony/proxy-manager-bridge": "5.2.*",
+        "symfony/security-bundle": "5.2.*",
+        "symfony/serializer": "5.2.*",
+        "symfony/string": "5.2.*",
+        "symfony/translation": "5.2.*",
+        "symfony/twig-bundle": "^5.2",
+        "symfony/validator": "5.2.*",
+        "symfony/web-link": "5.2.*",
+        "symfony/yaml": "5.2.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
+    },
+    "require-dev": {
+        "symfony/browser-kit": "^5.2",
+        "symfony/css-selector": "^5.2",
+        "symfony/debug-bundle": "^5.2",
+        "symfony/maker-bundle": "^1.0",
+        "symfony/phpunit-bridge": "^5.2",
+        "symfony/stopwatch": "^5.2",
+        "symfony/var-dumper": "^5.2",
+        "symfony/web-profiler-bundle": "^5.2"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
     "autoload": {
         "psr-4": {
-            "Georoadbook\\": "src/Georoadbook/"
+            "App\\": "src/"
         }
     },
-    "require": {
-        "php": "~7.2",
-        "ext-dom": "*",
-        "ext-zip": "*",
-        "ext-tidy": "*",
-        "jbbcode/jbbcode": "~1.2",
-        "twig/twig": "~2.0",
-        "tinymce/tinymce": "~4.0",
-        "cebe/markdown": "~1.0",
-        "silex/silex": "~2.0",
-        "symfony/console": "^3.2",
-        "monolog/monolog": "^1.22",
-        "symfony/twig-bridge": "^3.2",
-        "symfony/translation": "^3.2",
-        "symfony/asset": "^3.2",
-        "twbs/bootstrap": "^3.3",
-        "kartik-v/bootstrap-fileinput": "~4.3",
-        "surfoo/geocaching-php-sdk": "~3.2",
-        "components/jquery": "~2.2",
-        "symfony/contracts": "^1.1"
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
     },
-   "require-dev": {
-        "silex/web-profiler": "^2.0",
-        "symfony/var-dumper": "^3.2",
-        "phpstan/phpstan": "*"
-   },
-   "scripts": {
-      "assets": [
-            "cp -rf vendor/components/jquery vendor/twbs/bootstrap vendor/tinymce/tinymce vendor/kartik-v/bootstrap-fileinput web/assets"
-      ],
-      "post-update-cmd": [
-            "@assets"
-      ],
-      "post-install-cmd": [
-            "cp -n app/config.php.dist app/config.php",
-            "@assets"
-      ]
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "5.2.*"
+        }
     }
 }
