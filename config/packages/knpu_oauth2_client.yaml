@@ -1,0 +1,8 @@
+knpu_oauth2_client:
+    clients:
+        geocaching_main:
+            type: geocaching
+            client_id: "%env(GEOCACHING_OAUTH_KEY)%"
+            client_secret: "%env(GEOCACHING_OAUTH_SECRET)%"
+            redirect_route: "app_callback"
+            environment: "%env(GEOCACHING_ENV)%"
