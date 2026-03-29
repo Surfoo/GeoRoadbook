@@ -1,7 +1,4 @@
 {
-    "composer/package-versions-deprecated": {
-        "version": "1.11.99.1"
-    },
     "doctrine/inflector": {
         "version": "2.0.3"
     },
@@ -10,9 +7,6 @@
     },
     "egulias/email-validator": {
         "version": "3.1.0"
-    },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.3"
     },
     "knpuniversity/oauth2-client-bundle": {
         "version": "2.13",
@@ -25,9 +19,6 @@
         "files": [
             "config/packages/knpu_oauth2_client.yaml"
         ]
-    },
-    "laminas/laminas-code": {
-        "version": "4.0.0"
     },
     "laminas/laminas-eventmanager": {
         "version": "3.3.1"
@@ -70,6 +61,21 @@
     },
     "symfony/asset": {
         "version": "v5.2.4"
+    },
+    "symfony/asset-mapper": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.4",
+            "ref": "6c28c471640cc2c6e60812ebcb961c526ef8997f"
+        },
+        "files": [
+            "assets/app.js",
+            "assets/styles/app.css",
+            "config/packages/asset_mapper.yaml",
+            "importmap.php"
+        ]
     },
     "symfony/browser-kit": {
         "version": "v5.2.4"
@@ -291,9 +297,6 @@
     "symfony/property-info": {
         "version": "v5.2.4"
     },
-    "symfony/proxy-manager-bridge": {
-        "version": "v5.2.4"
-    },
     "symfony/routing": {
         "version": "7.1",
         "recipe": {
@@ -381,6 +384,9 @@
     },
     "symfony/twig-pack": {
         "version": "v1.0.1"
+    },
+    "symfony/ux-dropzone": {
+        "version": "v2.17.0"
     },
     "symfony/validator": {
         "version": "7.1",
