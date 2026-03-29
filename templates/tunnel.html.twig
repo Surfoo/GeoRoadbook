@@ -1,0 +1,16 @@
+{% extends "main.html.twig" %}
+
+{% block main %}
+<div class="p-3 bg-primary-subtle rounded-3">
+    <div class="container-fluid py-5">
+        <p class="col-md-8 fs-4">
+        Unpublished Geocaches allow you to retrieve your unpublished geocaches in order to prepare an event, powertrail before their publication.<br />
+        You can choose your geocaches, download one or several GPX files.
+        </p>
+
+        {# <p>In order to use it, you have to login with your geocaching account.</p> #}
+
+        <a href="{{ path('app_login')}}" class="text-center btn btn-primary btn-lg">Sign in with geocaching.com</a>
+    </div>
+</div>
+{% endblock %}

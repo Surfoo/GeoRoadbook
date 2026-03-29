@@ -7,14 +7,11 @@
         <title>GeoRoadbook, create your geocaching roadbook ready-to-print</title>
         <meta name="description" content="GeoRoadbook is a free and open source web app to create your geocaching roadbook ready-to-print from your gpx file (Pocket queries, GSAK, GCTour, etc.)">
         <link rel="icon" type="image/png" href="/design/icon-roadbook.png" />
-        <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css?{{ suffix_css_js }}" media="all" />
-        <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap-theme.min.css?{{ suffix_css_js }}" media="all">
-        <link rel="stylesheet" href="/assets/bootstrap-fileinput/css/fileinput.min.css" media="all" type="text/css" />
-        <!-- <link rel="stylesheet" href="/bootstrap/css/bootstrap-fileupload.min.css" media="all" /> -->
-        <link rel="stylesheet" href="/app.min.css?{{ suffix_css_js }}" media="all" />
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
     </head>
     <body>
-
         {% include '_header.twig.html' %}
 
         <div class="container" role="main">
