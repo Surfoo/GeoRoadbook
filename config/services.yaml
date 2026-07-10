@@ -14,6 +14,9 @@ parameters:
     # URL the php container uses to reach the web server (for headless-Chrome PDF export)
     app.internal_base_url: '%env(default:app.internal_base_url_default:INTERNAL_BASE_URL)%'
     app.internal_base_url_default: 'http://webserver'
+    # WeasyPrint sidecar converting the raw roadbook view to PDF
+    app.weasyprint_url: '%env(default:app.weasyprint_url_default:WEASYPRINT_URL)%'
+    app.weasyprint_url_default: 'http://weasyprint:5001'
     app.available_sorts: ['none', 'name', 'owner', 'difficulty', 'terrain']
     app.locales:
         cs: 'Čeština'

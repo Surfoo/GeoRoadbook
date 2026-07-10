@@ -95,9 +95,11 @@ class Roadbook
     }
 
     /**
-     * Renders the raw roadbook page to PDF with headless Chromium.
+     * Renders the raw roadbook page to PDF through the WeasyPrint service.
+     *
+     * @throws \RuntimeException when the conversion fails
      */
-    public function exportPdf(string $internalBaseUrl): bool
+    public function exportPdf(string $internalBaseUrl, string $weasyprintUrl): void
     {
         $pdfDir = dirname($this->getPdfFile());
         if (!is_dir($pdfDir)) {
@@ -105,27 +107,37 @@ class Roadbook
         }
 
         $url = rtrim($internalBaseUrl, '/') . '/roadbook/' . $this->id . '/raw';
-        $cmd = sprintf(
-            'HOME=/tmp %s --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --user-data-dir=/tmp/chrome-profile --no-pdf-header-footer --print-to-pdf=%s %s 2>&1',
-            escapeshellcmd(self::findChromeBinary()),
-            escapeshellarg($this->getPdfFile()),
-            escapeshellarg($url),
-        );
-        exec($cmd, $output, $exitCode);
 
-        return $exitCode === 0 && file_exists($this->getPdfFile());
-    }
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => "Content-Type: application/json\r\n",
+                'content' => json_encode(['url' => $url]),
+                'timeout' => 120,
+                'ignore_errors' => true,
+            ],
+        ]);
 
-    private static function findChromeBinary(): string
-    {
-        foreach (['google-chrome-stable', 'chromium', 'chromium-browser'] as $binary) {
-            $path = trim((string) shell_exec('command -v ' . escapeshellarg($binary)));
-            if ($path !== '') {
-                return $path;
+        $body = file_get_contents(rtrim($weasyprintUrl, '/') . '/convert', false, $context);
+        $status = 0;
+        foreach ($http_response_header ?? [] as $header) {
+            if (preg_match('#^HTTP/\S+\s+(\d{3})#', $header, $m)) {
+                $status = (int) $m[1];
             }
         }
 
-        throw new \RuntimeException('No Chromium/Chrome binary found for PDF export.');
+        if ($body === false || $status !== 200) {
+            $error = 'PDF conversion failed';
+            if (is_string($body) && ($decoded = json_decode($body, true)) && isset($decoded['error'])) {
+                $error .= ': ' . $decoded['error'];
+            }
+
+            throw new \RuntimeException($error);
+        }
+
+        if (!$this->saveFile($this->getPdfFile(), $body)) {
+            throw new \RuntimeException('Unable to write the PDF file.');
+        }
     }
 
     /**
