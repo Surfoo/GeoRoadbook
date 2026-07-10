@@ -1,0 +1,27 @@
+services:
+  webserver:
+    image: nginx:alpine
+    container_name: georoadbook-webserver
+    working_dir: /application
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - .:/application
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8000:80"
+
+  php-fpm:
+    build:
+      context: docker/php-fpm
+      args:
+        UID: "${UID:-1000}"
+        GID: "${GID:-1000}"
+    container_name: georoadbook-php-fpm
+    working_dir: /application
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - .:/application
+      - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/8.4/fpm/conf.d/99-overrides.ini
