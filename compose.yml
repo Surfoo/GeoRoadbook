@@ -25,3 +25,15 @@ services:
     volumes:
       - .:/application
       - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/8.4/fpm/conf.d/99-overrides.ini
+
+  weasyprint:
+    build:
+      context: docker/weasyprint
+    container_name: georoadbook-weasyprint
+    environment:
+      - TZ=Europe/Paris
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5001/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
