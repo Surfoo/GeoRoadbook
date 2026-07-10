@@ -24,9 +24,12 @@
  */
 return [
     'app' => ['path' => './assets/app.js', 'entrypoint' => true],
+    'editor' => ['path' => './assets/editor.js', 'entrypoint' => true],
     'bootstrap' => ['version' => '5.3.3'],
     '@popperjs/core' => ['version' => '2.11.8'],
     'bootstrap/dist/css/bootstrap.min.css' => ['version' => '5.3.3', 'type' => 'css'],
     'bootstrap-icons/font/bootstrap-icons.min.css' => ['version' => '1.11.3', 'type' => 'css'],
     '@hotwired/stimulus' => ['version' => '3.2.2'],
+    'jodit' => ['version' => '4.12.43'],
+    'jodit/es2021/jodit.min.css' => ['version' => '4.12.43', 'type' => 'css'],
 ];

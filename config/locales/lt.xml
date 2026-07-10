@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<i18n>
+    <text id="difficulty">Sunkumas:</text>
+    <text id="terrain">aikštė:</text>
+    <text id="size">Dydis:</text>
+    <text id="location">Vietovė:</text>
+    <text id="hint">Papildomi patarimai</text>
+    <text id="logs">Registruoti</text>
+    <text id="by">Pagal</text>
+    <text id="hidden">Paslėptas</text>
+    <text id="micro">Mikro</text>
+    <text id="small">Mažas</text>
+    <text id="regular">Reguliarus</text>
+    <text id="large">Didelis</text>
+    <text id="other">Kitas</text>
+    <text id="not_chosen">Nepasirinktas</text>
+    <text id="note">Asmeninis talpyklos pranešimas</text>
+    <format id="date">%Y/%m/%d</format>
+    <text id="toc_title">Turinys</text>
+    <text id="toc_name">Talpyklos pavadinimas</text>
+    <text id="toc_page">Puslapis</text>
+</i18n>

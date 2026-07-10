@@ -1,0 +1,130 @@
+{% extends 'main.html.twig' %}
+
+{% block importmap %}{{ importmap('editor') }}{% endblock %}
+
+{% block main %}
+<div class="container py-4"
+     id="editor_page"
+     data-roadbook-id="{{ roadbook_id|e('html_attr') }}"
+     data-save-url="{{ path('app_roadbook_save', {id: roadbook_id}) }}"
+     data-delete-url="{{ path('app_roadbook_delete', {id: roadbook_id}) }}"
+     data-export-url="{{ path('app_roadbook_export', {id: roadbook_id}) }}"
+     data-pdf-url="{{ path('app_roadbook_pdf', {id: roadbook_id}) }}"
+     data-options="{{ export_options|json_encode|e('html_attr') }}">
+
+    {# Action bar #}
+    <div class="option-group-card mb-4">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <button type="button" id="btn_save" class="btn btn-primary px-4" disabled title="{{ last_modification|e }}">Save</button>
+
+            <button type="button" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#ui_export">
+                <i class="bi bi-file-earmark-pdf me-1"></i> Export as PDF
+            </button>
+
+            <div class="dropdown">
+                <button class="btn btn-primary px-4 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-download me-1"></i> Download
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ path('app_roadbook_raw', {id: roadbook_id}) }}" target="_blank"><i class="bi bi-filetype-html me-2"></i>HTML</a></li>
+                    <li><a class="dropdown-item" href="{{ path('app_roadbook_zip', {id: roadbook_id}) }}"><i class="bi bi-file-earmark-zip me-2"></i>ZIP (HTML + images)</a></li>
+                    {% if pdf_available %}
+                        <li><a class="dropdown-item" id="menu_download_pdf" href="{{ path('app_roadbook_pdf', {id: roadbook_id}) }}"><i class="bi bi-file-earmark-pdf me-2"></i>PDF</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <span class="text-muted small">{{ last_modification|e }}</span>
+                <button type="button" id="btn_delete" class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+
+    {# Editor #}
+    <textarea id="editable">{{ roadbook_content }}</textarea>
+</div>
+
+{# Export options modal #}
+<div id="ui_export" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background: var(--bg-base); color: var(--text-primary);">
+            <div class="modal-header" style="border-color: var(--divider);">
+                <h5 class="modal-title" style="font-family: var(--font-display);">Export as PDF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="export_form">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="option-group-title mb-3">Format</div>
+                            <div class="mb-3">
+                                <label class="form-label form-label-mono" for="page_size">Page size</label>
+                                <select name="page_size" id="page_size" class="form-select">
+                                    <option value="A4">A4</option>
+                                    <option value="A5">A5</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label form-label-mono" for="orientation">Orientation</label>
+                                <select name="orientation" id="orientation" class="form-select">
+                                    <option value="portrait">Portrait</option>
+                                    <option value="landscape">Landscape</option>
+                                </select>
+                            </div>
+                            <label class="form-label form-label-mono">Margins (mm)</label>
+                            <div class="row g-2">
+                                <div class="col-3"><input name="margin_top" type="number" min="0" max="50" value="10" class="form-control" title="Top"></div>
+                                <div class="col-3"><input name="margin_right" type="number" min="0" max="50" value="10" class="form-control" title="Right"></div>
+                                <div class="col-3"><input name="margin_bottom" type="number" min="0" max="50" value="10" class="form-control" title="Bottom"></div>
+                                <div class="col-3"><input name="margin_left" type="number" min="0" max="50" value="10" class="form-control" title="Left"></div>
+                            </div>
+                            <div class="text-muted extra-small mt-1">Top · Right · Bottom · Left</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="option-group-title mb-3">Header &amp; Footer</div>
+                            <div class="mb-3">
+                                <label class="form-label form-label-mono" for="header_text">Header text</label>
+                                <div class="d-flex gap-2">
+                                    <input name="header_text" id="header_text" type="text" class="form-control">
+                                    <select name="header_align" id="header_align" class="form-select" style="max-width: 110px;">
+                                        <option value="left">Left</option>
+                                        <option value="center">Center</option>
+                                        <option value="right">Right</option>
+                                    </select>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" name="header_pagination" id="header_pagination">
+                                    <label class="form-check-label small" for="header_pagination">Show page number instead</label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label form-label-mono" for="footer_text">Footer text</label>
+                                <div class="d-flex gap-2">
+                                    <input name="footer_text" id="footer_text" type="text" class="form-control">
+                                    <select name="footer_align" id="footer_align" class="form-select" style="max-width: 110px;">
+                                        <option value="left">Left</option>
+                                        <option value="center">Center</option>
+                                        <option value="right">Right</option>
+                                    </select>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" name="footer_pagination" id="footer_pagination">
+                                    <label class="form-check-label small" for="footer_pagination">Show page number instead</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-between" style="border-color: var(--divider);">
+                <span id="export_status" class="text-muted small"></span>
+                <div class="d-flex gap-2">
+                    <a href="#" id="btn_download_pdf" class="btn btn-primary d-none"><i class="bi bi-download me-1"></i> Download PDF</a>
+                    <button type="button" id="btn_export_run" class="btn btn-primary">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

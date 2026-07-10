@@ -287,7 +287,16 @@ html[data-theme="dark"] .theme-toggle button[data-set-theme="dark"] {
 
 .drop-zone .dz-meta {
     font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.drop-zone.file-selected .dz-meta {
     color: var(--accent-green-text);
+}
+
+.drop-zone .dz-replace {
+    color: var(--text-muted);
+    text-decoration: underline;
 }
 
 /* ── Checkboxes & radios (Signal Orange) ────────────────────── */

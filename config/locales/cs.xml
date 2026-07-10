@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<i18n>
+    <text id="difficulty">Obtížnost:</text>
+    <text id="terrain">Terén:</text>
+    <text id="size">Velikost:</text>
+    <text id="location">Location:</text>
+    <text id="hint">Hint</text>
+    <text id="logs">logů</text>
+    <text id="by">Keš uživatele</text>
+    <text id="hidden">Založeno</text>
+    <text id="micro">Mikro</text>
+    <text id="small">Malá</text>
+    <text id="regular">Střední</text>
+    <text id="large">Velká</text>
+    <text id="other">Jiná</text>
+    <text id="not_chosen">nespecifikováno</text>
+    <text id="note">Vlastní poznámka ke keši</text>
+    <format id="date">%Y/%m/%d</format>
+    <text id="toc_title">Shrnutí</text>
+    <text id="toc_name">Název</text>
+    <text id="toc_page">Strana</text>
+</i18n>

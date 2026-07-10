@@ -23,6 +23,8 @@
         "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "cebe/markdown": "^1.2",
+        "jbbcode/jbbcode": "^1.4",
         "knpuniversity/oauth2-client-bundle": "*",
         "surfoo/geocaching-php-sdk": "^3.0",
         "surfoo/oauth2-geocaching": "*",

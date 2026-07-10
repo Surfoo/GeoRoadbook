@@ -20,3 +20,7 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+/public/roadbook/*
+!/public/roadbook/pdf
+/public/roadbook/pdf/*
+!/public/roadbook/.gitkeep

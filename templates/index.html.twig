@@ -21,7 +21,7 @@
         </div>
     {% endfor %}
 
-    <form action="#" method="post" enctype="multipart/form-data">
+    <form action="#" method="post" data-roadbook-form>
         <div id="error" class="alert alert-warning d-none" role="alert"></div>
 
         {# Source Card #}
@@ -30,7 +30,8 @@
             <div class="drop-zone mb-4" id="drop_zone">
                 <i class="bi bi-geo-alt-fill fs-1 text-orange mb-2 d-block"></i>
                 <p class="mb-1 fw-bold dz-filename text-primary">Drop your GPX file here</p>
-                <p class="text-muted small mb-0 dz-meta" style="color: var(--text-muted) !important;">or click to browse • 8MB max</p>
+                <p class="small mb-0 dz-meta">or click to browse • 8MB max</p>
+                <a href="#" class="dz-replace small d-none">Replace</a>
                 <input id="gpx" type="file" class="d-none" accept=".gpx">
             </div>
 
@@ -176,45 +177,3 @@
 </div>
 {% endblock %}
 
-{% block body_scripts %}
-<script src="/assets/jquery/jquery.min.js?{{ suffix_css_js }}"></script>
-<script src="/app.min.js?{{ suffix_css_js }}"></script>
-<script>
-    $(function() {
-        // Toggle advanced options
-        $('#toggle_advanced').on('click', function(e) {
-            e.preventDefault();
-            $('#advanced_section').toggleClass('show');
-            $(this).text($('#advanced_section').hasClass('show') ?
-                'Hide advanced options' :
-                'Show advanced options');
-        });
-
-        // Trigger file input on drop zone click
-        $('#drop_zone').on('click', function() {
-            $('#gpx').trigger('click');
-        });
-
-        // Drag & drop visual feedback
-        $('#drop_zone').on('dragover dragenter', function(e) {
-            e.preventDefault();
-            $(this).addClass('dragover');
-        }).on('dragleave drop', function(e) {
-            e.preventDefault();
-            $(this).removeClass('dragover');
-        });
-
-        // File selected state
-        $('#gpx').on('change', function() {
-            const fileName = $(this).val().split('\\').pop();
-            if (fileName) {
-                const size = this.files.length ? (this.files[0].size / (1024 * 1024)).toFixed(1) + ' MB' : '';
-                $('#drop_zone').addClass('file-selected');
-                $('#drop_zone i').attr('class', 'bi bi-check-circle-fill fs-2 text-accent mb-2 d-block');
-                $('#drop_zone .dz-filename').text(fileName);
-                $('#drop_zone .dz-meta').attr('style', '').text(size);
-            }
-        });
-    });
-</script>
-{% endblock %}

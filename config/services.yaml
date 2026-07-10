@@ -7,6 +7,27 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.roadbook_dir: '%kernel.project_dir%/public/roadbook'
+    app.xslt_dir: '%kernel.project_dir%/templates/xslt'
+    app.locales_dir: '%kernel.project_dir%/config/locales'
+    app.icon_cache_dir: '32x32'
+    # URL the php container uses to reach the web server (for headless-Chrome PDF export)
+    app.internal_base_url: '%env(default:app.internal_base_url_default:INTERNAL_BASE_URL)%'
+    app.internal_base_url_default: 'http://webserver'
+    app.available_sorts: ['none', 'name', 'owner', 'difficulty', 'terrain']
+    app.locales:
+        cs: 'Čeština'
+        da: 'Dansk'
+        de: 'Deutsch'
+        en: 'English'
+        es: 'Español'
+        fr: 'Français'
+        it: 'Italiano'
+        lt: 'Lietuvių'
+        nl: 'Nederlands'
+        pt: 'Português'
+        sv: 'Svenska'
+        th: 'ภาษาไทย'
 
 services:
     # default configuration for services in *this* file

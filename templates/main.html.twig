@@ -80,19 +80,8 @@
         </div>
     </footer>
 
-    {# Keep FAQ/About Modals... #}
-    <div id="faq" class="modal fade" tabindex="-1">...</div>
-    <div id="about" class="modal fade" tabindex="-1">...</div>
-
-    <script>
-        document.querySelectorAll('.theme-toggle [data-set-theme]').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var theme = btn.getAttribute('data-set-theme');
-                document.documentElement.setAttribute('data-theme', theme);
-                localStorage.setItem('theme', theme);
-            });
-        });
-    </script>
+    {% include '_faq.twig.html' %}
+    {% include '_about.twig.html' %}
 
     {% block body_scripts %}{% endblock %}
 

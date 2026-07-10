@@ -8,7 +8,15 @@ ARG GID=1000
 
 # Install selected extensions and other stuff
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install php8.4-intl \
+    && apt-get -y --no-install-recommends install php8.4-intl php8.4-xsl php8.4-tidy \
+    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+# Headless Chrome for server-side PDF export of roadbooks
+RUN apt-get update \
+    && apt-get -y --no-install-recommends install wget \
+    && wget -q -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && apt-get -y --no-install-recommends install /tmp/chrome.deb \
+    && rm /tmp/chrome.deb \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Remap www-data UID/GID to match the host user so files created inside the
