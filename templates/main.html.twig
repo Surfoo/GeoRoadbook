@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="h-100">
+<html lang="en" class="h-100" data-theme="light">
 <head>
     <meta charset="utf-8">
     <title>GeoRoadbook — create your geocaching roadbook</title>
@@ -8,8 +8,17 @@
     <link rel="icon" type="image/png" href="/design/icon-roadbook.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+        (function () {
+            var theme = localStorage.getItem('theme');
+            if (!theme) {
+                theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
     {% block javascripts %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
     {% endblock %}
@@ -17,20 +26,24 @@
 <body class="d-flex flex-column h-100">
 
     <header>
-        <nav class="navbar border-bottom shadow-sm">
+        <nav class="navbar">
             <div class="container">
                 <span class="navbar-brand-name">
-                    <i class="bi bi-compass text-orange me-1"></i> GeoRoadbook
+                    <span class="text-orange">◎</span> GeoRoadbook
                 </span>
-                <div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="theme-toggle" role="group" aria-label="Color theme">
+                        <button type="button" data-set-theme="light" title="Light theme" aria-label="Light theme"><i class="bi bi-sun-fill"></i></button>
+                        <button type="button" data-set-theme="dark" title="Dark theme" aria-label="Dark theme"><i class="bi bi-moon-fill"></i></button>
+                    </div>
                     {% if app.user is empty %}
-                        <a href="{{ path('app_login') }}" class="btn btn-primary btn-sm px-4 shadow-sm">Sign in</a>
+                        <a href="{{ path('app_login') }}" class="btn btn-primary btn-sm px-4">Sign in</a>
                     {% else %}
                         <div class="hello-user d-flex align-items-center gap-2 px-3 py-1 rounded-pill">
-                            <img src="{{ app.user.avatarUrl }}" loading="lazy" width="24" height="24" class="rounded-circle shadow-sm" alt="{{ app.user.username }}'s avatar">
+                            <img src="{{ app.user.avatarUrl }}" loading="lazy" width="24" height="24" class="rounded-circle" alt="{{ app.user.username }}'s avatar">
                             <span class="small">{{ app.user.username }}</span>
-                            <a href="{{ path('app_logout') }}" class="text-orange small ms-1 text-decoration-none fw-bold" title="Sign out"><i class="bi bi-box-arrow-right"></i></a>
                         </div>
+                        <a href="{{ path('app_logout') }}" class="text-muted small text-decoration-none border-start ps-3" style="border-color: var(--divider) !important;" title="Sign out">Sign out</a>
                     {% endif %}
                 </div>
             </div>
@@ -38,29 +51,30 @@
     </header>
 
     <main class="flex-shrink-0">
-        <div class="container">
-            {% if exception is defined %}
-                <div class="alert alert-danger mt-4 border-0 shadow-sm d-flex align-items-center" role="alert">
+        {% if exception is defined %}
+            <div class="container">
+                <div class="alert alert-danger mt-4 d-flex align-items-center" role="alert">
                     <i class="bi bi-exclamation-circle-fill me-3 fs-4"></i>
                     <div>
                         <strong class="d-block">{{ exception.type }}</strong>
                         <span class="small">{{ exception.message }}</span>
                     </div>
                 </div>
-            {% endif %}
-            {% block main %}{% endblock %}
-        </div>
+            </div>
+        {% endif %}
+        {% block main %}{% endblock %}
     </main>
 
-    <footer class="footer mt-auto py-5" style="background: white; border-top: 1px solid var(--border);">
+    <footer class="footer mt-auto py-5">
         <div class="container text-center">
-            <div class="mb-4">
-                <span class="navbar-brand-name small text-muted opacity-50">◎ GEOROADBOOK</span>
+            <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+                <i class="bi bi-shield-check text-shield"></i>
+                <span class="small text-secondary">Private &amp; Secure — roadbooks deleted after 30 days.</span>
             </div>
-            <ul class="list-inline mb-4">
-                <li class="list-inline-item px-3"><a href="#faq" class="text-secondary text-decoration-none small fw-medium" data-bs-toggle="modal" data-bs-target="#faq"><i class="bi bi-question-circle me-1"></i> FAQ</a></li>
-                <li class="list-inline-item px-3 border-start"><a href="#about" class="text-secondary text-decoration-none small fw-medium" data-bs-toggle="modal" data-bs-target="#about"><i class="bi bi-info-circle me-1"></i> About</a></li>
-                <li class="list-inline-item px-3 border-start"><a href="https://github.com/Surfoo/georoadbook" target="_blank" class="text-secondary text-decoration-none small fw-medium"><i class="bi bi-github me-1"></i> GitHub</a></li>
+            <ul class="list-inline mb-3">
+                <li class="list-inline-item px-3"><a href="#faq" class="text-decoration-none small fw-medium" data-bs-toggle="modal" data-bs-target="#faq">FAQ</a></li>
+                <li class="list-inline-item px-3"><a href="#about" class="text-decoration-none small fw-medium" data-bs-toggle="modal" data-bs-target="#about">About</a></li>
+                <li class="list-inline-item px-3"><a href="https://github.com/Surfoo/georoadbook" target="_blank" class="text-decoration-none small fw-medium">GitHub</a></li>
             </ul>
             <p class="mb-0 text-muted extra-small">Made with ❤️ for the world's geocachers. Happy hunting!</p>
         </div>
@@ -69,6 +83,16 @@
     {# Keep FAQ/About Modals... #}
     <div id="faq" class="modal fade" tabindex="-1">...</div>
     <div id="about" class="modal fade" tabindex="-1">...</div>
+
+    <script>
+        document.querySelectorAll('.theme-toggle [data-set-theme]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var theme = btn.getAttribute('data-set-theme');
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            });
+        });
+    </script>
 
     {% block body_scripts %}{% endblock %}
 

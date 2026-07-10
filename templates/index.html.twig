@@ -1,18 +1,21 @@
 {% extends 'main.html.twig' %}
 
 {% block main %}
-<div class="pb-5">
 
-    {# Hero Section #}
-    <div class="hero-section text-center">
-        <span class="section-label">THE ULTIMATE GEOCACHING TOOL</span>
+{# Hero Section #}
+<div class="hero-section text-center">
+    <div class="container">
+        <span class="section-label">The ultimate geocaching tool</span>
         <h1 class="section-title">Ready for your next adventure?</h1>
-        <p class="page-desc">Create a beautiful, customizable roadbook in seconds. Perfectly formatted for printing or digital use on the trail.</p>
+        <p class="page-desc">Create your roadbook. Generate a customizable, ready-to-print trail booklet from your GPX files.</p>
     </div>
+</div>
+
+<div class="container pb-5">
 
     {# Flash messages #}
     {% for message in app.flashes('deleted') %}
-        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i> {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -22,173 +25,155 @@
         <div id="error" class="alert alert-warning d-none" role="alert"></div>
 
         {# Source Card #}
-        <div class="card-glass source-card border-0 mb-5">
-            <div class="row g-4 align-items-center">
-                <div class="col-md-7">
-                    <label class="form-label text-accent fw-bold" for="gpx">1. CHOOSE YOUR GPX FILE</label>
-                    <div class="drop-zone" id="drop_zone">
-                        <i class="bi bi-map-fill fs-1 text-sky mb-3 d-block"></i>
-                        <p class="mb-1 fw-bold text-primary">Drop your GPX file here</p>
-                        <p class="text-muted small mb-0">v1.0.1 • 8MB max</p>
-                        <input id="gpx" type="file" class="d-none">
-                    </div>
+        <div class="card-glass mb-5">
 
-                    {% if pocketqueryList is defined %}
-                        <div class="mt-4">
-                            <label class="form-label text-accent fw-bold" for="pocket_list">OR USE A POCKET QUERY</label>
-                            <select name="referenceCode" class="form-select border-0 shadow-sm" id="pocket_list">
-                                <option value="">Select a query...</option>
-                                {% for pq in pocketqueryList %}
-                                    <option value="{{ pq.referenceCode }}">{{ pq.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    {% endif %}
+            <div class="drop-zone mb-4" id="drop_zone">
+                <i class="bi bi-geo-alt-fill fs-1 text-orange mb-2 d-block"></i>
+                <p class="mb-1 fw-bold dz-filename text-primary">Drop your GPX file here</p>
+                <p class="text-muted small mb-0 dz-meta" style="color: var(--text-muted) !important;">or click to browse • 8MB max</p>
+                <input id="gpx" type="file" class="d-none" accept=".gpx">
+            </div>
+
+            {% if pocketqueryList is defined %}
+                <div class="mb-4">
+                    <label class="form-label form-label-mono" for="pocket_list">Or choose a pocket query</label>
+                    <select name="referenceCode" class="form-select" id="pocket_list">
+                        <option value="">Select a query...</option>
+                        {% for pq in pocketqueryList %}
+                            <option value="{{ pq.referenceCode }}">{{ pq.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
+            {% endif %}
 
-                <div class="col-md-5">
-                    <div class="p-4 rounded-4" style="background: var(--bg-base);">
-                        <label class="form-label text-accent fw-bold" for="locale">ROADBOOK LANGUAGE</label>
-                        <select name="locale" class="form-select border-0 shadow-sm mb-3" id="locale">
-                            <option value=""></option>
-                            {% for code, name in locales %}
-                                <option value="{{ code|e }}"{% if language is defined and language == code %} selected{% endif %}>{{ name|e }}</option>
-                            {% endfor %}
-                        </select>
-                        <div class="d-flex align-items-start gap-2">
-                            <i class="bi bi-info-circle text-sky mt-1"></i>
-                            <p class="text-muted small mb-0">This language will be used for all generated headings and labels in your final roadbook.</p>
-                        </div>
-                    </div>
+            <div>
+                <label class="form-label form-label-mono" for="locale">Roadbook language</label>
+                <select name="locale" class="form-select" id="locale">
+                    <option value=""></option>
+                    {% for code, name in locales %}
+                        <option value="{{ code|e }}"{% if language is defined and language == code %} selected{% endif %}>{{ name|e }}</option>
+                    {% endfor %}
+                </select>
+                <div class="d-flex align-items-center gap-2 mt-2">
+                    <i class="bi bi-info-circle text-sky"></i>
+                    <span class="text-muted small">Controls headings and labels in the generated document, not your cache descriptions.</span>
                 </div>
             </div>
         </div>
 
         {# Options Grid #}
-        <h4 class="mb-4 fw-bold text-primary">2. Customize your roadbook</h4>
         <div class="options-grid">
-            
+
             {# General Settings #}
-            <div class="option-group-card border-0">
-                <div class="option-group-title mb-4">GENERAL SETTINGS</div>
-                
-                <div class="option-item mb-3">
+            <div class="option-group-card">
+                <div class="option-group-title mb-4">
+                    <i class="bi bi-list-ul"></i> General Settings
+                </div>
+
+                <div class="mb-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="sort" id="sort" value="1">
-                        <label class="form-check-label fw-medium" for="sort">Sort caches by...</label>
+                        <label class="form-check-label fw-medium" for="sort">Sort caches</label>
                     </div>
-                </div>
-                
-                <div id="sort_options" class="hidden ps-4 mb-3 border-start border-2 border-accent">
-                    <div class="d-flex flex-wrap gap-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sort_by" id="sort1" value="name">
-                            <label class="form-check-label small" for="sort1">Name</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sort_by" id="sort2" value="owner">
-                            <label class="form-check-label small" for="sort2">Owner</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sort_by" id="sort3" value="difficulty">
-                            <label class="form-check-label small" for="sort3">Difficulty</label>
+                    <div id="sort_options" class="hidden ms-4 mt-2">
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort_by" id="sort1" value="name">
+                                <label class="form-check-label small" for="sort1">By name</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort_by" id="sort2" value="owner">
+                                <label class="form-check-label small" for="sort2">By owner</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort_by" id="sort3" value="difficulty">
+                                <label class="form-check-label small" for="sort3">By difficulty</label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="option-item">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="toc" id="toc" value="1">
-                        <label class="form-check-label fw-medium" for="toc">Include table of contents</label>
-                    </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="toc" id="toc" value="1">
+                    <label class="form-check-label fw-medium" for="toc">Table of contents</label>
                 </div>
             </div>
 
-            {# Geocache Details #}
-            <div class="option-group-card border-0">
-                <div class="option-group-title mb-4">GEOCACHE CONTENT</div>
-                
+            {# Geocache Content #}
+            <div class="option-group-card">
+                <div class="option-group-title mb-4">
+                    <i class="bi bi-box-seam"></i> Geocache Content
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="note" id="note" value="1">
+                    <label class="form-check-label fw-medium" for="note">Note area</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="short_desc" id="short_desc" value="1">
+                    <label class="form-check-label fw-medium" for="short_desc">Short description</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="long_desc" id="long_desc" value="1">
+                    <label class="form-check-label fw-medium" for="long_desc">Long description</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="hint" id="hint" value="1">
+                    <label class="form-check-label fw-medium" for="hint">Hints</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="waypoints" id="waypoints" value="1">
+                    <label class="form-check-label fw-medium" for="waypoints">Waypoints</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="logs" id="logs" value="1">
+                    <label class="form-check-label fw-medium" for="logs">Recent logs</label>
+                </div>
+            </div>
+        </div>
+
+        {# Advanced Options #}
+        <div class="option-group-card mt-4" style="max-width: 960px; margin-left: auto; margin-right: auto;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="option-group-title">
+                    <i class="bi bi-gear-fill"></i> Advanced Options
+                </div>
+                <a href="#" class="advanced-toggle-link" id="toggle_advanced">Show advanced options</a>
+            </div>
+
+            <div class="advanced-options mt-4" id="advanced_section">
                 <div class="row g-3">
-                    <div class="col-6">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="note" id="note" value="1">
-                            <label class="form-check-label fw-medium" for="note">Note area</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="short_desc" id="short_desc" value="1">
-                            <label class="form-check-label fw-medium" for="short_desc">Short desc.</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="long_desc" id="long_desc" value="1">
-                            <label class="form-check-label fw-medium" for="long_desc">Long desc.</label>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="hint" id="hint" value="1">
-                            <label class="form-check-label fw-medium" for="hint">Hints</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="waypoints" id="waypoints" value="1">
-                            <label class="form-check-label fw-medium" for="waypoints">Waypoints</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="logs" id="logs" value="1">
-                            <label class="form-check-label fw-medium" for="logs">Recent logs</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4 pt-3 border-top border-muted border-opacity-10">
-                    <a href="#" class="text-orange fw-bold small text-decoration-none" id="toggle_advanced">
-                        <i class="bi bi-gear-fill me-1"></i> SHOW ADVANCED OPTIONS
-                    </a>
-                </div>
-
-                <div class="advanced-options mt-3" id="advanced_section">
-                    <div class="p-3 rounded-3 bg-white shadow-sm border border-light">
-                        <div class="form-check mb-2">
+                    <div class="col-md-4">
+                        <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="images" id="images" value="1">
-                            <label class="form-check-label small" for="images">Remove images (save ink)</label>
+                            <label class="form-check-label" for="images">Remove images (save ink)</label>
                         </div>
-                        <div class="form-check mb-2">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="spoilers" id="spoilers" value="1">
-                            <label class="form-check-label small" for="spoilers">Include Spoilers (Spoilers4gpx)</label>
+                            <label class="form-check-label" for="spoilers">Include spoilers (Spoilers4gpx)</label>
                         </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="pagebreak" id="pagebreak" value="1">
-                            <label class="form-check-label small" for="pagebreak">New page for each cache</label>
+                            <label class="form-check-label" for="pagebreak">Page break per cache</label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {# Sticky Action Footer #}
-        <div class="action-footer py-3">
-            <div class="container d-flex justify-content-between align-items-center">
-                <div class="d-none d-md-flex align-items-center gap-2">
-                    <div class="rounded-circle bg-accent text-white d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                        <i class="bi bi-shield-lock-fill small"></i>
-                    </div>
-                    <div>
-                        <p class="mb-0 fw-bold small text-primary">Private & Secure</p>
-                        <p class="mb-0 text-muted extra-small">Roadbooks are deleted after 30 days.</p>
-                    </div>
-                </div>
-                <button type="submit" id="create" name="send" class="btn btn-primary btn-lg px-5 py-3 btn-primary-action shadow">
-                    GENERATE ROADBOOK <i class="bi bi-compass-fill ms-2"></i>
-                </button>
-            </div>
+        {# Generate CTA #}
+        <div class="d-flex justify-content-center mt-5">
+            <button type="submit" id="create" name="send" class="btn btn-primary btn-lg btn-primary-action">
+                Generate Roadbook
+            </button>
         </div>
 
     </form>
 </div>
-
-<style>
-    .extra-small { font-size: 0.7rem; }
-    .rounded-4 { border-radius: 1rem !important; }
-</style>
 {% endblock %}
 
 {% block body_scripts %}
@@ -200,9 +185,9 @@
         $('#toggle_advanced').on('click', function(e) {
             e.preventDefault();
             $('#advanced_section').toggleClass('show');
-            $(this).html($('#advanced_section').hasClass('show') ? 
-                '<i class="bi bi-gear-fill me-1"></i> HIDE ADVANCED OPTIONS' : 
-                '<i class="bi bi-gear-fill me-1"></i> SHOW ADVANCED OPTIONS');
+            $(this).text($('#advanced_section').hasClass('show') ?
+                'Hide advanced options' :
+                'Show advanced options');
         });
 
         // Trigger file input on drop zone click
@@ -210,12 +195,24 @@
             $('#gpx').trigger('click');
         });
 
-        // Simple file name display
+        // Drag & drop visual feedback
+        $('#drop_zone').on('dragover dragenter', function(e) {
+            e.preventDefault();
+            $(this).addClass('dragover');
+        }).on('dragleave drop', function(e) {
+            e.preventDefault();
+            $(this).removeClass('dragover');
+        });
+
+        // File selected state
         $('#gpx').on('change', function() {
             const fileName = $(this).val().split('\\').pop();
             if (fileName) {
-                $('#drop_zone p.fw-bold').text(fileName).removeClass('text-primary').addClass('text-sky');
-                $('#drop_zone i').removeClass('bi-map-fill').addClass('bi-check-circle-fill').removeClass('text-sky').addClass('text-accent');
+                const size = this.files.length ? (this.files[0].size / (1024 * 1024)).toFixed(1) + ' MB' : '';
+                $('#drop_zone').addClass('file-selected');
+                $('#drop_zone i').attr('class', 'bi bi-check-circle-fill fs-2 text-accent mb-2 d-block');
+                $('#drop_zone .dz-filename').text(fileName);
+                $('#drop_zone .dz-meta').attr('style', '').text(size);
             }
         });
     });
