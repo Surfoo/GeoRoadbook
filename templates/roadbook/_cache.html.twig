@@ -7,7 +7,7 @@
 </div>
 <div class="container2">
 <p class="cacheGCode">{{ cache.code }}</p>
-<p>{% if cache.placedBy %}{{ t.by }}&#160;<strong>{{ cache.placedBy }}</strong>, {% endif %}{{ t.hidden }}<strong>&#160;{{ hiddenDate }}</strong></p>
+<p>{% set ownerName = cache.owner ?? cache.placedBy %}{% if ownerName %}{{ t.by }}&#160;<strong>{{ ownerName }}</strong>, {% endif %}{{ t.hidden }}<strong>&#160;{{ hiddenDate }}</strong></p>
 <p>{% if icons.container(cache.container) %}{{ t.size }}&#160;<img src="{{ icons.container(cache.container) }}" alt="{{ cache.container }}"/>&#160;({{ t[cache.container|replace({' ': '_'})]|default(cache.container) }}){% endif %}</p>
 <div class="clear"></div>
 </div>

@@ -29,6 +29,12 @@ final readonly class Geocache
         public array $logs,
         public array $waypoints,
         public array $spoilers,
+        public ?string $owner = null,
     ) {
+    }
+
+    public function withOwner(?string $owner): self
+    {
+        return clone ($this, ['owner' => $owner]);
     }
 }
