@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 )]
 class PurgeRoadbooksCommand extends Command
 {
-    private const DEFAULT_RETENTION_DAYS = 30;
+    private const int DEFAULT_RETENTION_DAYS = 30;
 
     public function __construct(
         #[Autowire('%app.roadbook_dir%')]
@@ -34,9 +34,9 @@ class PurgeRoadbooksCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $days = max(1, (int) $input->getOption('days'));
-        $dryRun = (bool) $input->getOption('dry-run');
+        $io        = new SymfonyStyle($input, $output);
+        $days      = max(1, (int) $input->getOption('days'));
+        $dryRun    = (bool) $input->getOption('dry-run');
         $threshold = time() - $days * 86400;
 
         $files = array_merge(

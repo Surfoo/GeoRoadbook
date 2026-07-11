@@ -9,7 +9,7 @@ namespace App\Roadbook;
  */
 class LogTextFormatter
 {
-    private const SMILEYS = [
+    private const array SMILEYS = [
         ':)'  => 'icon_smile.gif',
         ':D'  => 'icon_smile_big.gif',
         '8D'  => 'icon_smile_cool.gif',
@@ -32,7 +32,7 @@ class LogTextFormatter
         '?'   => 'icon_smile_question.gif',
     ];
 
-    private const COLORS = [
+    private const array COLORS = [
         'black', 'blue', 'gold', 'green', 'maroon', 'navy', 'orange',
         'pink', 'purple', 'red', 'teal', 'white', 'yellow',
     ];
@@ -41,7 +41,7 @@ class LogTextFormatter
 
     public function format(string $text): string
     {
-        $html = (new \cebe\markdown\Markdown())->parse($text);
+        $html = new \cebe\markdown\Markdown()->parse($text);
 
         $parser = $this->bbcodeParser();
         $parser->parse($html);
@@ -68,11 +68,11 @@ class LogTextFormatter
 
     private function replaceSmileys(string $html): string
     {
-        $search = [];
+        $search  = [];
         $replace = [];
         foreach (self::SMILEYS as $code => $image) {
-            $search[] = '[' . $code . ']';
-            $replace[] = '<img src="/images/icons/' . $image . '" alt="' . htmlspecialchars($code, ENT_QUOTES) . '" />';
+            $search[]  = '[' . $code . ']';
+            $replace[] = '<img src="/images/icons/' . $image . '" alt="' . htmlspecialchars((string) $code, ENT_QUOTES) . '" />';
         }
 
         return str_replace($search, $replace, $html);

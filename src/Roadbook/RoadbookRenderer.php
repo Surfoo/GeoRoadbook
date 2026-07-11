@@ -39,25 +39,25 @@ class RoadbookRenderer
             if (!empty($options['display_logs'])) {
                 foreach ($cache->logs as $log) {
                     $logs[] = [
-                        'log' => $log,
+                        'log'  => $log,
                         'html' => $this->sanitizer->sanitize($this->logFormatter->format($log->text)),
                     ];
                 }
             }
 
             $items[] = [
-                'cache' => $cache,
+                'cache'       => $cache,
                 'description' => $this->displayDescription($cache),
-                'hiddenDate' => $cache->hiddenDate === null ? '' : $this->locales->formatDate($locale, $cache->hiddenDate),
-                'logs' => $logs,
+                'hiddenDate'  => $cache->hiddenDate === null ? '' : $this->locales->formatDate($locale, $cache->hiddenDate),
+                'logs'        => $logs,
             ];
         }
 
         return $this->twig->render('roadbook/document.html.twig', [
-            'items' => $items,
+            'items'   => $items,
             'options' => $options,
-            't' => $this->locales->texts($locale),
-            'icons' => $this->icons,
+            't'       => $this->locales->texts($locale),
+            'icons'   => $this->icons,
         ]);
     }
 

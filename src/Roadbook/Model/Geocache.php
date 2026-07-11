@@ -5,9 +5,9 @@ namespace App\Roadbook\Model;
 final readonly class Geocache
 {
     /**
-     * @param list<array{id: int, inc: bool}> $attributes
-     * @param list<GeocacheLog>               $logs
-     * @param list<AdditionalWaypoint>        $waypoints
+     * @param list<array{id: int, inc: bool}>         $attributes
+     * @param list<GeocacheLog>                       $logs
+     * @param list<AdditionalWaypoint>                $waypoints
      * @param list<array{title: string, url: string}> $spoilers
      */
     public function __construct(

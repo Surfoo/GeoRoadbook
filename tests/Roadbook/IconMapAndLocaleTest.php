@@ -13,8 +13,8 @@ class IconMapAndLocaleTest extends TestCase
 
     protected function setUp(): void
     {
-        $projectDir = dirname(__DIR__, 2);
-        $this->icons = new IconMap('32x32', $projectDir . '/config/roadbook/attribute_icons.php');
+        $projectDir    = dirname(__DIR__, 2);
+        $this->icons   = new IconMap('32x32', $projectDir . '/config/roadbook/attribute_icons.php');
         $this->locales = new LocaleCatalog($projectDir . '/config/locales');
     }
 

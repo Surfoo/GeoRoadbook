@@ -15,6 +15,9 @@ class GpxParserTest extends TestCase
         $this->parser = new GpxParser();
     }
 
+    /**
+     * @return list<Geocache>
+     */
     private function parseFixture(): array
     {
         return $this->parser->parse((string) file_get_contents(__DIR__ . '/fixtures/sample.gpx'));

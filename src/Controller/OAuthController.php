@@ -22,13 +22,13 @@ class OAuthController extends AbstractController
     }
 
     #[Route('/logout', name: 'app_logout')]
-    public function logout()
+    public function logout(): never
     {
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 
     #[Route('/callback', name: 'app_callback')]
-    public function callback()
+    public function callback(): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         return $this->redirectToRoute('app_homepage');
     }

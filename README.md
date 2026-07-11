@@ -26,6 +26,16 @@ docker compose exec php-fpm composer install
 
 The app runs at [http://localhost:8000/](http://localhost:8000/). Three services: `webserver` (nginx), `php-fpm`, and `weasyprint` (PDF conversion).
 
+### Code quality
+
+Rector, php-cs-fixer, and PHPStan (level 6) run in CI (`.github/workflows/check.yml`) and in the versioned pre-commit hook. Activate the hook once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Composer shortcuts: `composer rector`, `composer php-cs-fixer`, `composer phpstan`.
+
 ### Housekeeping
 
 Roadbooks are deleted after 30 days without modification. Run the purge from cron:

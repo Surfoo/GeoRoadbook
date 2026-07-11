@@ -6,7 +6,9 @@ use App\Roadbook\GpxParser;
 use App\Roadbook\RoadbookFactory;
 use App\Roadbook\RoadbookRenderer;
 use App\Security\User;
-use Geocaching\GeocachingFactory;
+use Geocaching\Enum\Environment;
+use Geocaching\GeocachingSdk;
+use Geocaching\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,6 +18,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class GeoroadBookController extends AbstractController
 {
+    /**
+     * @param array<string, string> $locales
+     * @param list<string>          $availableSorts
+     */
     public function __construct(
         private readonly RoadbookFactory $roadbookFactory,
         private readonly GpxParser $gpxParser,
@@ -40,22 +46,19 @@ class GeoroadBookController extends AbstractController
     {
         $params = [
             'suffix_css_js' => 'aa',
-            'locales' => $this->locales,
+            'locales'       => $this->locales,
         ];
 
         $user = $this->getUser();
         if ($user instanceof User && $user->getCredentials()) {
             try {
-                $geocachingApi = GeocachingFactory::createSdk(
-                    $user->getCredentials()->getToken(),
-                    $this->geocachingEnvironment,
-                    ['debug' => false, 'timeout' => 10],
-                );
-                $pocketQueryList = $geocachingApi->getUserLists('me', [
-                    'types' => 'pq',
-                    'take' => 50,
+                $response = $this->createGeocachingSdk($user)->getUserLists('me', [
+                    'types'  => 'pq',
+                    'take'   => 50,
                     'fields' => 'referenceCode,name',
-                ])->getBody();
+                ]);
+                /** @var list<object{referenceCode: string, name: string}> $pocketQueryList */
+                $pocketQueryList = json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
                 usort($pocketQueryList, fn ($a, $b) => $a->name <=> $b->name);
                 $params['pocketqueryList'] = $pocketQueryList;
             } catch (\Throwable) {
@@ -71,9 +74,9 @@ class GeoroadBookController extends AbstractController
     {
         $payload = $request->getPayload();
 
-        $gpx = (string) $payload->get('gpx', '');
+        $gpx           = (string) $payload->get('gpx', '');
         $referenceCode = (string) $payload->get('referenceCode', '');
-        $locale = $payload->get('locale');
+        $locale        = $payload->get('locale');
 
         if ($gpx === '' && $referenceCode === '') {
             return $this->json(['success' => false, 'message' => 'A GPX file or a Pocket Query is missing.']);
@@ -119,13 +122,13 @@ class GeoroadBookController extends AbstractController
             $sortBy = $this->availableSorts[0];
         }
 
-        $displayToc = $bool($payload->get('toc'));
-        $displayHint = $bool($payload->get('hint'));
-        $displayLogs = $bool($payload->get('logs'));
-        $displaySpoilers = $bool($payload->get('spoilers'));
+        $displayToc       = $bool($payload->get('toc'));
+        $displayHint      = $bool($payload->get('hint'));
+        $displayLogs      = $bool($payload->get('logs'));
+        $displaySpoilers  = $bool($payload->get('spoilers'));
         $displayWaypoints = $bool($payload->get('waypoints'));
-        $hintEncrypted = $bool($payload->get('hint_encrypted'));
-        $removeImages = $bool($payload->get('images'));
+        $hintEncrypted    = $bool($payload->get('hint_encrypted'));
+        $removeImages     = $bool($payload->get('images'));
 
         $roadbook = $this->roadbookFactory->create();
 
@@ -134,13 +137,13 @@ class GeoroadBookController extends AbstractController
         }
 
         $options = [
-            'display_note' => $bool($payload->get('note')),
+            'display_note'      => $bool($payload->get('note')),
             'display_long_desc' => $bool($payload->get('long_desc')),
-            'display_hint' => $displayHint,
-            'display_logs' => $displayLogs,
+            'display_hint'      => $displayHint,
+            'display_logs'      => $displayLogs,
             'display_waypoints' => $displayWaypoints,
-            'display_spoilers' => $displaySpoilers,
-            'pagebreak' => $bool($payload->get('pagebreak')),
+            'display_spoilers'  => $displaySpoilers,
+            'pagebreak'         => $bool($payload->get('pagebreak')),
         ];
 
         $caches = $this->gpxParser->sort($this->gpxParser->parse($gpx), $sortBy);
@@ -177,12 +180,12 @@ class GeoroadBookController extends AbstractController
         }
 
         return $this->render('edit.html.twig', [
-            'suffix_css_js' => 'aa',
-            'roadbook_id' => $roadbook->id,
-            'roadbook_content' => file_get_contents($roadbook->getHtmlFile()),
+            'suffix_css_js'     => 'aa',
+            'roadbook_id'       => $roadbook->id,
+            'roadbook_content'  => file_get_contents($roadbook->getHtmlFile()),
             'last_modification' => 'Last saved: ' . $roadbook->getLastSavedDate(),
-            'export_options' => $options,
-            'pdf_available' => file_exists($roadbook->getPdfFile()),
+            'export_options'    => $options,
+            'pdf_available'     => file_exists($roadbook->getPdfFile()),
         ]);
     }
 
@@ -193,8 +196,8 @@ class GeoroadBookController extends AbstractController
 
         return $this->render('raw.twig.html', [
             'suffix_css_js' => 'aa',
-            'style' => $roadbook->getCustomCss(),
-            'content' => file_get_contents($roadbook->getHtmlFile()),
+            'style'         => $roadbook->getCustomCss(),
+            'content'       => file_get_contents($roadbook->getHtmlFile()),
         ]);
     }
 
@@ -213,7 +216,7 @@ class GeoroadBookController extends AbstractController
         }
 
         return $this->json([
-            'success' => true,
+            'success'           => true,
             'last_modification' => 'Last saved: ' . $roadbook->getLastSavedDate(),
         ]);
     }
@@ -233,20 +236,20 @@ class GeoroadBookController extends AbstractController
     public function export(string $id, Request $request): JsonResponse
     {
         $roadbook = $this->getRoadbookOr404($id);
-        $payload = $request->getPayload();
+        $payload  = $request->getPayload();
 
         $options = [
-            'page_size' => in_array($payload->get('page_size'), ['A4', 'A5'], true) ? $payload->get('page_size') : 'A4',
-            'orientation' => in_array($payload->get('orientation'), ['portrait', 'landscape'], true) ? $payload->get('orientation') : 'portrait',
-            'margin_top' => (int) $payload->get('margin_top', 10),
-            'margin_right' => (int) $payload->get('margin_right', 10),
-            'margin_bottom' => (int) $payload->get('margin_bottom', 10),
-            'margin_left' => (int) $payload->get('margin_left', 10),
-            'header_align' => in_array($payload->get('header_align'), ['left', 'center', 'right'], true) ? $payload->get('header_align') : 'left',
-            'header_text' => (string) $payload->get('header_text', ''),
+            'page_size'         => in_array($payload->get('page_size'), ['A4', 'A5'], true) ? $payload->get('page_size') : 'A4',
+            'orientation'       => in_array($payload->get('orientation'), ['portrait', 'landscape'], true) ? $payload->get('orientation') : 'portrait',
+            'margin_top'        => (int) $payload->get('margin_top', 10),
+            'margin_right'      => (int) $payload->get('margin_right', 10),
+            'margin_bottom'     => (int) $payload->get('margin_bottom', 10),
+            'margin_left'       => (int) $payload->get('margin_left', 10),
+            'header_align'      => in_array($payload->get('header_align'), ['left', 'center', 'right'], true) ? $payload->get('header_align') : 'left',
+            'header_text'       => (string) $payload->get('header_text', ''),
             'header_pagination' => (bool) $payload->get('header_pagination', false),
-            'footer_align' => in_array($payload->get('footer_align'), ['left', 'center', 'right'], true) ? $payload->get('footer_align') : 'left',
-            'footer_text' => (string) $payload->get('footer_text', ''),
+            'footer_align'      => in_array($payload->get('footer_align'), ['left', 'center', 'right'], true) ? $payload->get('footer_align') : 'left',
+            'footer_text'       => (string) $payload->get('footer_text', ''),
             'footer_pagination' => (bool) $payload->get('footer_pagination', false),
         ];
 
@@ -260,7 +263,7 @@ class GeoroadBookController extends AbstractController
 
         return $this->json([
             'success' => true,
-            'size' => round(filesize($roadbook->getPdfFile()) / (1024 * 1024), 2),
+            'size'    => round(filesize($roadbook->getPdfFile()) / (1024 * 1024), 2),
         ]);
     }
 
@@ -280,9 +283,17 @@ class GeoroadBookController extends AbstractController
     public function zip(string $id): Response
     {
         $roadbook = $this->getRoadbookOr404($id);
-        $zipFile = $roadbook->buildZip($this->publicDir);
+        $zipFile  = $roadbook->buildZip($this->publicDir);
 
         return $this->file($zipFile, 'roadbook.zip')->deleteFileAfterSend();
+    }
+
+    private function createGeocachingSdk(User $user): GeocachingSdk
+    {
+        return new GeocachingSdk(new Options([
+            'environment'  => Environment::from($this->geocachingEnvironment),
+            'access_token' => (string) $user->getCredentials()?->getToken(),
+        ]));
     }
 
     private function getRoadbookOr404(string $id): \App\Roadbook\Roadbook
@@ -303,11 +314,7 @@ class GeoroadBookController extends AbstractController
             throw new \RuntimeException('You must be signed in to use a Pocket Query.');
         }
 
-        $geocachingApi = GeocachingFactory::createSdk(
-            $user->getCredentials()->getToken(),
-            $this->geocachingEnvironment,
-            ['debug' => false, 'timeout' => 10],
-        );
+        $geocachingApi = $this->createGeocachingSdk($user);
 
         $tmpDirectory = sys_get_temp_dir() . '/georoadbook';
         if (!is_dir($tmpDirectory)) {

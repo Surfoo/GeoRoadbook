@@ -2,24 +2,16 @@
 
 namespace App\Security;
 
-use App\Api\Geocaching;
-use App\Dao\UserDao;
-use Geocaching\Enum\MembershipType;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * @implements UserProviderInterface<User>
+ */
 class UserProvider implements UserProviderInterface
 {
-    public function __construct(
-        // private readonly UserDao $userDao,
-        // private readonly Geocaching $api,
-        private readonly LoggerInterface $apiLogger)
-    {
-    }
-
     /**
      * Symfony calls this method if you use features like switch_user
      * or remember_me. If you're not using these features, you do not
@@ -32,7 +24,7 @@ class UserProvider implements UserProviderInterface
         // Load a User object from your data source or throw UserNotFoundException.
         // The $identifier argument is whatever value is being returned by the
         // getUserIdentifier() method in your User class.
-        throw new \Exception('TODO: fill in loadUserByIdentifier() inside '.__FILE__);
+        throw new \Exception('TODO: fill in loadUserByIdentifier() inside ' . __FILE__);
     }
 
     /**
@@ -83,7 +75,7 @@ class UserProvider implements UserProviderInterface
     /**
      * Tells Symfony to use this provider for this User class.
      */
-    public function supportsClass($class): bool
+    public function supportsClass(string $class): bool
     {
         return User::class === $class || is_subclass_of($class, User::class);
     }

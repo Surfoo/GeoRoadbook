@@ -11,7 +11,7 @@ use App\Roadbook\Model\GeocacheLog;
  */
 class GpxParser
 {
-    private const GROUNDSPEAK_NS = 'http://www.groundspeak.com/cache/1/0/1';
+    private const string GROUNDSPEAK_NS = 'http://www.groundspeak.com/cache/1/0/1';
 
     /**
      * @return list<Geocache>
@@ -35,8 +35,8 @@ class GpxParser
                 continue; // additional waypoint entries have no cache element
             }
 
-            $latitude = (float) $wpt['lat'];
-            $longitude = (float) $wpt['lon'];
+            $latitude               = (float) $wpt['lat'];
+            $longitude              = (float) $wpt['lon'];
             [$description, $isHtml] = $this->extractDescription($cache);
 
             $caches[] = new Geocache(
@@ -57,7 +57,7 @@ class GpxParser
                 hint: trim((string) $cache->encoded_hints) ?: null,
                 logs: $this->extractLogs($cache),
                 waypoints: $description !== null && $isHtml ? $this->extractWaypoints($description) : [],
-                spoilers: $description !== null ? $this->extractSpoilers($description) : [],
+                spoilers: $description  !== null ? $this->extractSpoilers($description) : [],
             );
         }
 
@@ -72,11 +72,11 @@ class GpxParser
     public function sort(array $caches, string $sortBy): array
     {
         $comparator = match ($sortBy) {
-            'name' => self::textComparator(static fn (Geocache $c) => $c->name),
-            'owner' => self::textComparator(static fn (Geocache $c) => $c->placedBy),
+            'name'       => self::textComparator(static fn (Geocache $c) => $c->name),
+            'owner'      => self::textComparator(static fn (Geocache $c) => $c->placedBy),
             'difficulty' => static fn (Geocache $a, Geocache $b) => (float) $a->difficulty <=> (float) $b->difficulty,
-            'terrain' => static fn (Geocache $a, Geocache $b) => (float) $a->terrain <=> (float) $b->terrain,
-            default => null,
+            'terrain'    => static fn (Geocache $a, Geocache $b) => (float) $a->terrain <=> (float) $b->terrain,
+            default      => null,
         };
 
         if ($comparator !== null) {
@@ -94,7 +94,7 @@ class GpxParser
             return static fn (Geocache $a, Geocache $b) => $collator->compare($key($a), $key($b));
         }
 
-        return static fn (Geocache $a, Geocache $b) => strcasecmp($key($a), $key($b));
+        return static fn (Geocache $a, Geocache $b) => strcasecmp((string) $key($a), (string) $key($b));
     }
 
     /**
@@ -153,9 +153,9 @@ class GpxParser
         $attributes = [];
         foreach ($cache->attributes->attribute ?? [] as $attribute) {
             // id/inc are un-namespaced attributes on a namespaced element
-            $raw = $attribute->attributes();
+            $raw          = $attribute->attributes();
             $attributes[] = [
-                'id' => (int) $raw['id'],
+                'id'  => (int) $raw['id'],
                 'inc' => (string) $raw['inc'] === '1',
             ];
         }

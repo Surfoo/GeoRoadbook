@@ -2,7 +2,6 @@
 
 namespace App\Security;
 
-use Geocaching\Enum\MembershipType;
 use League\OAuth2\Client\Token\AccessToken;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -16,7 +15,11 @@ class User implements UserInterface
     private \DateTimeInterface $joinedDateUtc;
     private AccessToken $credentials;
 
+    /** @var list<string> */
     private array $roles = [];
+
+    /** Geocaching API membership level for premium members */
+    private const string MEMBERSHIP_PREMIUM = '3';
 
     public function getUserId(): ?int
     {
@@ -114,10 +117,12 @@ class User implements UserInterface
 
     public function isPremium(): bool
     {
-        return $this->getMembershipLevelId() == MembershipType::getId('Premium');
+        return $this->getMembershipLevelId() === self::MEMBERSHIP_PREMIUM;
     }
 
     /**
+     * @return list<string>
+     *
      * @see UserInterface
      */
     public function getRoles(): array
@@ -129,6 +134,9 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param list<string> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -156,10 +164,7 @@ class User implements UserInterface
         return null;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
+    public function serialize(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

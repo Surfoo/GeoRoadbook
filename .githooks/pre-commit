@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+ENDCOLOR="\e[0m"
+
+status=0
+
+# Run the tools inside the php-fpm container when it is up, locally otherwise.
+if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^georoadbook-php-fpm$'; then
+  run_php() { docker exec georoadbook-php-fpm "$@"; }
+else
+  run_php() { "$@"; }
+fi
+
+run_check() {
+  local label="$1"
+  shift
+  echo -e "${YELLOW}▶ ${label}${ENDCOLOR}"
+  if run_php "$@"; then
+    echo -e "${GREEN}✔ ${label} OK${ENDCOLOR}"
+  else
+    echo -e "${RED}✘ ${label} a échoué${ENDCOLOR}"
+    status=1
+  fi
+}
+
+# Ordre : outils qui modifient le code (en dry-run) avant l'analyse statique.
+# 1. Rector : refactoring le plus profond
+run_check "Rector"       ./vendor/bin/rector --dry-run --ansi
+# 2. php-cs-fixer : normalise le style après Rector
+run_check "php-cs-fixer" ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff --ansi
+# 3. PHPStan : analyse statique sur le résultat final
+run_check "PHPStan"      ./vendor/bin/phpstan --memory-limit=1G --ansi analyse
+
+if [ "$status" -ne 0 ]; then
+  echo -e "${RED}⚠ Erreurs détectées durant l'analyse du commit ⚠${ENDCOLOR}"
+  exit 1
+fi
+
+echo -e "${GREEN}Toutes les analyses sont passées.${ENDCOLOR}"
+exit 0

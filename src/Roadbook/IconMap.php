@@ -9,45 +9,45 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  */
 class IconMap
 {
-    private const CACHE_TYPES = [
-        'Traditional Cache' => 'traditional.gif',
-        'Multi-cache' => 'multi.gif',
-        'Unknown Cache' => 'mystery.gif',
-        'Mystery Cache' => 'mystery.gif',
-        'Event Cache' => 'event.gif',
-        'Webcam Cache' => 'webcam.gif',
-        'Wherigo Cache' => 'wherigo.gif',
-        'Earthcache' => 'earthcache.gif',
-        'Virtual Cache' => 'virtual.gif',
-        'Letterbox Hybrid' => 'letterbox.gif',
-        'Cache In Trash Out Event' => 'cito.gif',
-        'Mega-Event Cache' => 'megaevent.gif',
-        'Giga-Event Cache' => 'megaevent.gif',
+    private const array CACHE_TYPES = [
+        'Traditional Cache'           => 'traditional.gif',
+        'Multi-cache'                 => 'multi.gif',
+        'Unknown Cache'               => 'mystery.gif',
+        'Mystery Cache'               => 'mystery.gif',
+        'Event Cache'                 => 'event.gif',
+        'Webcam Cache'                => 'webcam.gif',
+        'Wherigo Cache'               => 'wherigo.gif',
+        'Earthcache'                  => 'earthcache.gif',
+        'Virtual Cache'               => 'virtual.gif',
+        'Letterbox Hybrid'            => 'letterbox.gif',
+        'Cache In Trash Out Event'    => 'cito.gif',
+        'Mega-Event Cache'            => 'megaevent.gif',
+        'Giga-Event Cache'            => 'megaevent.gif',
         'Community Celebration Event' => 'event.gif',
-        'Waymark' => 'waymark.gif',
-        'Benchmark' => 'benchmark.gif',
+        'Waymark'                     => 'waymark.gif',
+        'Benchmark'                   => 'benchmark.gif',
     ];
 
-    private const LOG_TYPES = [
-        'Found it' => 'icon_smile.png',
-        'Needs Maintenance' => 'icon_needsmaint.png',
-        "Didn't find it" => 'icon_sad.png',
-        'Owner Maintenance' => 'icon_maint.png',
-        'Enable Listing' => 'icon_enabled.png',
+    private const array LOG_TYPES = [
+        'Found it'                    => 'icon_smile.png',
+        'Needs Maintenance'           => 'icon_needsmaint.png',
+        "Didn't find it"              => 'icon_sad.png',
+        'Owner Maintenance'           => 'icon_maint.png',
+        'Enable Listing'              => 'icon_enabled.png',
         'Temporarily Disable Listing' => 'icon_disabled.png',
-        'Webcam Photo Taken' => 'icon_camera.png',
-        'Update Coordinates' => 'coord_update.png',
-        'Publish Listing' => 'icon_greenlight.png',
-        'Archive' => 'traffic_cone.png',
-        'Announcement' => 'icon_announcement.png',
-        'Need Archived' => 'icon_remove.png',
-        'Will Attend' => 'icon_rsvp.png',
-        'Attended' => 'icon_attended.png',
-        'Write note' => 'icon_note.png',
-        'Post Reviewer Note' => 'reviewer_note.png',
+        'Webcam Photo Taken'          => 'icon_camera.png',
+        'Update Coordinates'          => 'coord_update.png',
+        'Publish Listing'             => 'icon_greenlight.png',
+        'Archive'                     => 'traffic_cone.png',
+        'Announcement'                => 'icon_announcement.png',
+        'Need Archived'               => 'icon_remove.png',
+        'Will Attend'                 => 'icon_rsvp.png',
+        'Attended'                    => 'icon_attended.png',
+        'Write note'                  => 'icon_note.png',
+        'Post Reviewer Note'          => 'reviewer_note.png',
     ];
 
-    private const CONTAINERS = ['micro', 'small', 'regular', 'large', 'other', 'not chosen', 'not_chosen'];
+    private const array CONTAINERS = ['micro', 'small', 'regular', 'large', 'other', 'not chosen', 'not_chosen'];
 
     /** @var array<string, string> */
     private readonly array $attributeIcons;

@@ -6,7 +6,7 @@
  *
  * @author  Surfoo <surfooo@gmail.com>
  *
- * @link    https://github.com/Surfoo/georoadbook
+ * @see    https://github.com/Surfoo/georoadbook
  *
  * @license http://opensource.org/licenses/eclipse-2.0.php
  */
@@ -26,7 +26,6 @@ class Roadbook
     public ?string $html = null;
 
     protected ?string $locale = null;
-
 
     public function __construct(
         private readonly string $roadbookDir,
@@ -81,17 +80,17 @@ class Roadbook
 
         $context = stream_context_create([
             'http' => [
-                'method' => 'POST',
-                'header' => "Content-Type: application/json\r\n",
-                'content' => json_encode(['url' => $url]),
-                'timeout' => 120,
+                'method'        => 'POST',
+                'header'        => "Content-Type: application/json\r\n",
+                'content'       => json_encode(['url' => $url]),
+                'timeout'       => 120,
                 'ignore_errors' => true,
             ],
         ]);
 
-        $body = file_get_contents(rtrim($weasyprintUrl, '/') . '/convert', false, $context);
+        $body   = file_get_contents(rtrim($weasyprintUrl, '/') . '/convert', false, $context);
         $status = 0;
-        foreach ($http_response_header ?? [] as $header) {
+        foreach ($http_response_header as $header) {
             if (preg_match('#^HTTP/\S+\s+(\d{3})#', $header, $m)) {
                 $status = (int) $m[1];
             }
@@ -135,9 +134,9 @@ class Roadbook
 
         $html = $this->twig->render('raw.twig.html', [
             'suffix_css_js' => '',
-            'asset_prefix' => '..',
-            'style' => $this->getCustomCss(),
-            'content' => $content,
+            'asset_prefix'  => '..',
+            'style'         => $this->getCustomCss(),
+            'content'       => $content,
         ]);
         $zip->addFromString('roadbook/' . $this->id . '.html', $html);
         $zip->addFile($publicDir . '/design/roadbook.css', 'design/roadbook.css');
@@ -149,7 +148,7 @@ class Roadbook
             }
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS));
             foreach ($iterator as $file) {
-                $zip->addFile($file->getPathname(), $imageDir . '/' . substr($file->getPathname(), strlen($dir) + 1));
+                $zip->addFile($file->getPathname(), $imageDir . '/' . substr((string) $file->getPathname(), strlen($dir) + 1));
             }
         }
 
@@ -196,26 +195,29 @@ class Roadbook
         $pageOptions = sprintf('size: %s %s;', $cssOptions['page_size'] ?? 'A4', $cssOptions['orientation'] ?? 'portrait');
         $pageOptions .= sprintf(
             'margin: %dmm %dmm %dmm %dmm;',
-            $cssOptions['margin_top'] ?? 10,
-            $cssOptions['margin_right'] ?? 10,
+            $cssOptions['margin_top']    ?? 10,
+            $cssOptions['margin_right']  ?? 10,
             $cssOptions['margin_bottom'] ?? 10,
-            $cssOptions['margin_left'] ?? 10,
+            $cssOptions['margin_left']   ?? 10,
         );
 
         if (!empty($cssOptions['header_pagination'])) {
             $pageOptions .= sprintf('@top-%s{content:counter(page)}', $cssOptions['header_align'] ?? 'left');
         } elseif (!empty($cssOptions['header_text'])) {
-            $pageOptions .= sprintf('@top-%s{content:"%s"}', $cssOptions['header_align'] ?? 'left', htmlspecialchars($cssOptions['header_text']));
+            $pageOptions .= sprintf('@top-%s{content:"%s"}', $cssOptions['header_align'] ?? 'left', htmlspecialchars((string) $cssOptions['header_text']));
         }
         if (!empty($cssOptions['footer_pagination'])) {
             $pageOptions .= sprintf('@bottom-%s{content:counter(page)}', $cssOptions['footer_align'] ?? 'left');
         } elseif (!empty($cssOptions['footer_text'])) {
-            $pageOptions .= sprintf('@bottom-%s{content:"%s"}', $cssOptions['footer_align'] ?? 'left', htmlspecialchars($cssOptions['footer_text']));
+            $pageOptions .= sprintf('@bottom-%s{content:"%s"}', $cssOptions['footer_align'] ?? 'left', htmlspecialchars((string) $cssOptions['footer_text']));
         }
 
         return sprintf('@page{%s}', $pageOptions);
     }
 
+    /**
+     * @param array<string, bool|int|string> $options
+     */
     public function saveOptions(array $options): bool
     {
         return $this->saveFile($this->getJsonFile(), json_encode($options));
@@ -232,7 +234,7 @@ class Roadbook
      */
     public function setContent(string $html, string $locale): static
     {
-        $this->html = $html;
+        $this->html   = $html;
         $this->locale = $locale;
 
         return $this;
@@ -246,21 +248,21 @@ class Roadbook
 
         // http://tidy.sourceforge.net/docs/quickref.html
         $config = [
-            'doctype' => 'html',
+            'doctype'      => 'html',
             'output-xhtml' => true,
-            'wrap' => 0,
+            'wrap'         => 0,
         ];
         $tidy = new \tidy();
         $tidy->parseString($this->html, $config, 'utf8');
         $tidy->cleanRepair();
-        $this->html = (string) $tidy;
+        $this->html = tidy_get_output($tidy);
 
         return $this;
     }
 
     public function getOnlyBody(): void
     {
-        if (preg_match('/<body>(.*)<\/body>/msU', $this->html, $match)) {
+        if (preg_match('/<body>(.*)<\/body>/msU', (string) $this->html, $match)) {
             $this->html = $match[1];
         }
     }
@@ -275,15 +277,17 @@ class Roadbook
 
         $finder = new \DOMXPath($dom);
 
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheTitle ')]");
+        $nodes      = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheTitle ')]");
         $gccodeNode = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheGCode ')]");
 
         $tocContent = [];
         foreach ($nodes as $node) {
+            $icon = $node->firstChild instanceof \DOMElement ? $node->firstChild->getAttribute('src') : '';
+
             $tocContent[] = [
-                'icon' => $node->firstChild->getAttribute('src'),
+                'icon'   => $icon,
                 'gccode' => false,
-                'title' => $node->textContent,
+                'title'  => $node->textContent,
             ];
         }
         foreach ($gccodeNode as $key => $node) {
@@ -293,13 +297,13 @@ class Roadbook
         if (!empty($tocContent)) {
             $toc = new \DOMDocument();
             $toc->load($this->getLocaleFile());
-            $xPath = new \DOMXPath($toc);
+            $xPath            = new \DOMXPath($toc);
             $tocI18n['title'] = $xPath->query("text[@id='toc_title']")->item(0)->nodeValue;
-            $tocI18n['name'] = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
-            $tocI18n['page'] = $xPath->query("text[@id='toc_page']")->item(0)->nodeValue;
+            $tocI18n['name']  = $xPath->query("text[@id='toc_name']")->item(0)->nodeValue;
+            $tocI18n['page']  = $xPath->query("text[@id='toc_page']")->item(0)->nodeValue;
 
             $tocHtml = $this->twig->render('toc.twig.html', [
-                'i18n' => $tocI18n,
+                'i18n'    => $tocI18n,
                 'content' => $tocContent,
             ]);
 
@@ -307,8 +311,9 @@ class Roadbook
             $frag->appendXML($tocHtml);
 
             $body = $dom->getElementsByTagName('body')->item(0);
-            $first = $body->getElementsByTagName('div')->item(0);
-            $body->insertBefore($frag, $first);
+            if ($body instanceof \DOMElement) {
+                $body->insertBefore($frag, $body->getElementsByTagName('div')->item(0));
+            }
             $this->html = $dom->saveHtml();
         }
     }
@@ -322,7 +327,7 @@ class Roadbook
         libxml_clear_errors();
 
         $finder = new \DOMXPath($dom);
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' long_description ')]");
+        $nodes  = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' long_description ')]");
         foreach ($nodes as $node) {
             $this->removeChildImages($node);
         }
@@ -332,9 +337,11 @@ class Roadbook
 
     private function removeChildImages(\DOMNode $node): void
     {
-        $toRemove = iterator_to_array($node->getElementsByTagName('img'));
-        foreach ($toRemove as $img) {
-            $img->parentNode->removeChild($img);
+        if (!$node instanceof \DOMElement) {
+            return;
+        }
+        foreach (iterator_to_array($node->getElementsByTagName('img')) as $img) {
+            $img->parentNode?->removeChild($img);
         }
     }
 
@@ -347,9 +354,9 @@ class Roadbook
         libxml_clear_errors();
 
         $finder = new \DOMXPath($dom);
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheHintContent ')]");
+        $nodes  = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheHintContent ')]");
         foreach ($nodes as $node) {
-            $chars = str_split($node->textContent);
+            $chars  = str_split($node->textContent);
             $encode = true;
             foreach ($chars as &$char) {
                 if ($char === '[') {
@@ -368,8 +375,6 @@ class Roadbook
         }
         $this->html = $dom->saveHtml();
     }
-
-
 
     protected static function generateId(): string
     {

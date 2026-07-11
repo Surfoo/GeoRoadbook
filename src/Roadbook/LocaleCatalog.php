@@ -39,11 +39,11 @@ class LocaleCatalog
         return (string) preg_replace_callback(
             '/%(.)/',
             static fn (array $m) => match ($m[1]) {
-                'd' => $date->format('d'),
-                'm' => $date->format('m'),
-                'y' => $date->format('y'),
-                'Y' => $date->format('Y'),
-                '%' => '%',
+                'd'     => $date->format('d'),
+                'm'     => $date->format('m'),
+                'y'     => $date->format('y'),
+                'Y'     => $date->format('Y'),
+                '%'     => '%',
                 default => $m[0],
             },
             $this->load($locale)['dateFormat'],
@@ -64,14 +64,14 @@ class LocaleCatalog
             throw new \InvalidArgumentException(sprintf('Unknown roadbook locale "%s".', $locale));
         }
 
-        $xml = simplexml_load_file($file);
+        $xml   = simplexml_load_file($file);
         $texts = [];
         foreach ($xml->text as $text) {
             $texts[(string) $text->attributes()['id']] = (string) $text;
         }
 
         return $this->catalogs[$locale] = [
-            'texts' => $texts,
+            'texts'      => $texts,
             'dateFormat' => (string) ($xml->format ?? '%Y/%m/%d'),
         ];
     }
