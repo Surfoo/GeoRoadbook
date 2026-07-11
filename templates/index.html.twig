@@ -27,12 +27,23 @@
         {# Source Card #}
         <div class="card-glass mb-5">
 
-            <div class="drop-zone mb-4" id="drop_zone">
-                <i class="bi bi-geo-alt-fill fs-1 text-orange mb-2 d-block"></i>
-                <p class="mb-1 fw-bold dz-filename text-primary">Drop your GPX file here</p>
-                <p class="small mb-0 dz-meta">or click to browse • 8MB max</p>
-                <a href="#" class="dz-replace small d-none">Replace</a>
-                <input id="gpx" type="file" class="d-none" accept=".gpx">
+            <div class="drop-zone mb-4" id="drop_zone" data-controller="symfony--ux-dropzone--dropzone">
+                <input id="gpx" type="file" accept=".gpx" class="dropzone-input"
+                       data-symfony--ux-dropzone--dropzone-target="input">
+                <div class="dropzone-placeholder" data-symfony--ux-dropzone--dropzone-target="placeholder">
+                    <i class="bi bi-geo-alt-fill fs-1 text-orange mb-2 d-block"></i>
+                    <p class="mb-1 fw-bold text-primary">Drop your GPX file here</p>
+                    <p class="small mb-0 dz-meta">or click to browse • 8MB max</p>
+                </div>
+                <div class="dropzone-preview" data-symfony--ux-dropzone--dropzone-target="preview" style="display: none">
+                    <span class="dropzone-preview-image" style="display: none" data-symfony--ux-dropzone--dropzone-target="previewImage"></span>
+                    <div class="dropzone-preview-data">
+                        <i class="bi bi-check-circle-fill fs-2 text-accent mb-2 d-block"></i>
+                        <p class="mb-1 fw-bold dropzone-preview-filename dz-filename" data-symfony--ux-dropzone--dropzone-target="previewFilename"></p>
+                        <p class="small mb-1 dz-meta dz-size"></p>
+                        <button type="button" class="dropzone-preview-button dz-replace small" data-symfony--ux-dropzone--dropzone-target="previewClearButton">Replace</button>
+                    </div>
+                </div>
             </div>
 
             {% if pocketqueryList is defined %}
@@ -165,7 +176,7 @@
         {# Generate CTA #}
         <div class="d-flex justify-content-center mt-5">
             <button type="submit" id="create" name="send" class="btn btn-primary btn-lg btn-primary-action">
-                Generate Roadbook
+                Generate your roadbook
             </button>
         </div>
 

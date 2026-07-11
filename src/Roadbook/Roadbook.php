@@ -248,7 +248,7 @@ class Roadbook
 
         // http://tidy.sourceforge.net/docs/quickref.html
         $config = [
-            'doctype'      => 'html',
+            'doctype'      => 'html5',
             'output-xhtml' => true,
             'wrap'         => 0,
         ];

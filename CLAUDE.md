@@ -76,7 +76,7 @@ GEOCACHING_ENV=production    # Geocaching API environment
 ## Important Notes
 
 - `/public/roadbook/` must be writable (gitignored)
-- PHP 8.4 with XSL + Tidy extensions (already in the php-fpm image)
+- PHP 8.5 with XSL + Tidy extensions (already in the php-fpm image)
 - Roadbook URLs are unauthenticated share-links (random id) — anyone with the URL can edit/delete
 - E2E tests live in the session scratchpad as Playwright scripts (test.mjs, test-e2e.mjs, test-modals.mjs, test-editor.mjs) using `channel: 'chrome'`
 

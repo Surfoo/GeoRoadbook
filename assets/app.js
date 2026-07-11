@@ -1,3 +1,4 @@
+import './stimulus_bootstrap.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 import 'bootstrap';
@@ -29,7 +30,6 @@ function initUploadForm() {
     }
 
     const dropZone = document.getElementById('drop_zone');
-    const fileInput = document.getElementById('gpx');
     const errorBox = document.getElementById('error');
     const pocketList = document.getElementById('pocket_list');
     const createBtn = document.getElementById('create');
@@ -46,26 +46,21 @@ function initUploadForm() {
         errorBox.classList.add('d-none');
     };
 
+    // The symfony/ux-dropzone Stimulus controller owns the drag & drop UI
+    // (placeholder/preview switching, clear button). This code only adds the
+    // GPX validation on top of its events.
     const resetDropZone = () => {
+        dropZone.querySelector('.dropzone-preview-button').click();
+    };
+
+    dropZone.addEventListener('dropzone:clear', () => {
         gpxContent = null;
-        fileInput.value = '';
         dropZone.classList.remove('file-selected');
-        dropZone.querySelector('i').className = 'bi bi-geo-alt-fill fs-1 text-orange mb-2 d-block';
-        dropZone.querySelector('.dz-filename').textContent = 'Drop your GPX file here';
-        dropZone.querySelector('.dz-meta').textContent = 'or click to browse • 8MB max';
-        dropZone.querySelector('.dz-replace').classList.add('d-none');
-    };
+    });
 
-    const showSelectedFile = (file) => {
-        dropZone.classList.add('file-selected');
-        dropZone.querySelector('i').className = 'bi bi-check-circle-fill fs-2 text-accent mb-2 d-block';
-        dropZone.querySelector('.dz-filename').textContent = file.name;
-        dropZone.querySelector('.dz-meta').textContent = `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
-        dropZone.querySelector('.dz-replace').classList.remove('d-none');
-    };
-
-    const acceptFile = (file) => {
+    dropZone.addEventListener('dropzone:change', (event) => {
         clearError();
+        const file = event.detail;
 
         if (!file.name.toLowerCase().endsWith('.gpx')) {
             resetDropZone();
@@ -87,54 +82,18 @@ function initUploadForm() {
                 return;
             }
             gpxContent = reader.result;
-            showSelectedFile(file);
+            dropZone.classList.add('file-selected');
+            dropZone.querySelector('.dz-size').textContent = `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
             if (pocketList) {
                 pocketList.value = '';
             }
         };
         reader.readAsText(file, 'UTF-8');
-    };
-
-    dropZone.addEventListener('click', (e) => {
-        if (e.target.closest('.dz-replace')) {
-            e.preventDefault();
-            resetDropZone();
-            return;
-        }
-        fileInput.click();
-    });
-
-    ['dragover', 'dragenter'].forEach((type) => {
-        dropZone.addEventListener(type, (e) => {
-            e.preventDefault();
-            dropZone.classList.add('dragover');
-        });
-    });
-
-    ['dragleave', 'drop'].forEach((type) => {
-        dropZone.addEventListener(type, (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('dragover');
-        });
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-        const file = e.dataTransfer.files[0];
-        if (file) {
-            acceptFile(file);
-        }
-    });
-
-    fileInput.addEventListener('change', () => {
-        const file = fileInput.files[0];
-        if (file) {
-            acceptFile(file);
-        }
     });
 
     // A GPX file and a Pocket Query are mutually exclusive sources
     pocketList?.addEventListener('change', () => {
-        if (pocketList.value !== '') {
+        if (pocketList.value !== '' && gpxContent !== null) {
             resetDropZone();
         }
     });

@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 # WeasyPrint system dependencies (Pango for text layout, fonts for rendering)
 RUN apt-get update \
@@ -7,7 +7,7 @@ RUN apt-get update \
         fonts-dejavu fonts-liberation \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir weasyprint==66.0
+RUN pip install --no-cache-dir weasyprint==69.0
 
 COPY server.py /srv/server.py
 

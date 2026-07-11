@@ -392,3 +392,53 @@ html[data-theme="dark"] .theme-toggle button[data-set-theme="dark"] {
     .section-title { font-size: 1.8rem; }
     .options-grid { grid-template-columns: 1fr; }
 }
+
+/* ── symfony/ux-dropzone integration ────────────────────────── */
+/* The bundle CSS targets .dropzone-container; our container is .drop-zone */
+.drop-zone {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+}
+
+.drop-zone .dropzone-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.drop-zone .dropzone-placeholder {
+    flex-grow: 1;
+    color: var(--text-secondary);
+}
+
+.drop-zone .dropzone-preview {
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.drop-zone .dropzone-preview-image {
+    display: none !important; /* GPX files have no image preview */
+}
+
+.drop-zone .dropzone-preview-button {
+    position: static;
+    background: none;
+    border: none;
+    z-index: 2;
+    color: var(--text-muted);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.drop-zone .dropzone-preview-button::before {
+    content: none; /* replace the bundle's "×" with our Replace label */
+}

@@ -32,4 +32,7 @@ return [
     '@hotwired/stimulus' => ['version' => '3.2.2'],
     'jodit' => ['version' => '4.12.43'],
     'jodit/es2021/jodit.min.css' => ['version' => '4.12.43', 'type' => 'css'],
+    '@symfony/stimulus-bundle' => ['path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js'],
+    '@symfony/ux-dropzone' => ['path' => './vendor/symfony/ux-dropzone/assets/dist/controller.js'],
+    '@symfony/ux-dropzone/dist/style.min.css' => ['path' => './vendor/symfony/ux-dropzone/assets/dist/style.min.css', 'type' => 'css'],
 ];

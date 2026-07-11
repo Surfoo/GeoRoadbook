@@ -11,7 +11,7 @@ Hosted here: [http://georoadbook.vaguelibre.net/](http://georoadbook.vaguelibre.
 * [Jodit](https://xdsoft.net/jodit/) in-browser editor
 * [WeasyPrint](https://weasyprint.org/) sidecar for HTML → PDF conversion (CSS Paged Media)
 * Twig rendering of parsed GPX (typed `GpxParser` + `RoadbookRenderer`), [jBBCode](https://github.com/jbowens/jBBCode) and [cebe/markdown](https://github.com/cebe/markdown) for log parsing
-* PHP 8.4 with the `tidy` extension
+* PHP 8.5 with the `tidy` extension
 * OAuth2 (PKCE) against the Geocaching.com API for Pocket Queries
 
 ## Development setup

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "782bb878e613ce972c5e7866fd9ae86a",
+    "content-hash": "984d4022f818062c5851afcac2a33977",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -2064,39 +2064,39 @@
         },
         {
             "name": "surfoo/geocaching-php-sdk",
-            "version": "3.21.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Surfoo/geocaching-php-sdk.git",
-                "reference": "34d67c4c52602e0992746a633b9951afd20f09e9"
+                "reference": "380a0eb2734c01af18ff3a8054ccf9a07d6ee563"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Surfoo/geocaching-php-sdk/zipball/34d67c4c52602e0992746a633b9951afd20f09e9",
-                "reference": "34d67c4c52602e0992746a633b9951afd20f09e9",
+                "url": "https://api.github.com/repos/Surfoo/geocaching-php-sdk/zipball/380a0eb2734c01af18ff3a8054ccf9a07d6ee563",
+                "reference": "380a0eb2734c01af18ff3a8054ccf9a07d6ee563",
                 "shasum": ""
             },
             "require": {
                 "monolog/monolog": "^3.0",
                 "nyholm/psr7": "^1.8",
-                "php": "^8.1",
+                "php": "^8.2",
                 "php-http/client-common": "^2.7",
                 "php-http/discovery": "^1.19",
                 "psr/http-client": "^1.0",
                 "psr/http-client-implementation": "*",
                 "psr/http-factory": "^1.0",
-                "surfoo/oauth2-geocaching": "^2.0"
+                "surfoo/oauth2-geocaching": "^3.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "php-http/mock-client": "^1.6",
                 "php-parallel-lint/php-parallel-lint": "~1.3",
-                "phpstan/phpstan": "^1.9",
-                "phpunit/php-code-coverage": "^10.0",
-                "phpunit/phpunit": "^10.0",
-                "rector/rector": "^0.17",
-                "squizlabs/php_codesniffer": "~3.5",
-                "symfony/var-dumper": "^6.3"
+                "phpstan/phpstan": "^2.1",
+                "phpunit/php-code-coverage": "^11.0 || ^12.0",
+                "phpunit/phpunit": "^11.0 || ^12.0",
+                "rector/rector": "^2.0",
+                "squizlabs/php_codesniffer": "^4.0",
+                "symfony/var-dumper": "^7.0 || ^8.0"
             },
             "type": "library",
             "autoload": {
@@ -2127,36 +2127,39 @@
             ],
             "support": {
                 "issues": "https://github.com/Surfoo/geocaching-php-sdk/issues",
-                "source": "https://github.com/Surfoo/geocaching-php-sdk/tree/3.21.0"
+                "source": "https://github.com/Surfoo/geocaching-php-sdk/tree/4.1.0"
             },
-            "time": "2023-11-01T23:57:46+00:00"
+            "time": "2026-07-03T11:47:01+00:00"
         },
         {
             "name": "surfoo/oauth2-geocaching",
-            "version": "2.1.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Surfoo/oauth2-geocaching.git",
-                "reference": "10f939a7d419b3f7029c9de713d97facf9fae71e"
+                "reference": "b8fdc3d5001e7f3baa4b06aad99069dcb026fab4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Surfoo/oauth2-geocaching/zipball/10f939a7d419b3f7029c9de713d97facf9fae71e",
-                "reference": "10f939a7d419b3f7029c9de713d97facf9fae71e",
+                "url": "https://api.github.com/repos/Surfoo/oauth2-geocaching/zipball/b8fdc3d5001e7f3baa4b06aad99069dcb026fab4",
+                "reference": "b8fdc3d5001e7f3baa4b06aad99069dcb026fab4",
                 "shasum": ""
             },
             "require": {
-                "league/oauth2-client": "^2.7",
-                "php": "^8.1"
+                "league/oauth2-client": "^2.9",
+                "php": ">=8.2",
+                "php-http/client-common": "^2.7",
+                "php-http/promise": "^1.1",
+                "psr/log": "^3.0"
             },
             "require-dev": {
-                "mockery/mockery": "~1.4",
+                "nyholm/psr7": "^1.8",
                 "php-parallel-lint/php-parallel-lint": "~1.3",
-                "phpstan/phpstan": "^1.9",
-                "phpunit/php-code-coverage": "^10.0",
-                "phpunit/phpunit": "^10.0",
-                "rector/rector": "^0.17",
-                "squizlabs/php_codesniffer": "~3.5"
+                "phpstan/phpstan": "^2.0",
+                "phpunit/php-code-coverage": "^11.0 || ^12.0",
+                "phpunit/phpunit": "^11.0 || ^12.0",
+                "rector/rector": "^2.0",
+                "squizlabs/php_codesniffer": "~4.0"
             },
             "type": "library",
             "autoload": {
@@ -2186,9 +2189,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Surfoo/oauth2-geocaching/issues",
-                "source": "https://github.com/Surfoo/oauth2-geocaching/tree/2.1.0"
+                "source": "https://github.com/Surfoo/oauth2-geocaching/tree/3.0.1"
             },
-            "time": "2023-10-02T18:58:49+00:00"
+            "time": "2026-07-06T19:36:05+00:00"
         },
         {
             "name": "symfony/asset",
@@ -6530,6 +6533,82 @@
             "time": "2026-06-16T09:55:08+00:00"
         },
         {
+            "name": "symfony/stimulus-bundle",
+            "version": "v3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/stimulus-bundle.git",
+                "reference": "3cf8cd35c400f287def6ccd4574c111c07661054"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/3cf8cd35c400f287def6ccd4574c111c07661054",
+                "reference": "3cf8cd35c400f287def6ccd4574c111c07661054",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.4",
+                "symfony/config": "^7.4|^8.0",
+                "symfony/dependency-injection": "^7.4|^8.0",
+                "symfony/deprecation-contracts": "^2.0|^3.0",
+                "symfony/finder": "^7.4|^8.0",
+                "symfony/http-kernel": "^7.4|^8.0",
+                "twig/twig": "^2.15.3|^3.8"
+            },
+            "conflict": {
+                "symfony/asset-mapper": "<6.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.1|^12.0",
+                "symfony/asset-mapper": "^7.4|^8.0",
+                "symfony/framework-bundle": "^7.4|^8.0",
+                "symfony/twig-bundle": "^7.4|^8.0",
+                "zenstruck/browser": "^1.9"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\UX\\StimulusBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Integration with your Symfony app & Stimulus!",
+            "keywords": [
+                "symfony-ux"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v3.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-06-05T09:42:50+00:00"
+        },
+        {
             "name": "symfony/string",
             "version": "v8.1.0",
             "source": {
@@ -7070,31 +7149,31 @@
         },
         {
             "name": "symfony/ux-dropzone",
-            "version": "v2.36.0",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-dropzone.git",
-                "reference": "40a446ec1ce39e0ba5f1a5a6b4b4744441e63a2f"
+                "reference": "5a6e9521da0c7b46229d540098998fd3fe9998f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/40a446ec1ce39e0ba5f1a5a6b4b4744441e63a2f",
-                "reference": "40a446ec1ce39e0ba5f1a5a6b4b4744441e63a2f",
+                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/5a6e9521da0c7b46229d540098998fd3fe9998f3",
+                "reference": "5a6e9521da0c7b46229d540098998fd3fe9998f3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/config": "^5.4|^6.0|^7.0|^8.0",
-                "symfony/dependency-injection": "^5.4|^6.0|^7.0|^8.0",
-                "symfony/form": "^5.4|^6.0|^7.0|^8.0",
-                "symfony/http-kernel": "^5.4|^6.0|^7.0|^8.0",
-                "symfony/options-resolver": "^5.4|^6.0|^7.0|^8.0"
+                "php": ">=8.4",
+                "symfony/config": "^7.4|^8.0",
+                "symfony/dependency-injection": "^7.4|^8.0",
+                "symfony/form": "^7.4|^8.0",
+                "symfony/http-kernel": "^7.4|^8.0",
+                "symfony/options-resolver": "^7.4|^8.0"
             },
             "require-dev": {
-                "symfony/framework-bundle": "^5.4|^6.0|^7.0|^8.0",
-                "symfony/phpunit-bridge": "^5.4|^6.0|^7.0|^8.0",
-                "symfony/twig-bundle": "^5.4|^6.0|^7.0|^8.0",
-                "symfony/var-dumper": "^5.4|^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^11.1|^12.0",
+                "symfony/framework-bundle": "^7.4|^8.0",
+                "symfony/twig-bundle": "^7.4|^8.0",
+                "symfony/var-dumper": "^7.4|^8.0",
                 "twig/twig": "^2.14.7|^3.0.4"
             },
             "type": "symfony-bundle",
@@ -7129,7 +7208,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-dropzone/tree/v2.36.0"
+                "source": "https://github.com/symfony/ux-dropzone/tree/v3.2.0"
             },
             "funding": [
                 {
@@ -7149,7 +7228,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-06T04:31:36+00:00"
+            "time": "2026-06-05T10:28:27+00:00"
         },
         {
             "name": "symfony/validator",
@@ -9806,7 +9885,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
