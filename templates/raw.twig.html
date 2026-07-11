@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"{% if lang is defined and lang %} lang="{{ lang|e('html_attr') }}"{% endif %}>
 <head>
 <meta charset="utf-8">
     <title>My roadbook</title>
-    <link type="text/css" rel="stylesheet" href="../design/roadbook.css?{{ suffix_css_js }}" media="all">
+    <link type="text/css" rel="stylesheet" href="{{ asset_prefix|default('') }}/design/roadbook.css{% if suffix_css_js %}?{{ suffix_css_js }}{% endif %}" media="all">
     <style type="text/css">{{ style|raw }}</style>
 </head>
 <body>

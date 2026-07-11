@@ -201,3 +201,63 @@ h1 img, .finder_name img {
     text-align: right;
 }
 */
+/* ── Print quality (WeasyPrint / CSS Paged Media) ─────────── */
+
+/* Typography: avoid stranded lines, hyphenate long descriptions */
+body {
+    widows: 3;
+    orphans: 3;
+    hyphens: auto;
+}
+
+/* Keep logical blocks on one page */
+.containers,
+.cacheNote,
+.cacheHint,
+.cacheWaypoints p,
+.cacheSpoilers img,
+.cacheLogs tr,
+#toc tr {
+    break-inside: avoid;
+}
+
+/* Never break between a section title and its content */
+.cacheHint p:first-child,
+.cacheSpoilers p:first-child,
+.cacheLogs p:first-child,
+.cacheWaypoints p:first-child {
+    break-after: avoid;
+}
+
+h1 {
+    break-after: avoid;
+}
+
+/* Repeat table headers on every page */
+.cacheLogs thead,
+#toc thead {
+    display: table-header-group;
+}
+
+/* Constrain images to sane physical sizes */
+.short_description img,
+.long_description img,
+.cacheSpoilers img {
+    max-width: 100%;
+    max-height: 120mm;
+    height: auto;
+}
+
+/* Table of contents: real page numbers via target-counter */
+.tocPageRef {
+    color: #000;
+    text-decoration: none;
+}
+.tocPageRef::after {
+    content: target-counter(attr(href), page);
+}
+
+/* Never render the Symfony dev toolbar (raw view is used for PDF export) */
+.sf-toolbar, .sf-toolbarreset, .sf-toolbar-clearer {
+    display: none !important;
+}

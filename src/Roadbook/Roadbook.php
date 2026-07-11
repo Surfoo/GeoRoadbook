@@ -154,10 +154,19 @@ class Roadbook
             throw new \RuntimeException('Unable to create the zip archive.');
         }
 
+        // The generated HTML uses absolute asset paths (/img, /images); the
+        // archive is self-contained, so rewrite them relative to its layout.
+        $content = str_replace(
+            ['src="/img/', 'src="/images/'],
+            ['src="../img/', 'src="../images/'],
+            (string) file_get_contents($this->getHtmlFile()),
+        );
+
         $html = $this->twig->render('raw.twig.html', [
             'suffix_css_js' => '',
+            'asset_prefix' => '..',
             'style' => $this->getCustomCss(),
-            'content' => file_get_contents($this->getHtmlFile()),
+            'content' => $content,
         ]);
         $zip->addFromString('roadbook/' . $this->id . '.html', $html);
         $zip->addFile($publicDir . '/design/roadbook.css', 'design/roadbook.css');
@@ -568,7 +577,7 @@ class Roadbook
         $bbcodes = array_keys($this->bbcodeSmileys);
         $images = array_values($this->bbcodeSmileys);
         foreach ($images as $k => &$image) {
-            $image = '<img src="../images/icons/' . $image . '" alt="' . $bbcodes[$k] . '" />';
+            $image = '<img src="/images/icons/' . $image . '" alt="' . $bbcodes[$k] . '" />';
         }
         foreach ($bbcodes as &$bbcode) {
             $bbcode = '[' . $bbcode . ']';

@@ -15,52 +15,52 @@
             <td class="finder_name">
                 <xsl:choose>
                     <xsl:when test="grdspk:type = 'Found it'">
-                        <img src="../img/log/icon_smile.png" alt="" />
+                        <img src="/img/log/icon_smile.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Needs Maintenance'">
-                        <img src="../img/log/icon_needsmaint.png" alt="" />
+                        <img src="/img/log/icon_needsmaint.png" alt="" />
                     </xsl:when>
                     <xsl:when test='grdspk:type = "Didn&apos;t find it"'>
-                        <img src="../img/log/icon_sad.png" alt="" />
+                        <img src="/img/log/icon_sad.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Owner Maintenance'">
-                        <img src="../img/log/icon_maint.png" alt="" />
+                        <img src="/img/log/icon_maint.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Enable Listing'">
-                        <img src="../img/log/icon_enabled.png" alt="" />
+                        <img src="/img/log/icon_enabled.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Temporarily Disable Listing'">
-                        <img src="../img/log/icon_disabled.png" alt="" />
+                        <img src="/img/log/icon_disabled.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Webcam Photo Taken'">
-                        <img src="../img/log/icon_camera.png" alt="" />
+                        <img src="/img/log/icon_camera.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Update Coordinates'">
-                        <img src="../img/log/coord_update.png" alt="" />
+                        <img src="/img/log/coord_update.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Publish Listing'">
-                        <img src="../img/log/icon_greenlight.png" alt="" />
+                        <img src="/img/log/icon_greenlight.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Archive'">
-                        <img src="../img/log/traffic_cone.png" alt="" />
+                        <img src="/img/log/traffic_cone.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Announcement'">
-                        <img src="../img/log/icon_announcement.png" alt="" />
+                        <img src="/img/log/icon_announcement.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Need Archived'">
-                        <img src="../img/log/icon_remove.png" alt="" />
+                        <img src="/img/log/icon_remove.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Will Attend'">
-                        <img src="../img/log/icon_rsvp.png" alt="" />
+                        <img src="/img/log/icon_rsvp.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Attended'">
-                        <img src="../img/log/icon_attended.png" alt="" />
+                        <img src="/img/log/icon_attended.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Write note'">
-                        <img src="../img/log/icon_note.png" alt="" />
+                        <img src="/img/log/icon_note.png" alt="" />
                     </xsl:when>
                     <xsl:when test="grdspk:type = 'Post Reviewer Note'">
-                        <img src="../img/log/reviewer_note.png" alt="" />
+                        <img src="/img/log/reviewer_note.png" alt="" />
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="grdspk:type" />
