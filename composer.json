@@ -36,6 +36,7 @@
         "symfony/flex": "^2.2",
         "symfony/form": "^8.0",
         "symfony/framework-bundle": "^8.0",
+        "symfony/html-sanitizer": "^8.0",
         "symfony/http-client": "^8.0",
         "symfony/intl": "^8.0",
         "symfony/mailer": "^8.0",

@@ -158,10 +158,6 @@ class GeoroadBookController extends AbstractController
             $roadbook->encryptHints();
         }
 
-        if ($displayLogs) {
-            $roadbook->parseMarkdown()->parseBBcode();
-        }
-
         $roadbook->getOnlyBody();
 
         $roadbook->saveFile($roadbook->getHtmlFile(), $roadbook->html);

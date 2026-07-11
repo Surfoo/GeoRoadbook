@@ -3,6 +3,8 @@
 namespace App\Roadbook;
 
 use App\Roadbook\Model\Geocache;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Twig\Environment;
 
 /**
@@ -18,11 +20,14 @@ class RoadbookRenderer
         private readonly Environment $twig,
         private readonly IconMap $icons,
         private readonly LocaleCatalog $locales,
+        private readonly LogTextFormatter $logFormatter,
+        #[Autowire(service: 'html_sanitizer.sanitizer.app.description_sanitizer')]
+        private readonly HtmlSanitizerInterface $sanitizer,
     ) {
     }
 
     /**
-     * @param list<Geocache>       $caches
+     * @param list<Geocache>             $caches
      * @param array<string, bool|string> $options display_note, display_long_desc, display_hint,
      *                                            display_waypoints, display_spoilers, display_logs, pagebreak
      */
@@ -30,10 +35,21 @@ class RoadbookRenderer
     {
         $items = [];
         foreach ($caches as $cache) {
+            $logs = [];
+            if (!empty($options['display_logs'])) {
+                foreach ($cache->logs as $log) {
+                    $logs[] = [
+                        'log' => $log,
+                        'html' => $this->sanitizer->sanitize($this->logFormatter->format($log->text)),
+                    ];
+                }
+            }
+
             $items[] = [
                 'cache' => $cache,
                 'description' => $this->displayDescription($cache),
                 'hiddenDate' => $cache->hiddenDate === null ? '' : $this->locales->formatDate($locale, $cache->hiddenDate),
+                'logs' => $logs,
             ];
         }
 
@@ -48,7 +64,9 @@ class RoadbookRenderer
     /**
      * Description as displayed: without the trailing "Additional Waypoints"
      * block (rendered separately) and without HTML comments (Spoiler4Gpx
-     * markers and the like), matching the legacy post-processing.
+     * markers and the like), matching the legacy post-processing. Listing
+     * HTML is sanitized: scripts, event handlers and javascript: URLs from
+     * a crafted GPX must never reach the page.
      */
     private function displayDescription(Geocache $cache): ?string
     {
@@ -62,6 +80,7 @@ class RoadbookRenderer
 
         $html = (string) preg_replace('#<p>Additional (?:Hidden )?Waypoints</p>.*$#is', '', $cache->description);
         $html = (string) preg_replace('#<!--.*-->#msU', '', $html);
+        $html = $this->sanitizer->sanitize($html);
 
         return trim($html) ?: null;
     }

@@ -1,0 +1,17 @@
+framework:
+    html_sanitizer:
+        sanitizers:
+            # Cache listing descriptions: standard safe elements plus images
+            # and inline styling, which Groundspeak listings rely on heavily.
+            # Scripts, event handlers and javascript: URLs are stripped.
+            app.description_sanitizer:
+                allow_safe_elements: true
+                allow_elements:
+                    img: ['src', 'alt', 'title', 'width', 'height', 'style']
+                allow_attributes:
+                    style: '*'
+                    class: '*'
+                force_https_urls: false
+                allowed_link_schemes: ['http', 'https', 'mailto']
+                allowed_media_schemes: ['http', 'https', 'data']
+                max_input_length: -1

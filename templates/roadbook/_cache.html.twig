@@ -51,17 +51,17 @@
 {%- endif %}
 </div>
 {% endif %}
-{% if options.display_logs and cache.logs is not empty %}
+{% if options.display_logs and logs is not empty %}
 <div class="cacheLogs">
 <p>{{ t.logs }}</p>
 <table>
-{% for log in cache.logs %}
+{% for entry in logs %}
 <tr>
-<td class="finder_name">{% if icons.logType(log.type) %}<img src="{{ icons.logType(log.type) }}" alt="{{ log.type }}"/>{% else %}{{ log.type }} {% endif %}{{ log.finder }}</td>
-<td class="cacheLogDate">{{ log.date ? log.date.format('d/m/Y') : '' }}</td>
+<td class="finder_name">{% if icons.logType(entry.log.type) %}<img src="{{ icons.logType(entry.log.type) }}" alt="{{ entry.log.type }}"/>{% else %}{{ entry.log.type }} {% endif %}{{ entry.log.finder }}</td>
+<td class="cacheLogDate">{{ entry.log.date ? entry.log.date.format('d/m/Y') : '' }}</td>
 </tr>
 <tr>
-<td class="cacheLogText" colspan="2">{{ log.text|nl2br }}<br/></td>
+<td class="cacheLogText" colspan="2">{{ entry.html|raw }}<br/></td>
 </tr>
 {% endfor %}
 </table>

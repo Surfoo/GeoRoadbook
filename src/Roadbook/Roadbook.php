@@ -27,33 +27,6 @@ class Roadbook
 
     protected ?string $locale = null;
 
-    protected array $bbcodeSmileys = [
-        ':)'  => 'icon_smile.gif',
-        ':D'  => 'icon_smile_big.gif',
-        '8D'  => 'icon_smile_cool.gif',
-        ':I'  => 'icon_smile_blush.gif',
-        ':P'  => 'icon_smile_tongue.gif',
-        '}:)' => 'icon_smile_evil.gif',
-        ';)'  => 'icon_smile_wink.gif',
-        ':o)' => 'icon_smile_clown.gif',
-        'B)'  => 'icon_smile_blackeye.gif',
-        '8'   => 'icon_smile_8ball.gif',
-        ':('  => 'icon_smile_sad.gif',
-        '8)'  => 'icon_smile_shy.gif',
-        ':O'  => 'icon_smile_shock.gif',
-        ':(!' => 'icon_smile_angry.gif',
-        'xx(' => 'icon_smile_dead.gif',
-        '|)'  => 'icon_smile_sleepy.gif',
-        ':X'  => 'icon_smile_kisses.gif',
-        '^'   => 'icon_smile_approve.gif',
-        'V'   => 'icon_smile_dissapprove.gif',
-        '?'   => 'icon_smile_question.gif',
-    ];
-
-    protected array $bbcodeColors = [
-        'black', 'blue', 'gold', 'green', 'maroon', 'navy', 'orange',
-        'pink', 'purple', 'red', 'teal', 'white', 'yellow',
-    ];
 
     public function __construct(
         private readonly string $roadbookDir,
@@ -396,73 +369,7 @@ class Roadbook
         $this->html = $dom->saveHtml();
     }
 
-    public function parseMarkdown(): static
-    {
-        $dom = new \DOMDocument();
 
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($this->html);
-        libxml_clear_errors();
-
-        $finder = new \DOMXPath($dom);
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
-
-        $mdParser = new \cebe\markdown\Markdown();
-        foreach ($nodes as $node) {
-            $rawLog = $node->ownerDocument->saveHTML($node);
-            $rawLog = trim(str_replace(['<td class="cacheLogText" colspan="2">', '</td>'], '', $rawLog));
-            $log = preg_replace('/<br>$/', '', $rawLog);
-
-            $node->nodeValue = $mdParser->parse($log);
-        }
-
-        $this->html = htmlspecialchars_decode($dom->saveHtml());
-
-        return $this;
-    }
-
-    public function parseBBcode(): static
-    {
-        $dom = new \DOMDocument();
-
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($this->html);
-        libxml_clear_errors();
-
-        $finder = new \DOMXPath($dom);
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' cacheLogText ')]");
-
-        $parser = new \JBBCode\Parser();
-        $parser->addCodeDefinitionSet(new \JBBCode\DefaultCodeDefinitionSet());
-
-        foreach ($this->bbcodeColors as $color) {
-            $builder = new \JBBCode\CodeDefinitionBuilder($color, '<span style="color: ' . $color . ';">{param}</span>');
-            $parser->addCodeDefinition($builder->build());
-        }
-
-        foreach ($nodes as $node) {
-            $rawLog = $node->ownerDocument->saveHTML($node);
-            $rawLog = trim(str_replace(['<td class="cacheLogText" colspan="2">', '</td>'], '', $rawLog));
-            $log = preg_replace('/<br>$/', '', $rawLog);
-            $parser->parse($log);
-            $node->nodeValue = $parser->getAsHtml();
-        }
-
-        $this->html = htmlspecialchars_decode($dom->saveHtml());
-
-        $bbcodes = array_keys($this->bbcodeSmileys);
-        $images = array_values($this->bbcodeSmileys);
-        foreach ($images as $k => &$image) {
-            $image = '<img src="/images/icons/' . $image . '" alt="' . $bbcodes[$k] . '" />';
-        }
-        foreach ($bbcodes as &$bbcode) {
-            $bbcode = '[' . $bbcode . ']';
-        }
-
-        $this->html = str_replace($bbcodes, $images, $this->html);
-
-        return $this;
-    }
 
     protected static function generateId(): string
     {
