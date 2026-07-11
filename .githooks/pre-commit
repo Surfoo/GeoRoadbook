@@ -21,23 +21,23 @@ run_check() {
   if run_php "$@"; then
     echo -e "${GREEN}✔ ${label} OK${ENDCOLOR}"
   else
-    echo -e "${RED}✘ ${label} a échoué${ENDCOLOR}"
+    echo -e "${RED}✘ ${label} failed${ENDCOLOR}"
     status=1
   fi
 }
 
-# Ordre : outils qui modifient le code (en dry-run) avant l'analyse statique.
-# 1. Rector : refactoring le plus profond
+# Order: tools that modify the code (in dry-run) before static analysis.
+# 1. Rector: deepest refactoring
 run_check "Rector"       ./vendor/bin/rector --dry-run --ansi
-# 2. php-cs-fixer : normalise le style après Rector
+# 2. php-cs-fixer: normalizes style after Rector
 run_check "php-cs-fixer" ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff --ansi
-# 3. PHPStan : analyse statique sur le résultat final
+# 3. PHPStan: static analysis on the final result
 run_check "PHPStan"      ./vendor/bin/phpstan --memory-limit=1G --ansi analyse
 
 if [ "$status" -ne 0 ]; then
-  echo -e "${RED}⚠ Erreurs détectées durant l'analyse du commit ⚠${ENDCOLOR}"
+  echo -e "${RED}⚠ Errors detected during commit analysis ⚠${ENDCOLOR}"
   exit 1
 fi
 
-echo -e "${GREEN}Toutes les analyses sont passées.${ENDCOLOR}"
+echo -e "${GREEN}All checks passed.${ENDCOLOR}"
 exit 0
