@@ -87,7 +87,7 @@ final class OwnerResolverTest extends TestCase
     {
         $sdk = $this->createMock(GeocachingSdk::class);
         $sdk->method('getGeocaches')->willThrowException(new \RuntimeException('API down'));
-        $sdk->method('getGeocache')->willThrowException(new \RuntimeException('API down'));
+        $sdk->expects($this->never())->method('getGeocache');
 
         $this->assertSame([], new OwnerResolver()->resolve($sdk, ['GC00001']));
     }

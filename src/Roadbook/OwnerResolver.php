@@ -8,10 +8,13 @@ use Geocaching\GeocachingSdk;
  * Resolves geocache owners (current usernames) from the Geocaching Live API.
  *
  * The batch endpoint (GET /v1/geocaches) silently omits caches the caller
- * cannot see — notably unpublished ones. Codes missing from the batch
- * response are retried individually: GET /v1/geocaches/{code} does return
- * an unpublished cache to its owner. Every failure is swallowed so the
- * roadbook falls back to the GPX placed_by value.
+ * cannot see — notably unpublished ones. Codes missing from a *successful*
+ * batch response are retried individually: GET /v1/geocaches/{code} does
+ * return an unpublished cache to its owner. If the batch call itself throws
+ * (API down/timeout), that chunk's codes are skipped entirely rather than
+ * retried one by one, to avoid up to BATCH_SIZE-many sequential failing
+ * calls per chunk. Every failure is swallowed so the roadbook falls back
+ * to the GPX placed_by value.
  */
 final class OwnerResolver
 {
@@ -24,7 +27,8 @@ final class OwnerResolver
      */
     public function resolve(GeocachingSdk $sdk, array $referenceCodes): array
     {
-        $owners = [];
+        $owners          = [];
+        $retryCandidates = [];
 
         foreach (array_chunk($referenceCodes, self::BATCH_SIZE) as $chunk) {
             try {
@@ -40,12 +44,16 @@ final class OwnerResolver
                         $owners[$geocache['referenceCode']] = $geocache['owner']['username'];
                     }
                 }
+                // Batch call succeeded — codes it omitted are eligible for
+                // an individual retry (e.g. unpublished caches).
+                array_push($retryCandidates, ...$chunk);
             } catch (\Throwable) {
-                // Batch failed entirely — the per-code fallback below still runs.
+                // Batch call itself failed — skip individual retries for
+                // this chunk's codes to avoid many sequential failing calls.
             }
         }
 
-        foreach ($referenceCodes as $code) {
+        foreach ($retryCandidates as $code) {
             if (isset($owners[$code])) {
                 continue;
             }
