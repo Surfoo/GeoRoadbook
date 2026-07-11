@@ -8,7 +8,7 @@ ARG GID=1000
 
 # Install selected extensions and other stuff
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install php8.4-intl php8.4-xsl php8.4-tidy \
+    && apt-get -y --no-install-recommends install php8.4-intl php8.4-tidy \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Remap www-data UID/GID to match the host user so files created inside the

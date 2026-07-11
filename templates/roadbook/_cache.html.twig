@@ -2,7 +2,7 @@
 <div class="containers">
 <div class="container1">
 <h1 class="cacheTitle"><img src="{{ icons.cacheType(cache.type) }}" alt="{{ cache.type }}"/>{{ cache.name }}</h1>
-<p><strong>{{ cache.displayCoordinates|replace({' E ': '\u{00A0}E ', ' W ': '\u{00A0}W '}) }}</strong></p>
+<p><strong>{{ cache.displayCoordinates|replace({' E ': ' E ', ' W ': ' W '}) }}</strong></p>
 <p>{{ t.difficulty }}<span>{% if icons.stars(cache.difficulty) %}<img src="{{ icons.stars(cache.difficulty) }}" alt="{{ cache.difficulty }}"/>{% endif %}</span>&#160;{{ t.terrain }}<span>{% if icons.stars(cache.terrain) %}<img src="{{ icons.stars(cache.terrain) }}" alt="{{ cache.terrain }}"/>{% endif %}</span></p>
 </div>
 <div class="container2">

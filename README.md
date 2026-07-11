@@ -10,8 +10,8 @@ Hosted here: [http://georoadbook.vaguelibre.net/](http://georoadbook.vaguelibre.
 * [Bootstrap 5](https://getbootstrap.com/) + vanilla JavaScript via Symfony Asset Mapper (no build step)
 * [Jodit](https://xdsoft.net/jodit/) in-browser editor
 * [WeasyPrint](https://weasyprint.org/) sidecar for HTML → PDF conversion (CSS Paged Media)
-* XSLT for the GPX → HTML conversion, [jBBCode](https://github.com/jbowens/jBBCode) and [cebe/markdown](https://github.com/cebe/markdown) for log parsing
-* PHP 8.4 with the `xsl` and `tidy` extensions
+* Twig rendering of parsed GPX (typed `GpxParser` + `RoadbookRenderer`), [jBBCode](https://github.com/jbowens/jBBCode) and [cebe/markdown](https://github.com/cebe/markdown) for log parsing
+* PHP 8.4 with the `tidy` extension
 * OAuth2 (PKCE) against the Geocaching.com API for Pocket Queries
 
 ## Development setup

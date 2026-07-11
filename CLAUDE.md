@@ -36,7 +36,9 @@ App: http://localhost:8000/ — WeasyPrint service: http://weasyprint:5001 (inte
 | File | Purpose |
 |---|---|
 | `src/Controller/GeoroadBookController.php` | All roadbook routes: `GET /`, `POST /upload`, `GET /roadbook/{id}` (editor), `/raw`, `POST .../save|delete|export`, `GET .../pdf|zip` |
-| `src/Roadbook/Roadbook.php` | Generation engine: XSLT GPX→HTML, tidy, TOC, hints, waypoints, spoilers, markdown/BBCode logs, PDF/ZIP export |
+| `src/Roadbook/GpxParser.php` | Groundspeak GPX → `Geocache` DTOs (coords, waypoints, spoilers, sorting) |
+| `src/Roadbook/RoadbookRenderer.php` | Renders DTOs via `templates/roadbook/*.html.twig` (+ `IconMap`, `LocaleCatalog`) |
+| `src/Roadbook/Roadbook.php` | File/state engine: tidy cleanup, TOC, hints, markdown/BBCode logs, PDF/ZIP export |
 | `src/Roadbook/RoadbookFactory.php` | DI factory (paths from `app.*` parameters in services.yaml) |
 | `src/Command/PurgeRoadbooksCommand.php` | 30-day retention cleanup |
 | `src/Controller/OAuthController.php` | OAuth routes: `/login`, `/callback`, `/logout` |
@@ -45,7 +47,7 @@ App: http://localhost:8000/ — WeasyPrint service: http://weasyprint:5001 (inte
 
 ### Generation pipeline
 
-`POST /upload` (JSON: raw GPX text + options) → validate schema version (1/0/1 only) → `Roadbook::create/convertXmlToHtml/cleanHtml` + optional addToc/removeImages/encryptHints/addSpoilers/addWaypoints/parseMarkdown+parseBBcode → files saved → redirect to editor.
+`POST /upload` (JSON: raw GPX text + options) → validate schema version (1/0/1 only) → `GpxParser` → `RoadbookRenderer` (Twig) → tidy + optional addToc/removeImages/encryptHints/parseMarkdown+parseBBcode → files saved → redirect to editor.
 
 PDF export: `POST /roadbook/{id}/export` saves `@page` CSS options to {id}.json, then WeasyPrint fetches `http://webserver/roadbook/{id}/raw` and returns the PDF. Margin boxes, `counter(page)` and `target-counter()` (TOC page numbers) work — do not switch back to Chrome, it ignores them.
 
@@ -57,7 +59,7 @@ Generated HTML uses **absolute** asset paths (`/img/...`, `/images/...`, `/desig
 
 ### Templates
 
-Twig in `/templates/`. Note the legacy `.twig.html` extension for partials (`_faq`, `_about`, `raw`, `toc`) vs standard `.html.twig` for pages. XSLT stylesheets in `/templates/xslt/`, roadbook locale files in `/config/locales/`.
+Twig in `/templates/`. Note the legacy `.twig.html` extension for partials (`_faq`, `_about`, `raw`, `toc`) vs standard `.html.twig` for pages. Roadbook rendering templates in `/templates/roadbook/`, locale files in `/config/locales/`.
 
 ## Required Environment Variables
 
