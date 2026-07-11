@@ -5,7 +5,7 @@
 {# Hero Section #}
 <div class="hero-section text-center">
     <div class="container">
-        <span class="section-label">The ultimate geocaching tool</span>
+        <span class="section-label">The ultimate geocaching roadbook tool</span>
         <h1 class="section-title">Ready for your next adventure?</h1>
         <p class="page-desc">Create your roadbook. Generate a customizable, ready-to-print trail booklet from your GPX files.</p>
     </div>
@@ -60,8 +60,8 @@
 
             <div>
                 <label class="form-label form-label-mono" for="locale">Roadbook language</label>
-                <select name="locale" class="form-select" id="locale">
-                    <option value=""></option>
+                <select name="locale" class="form-select" id="locale" required>
+                    <option value="">Choose a language…</option>
                     {% for code, name in locales %}
                         <option value="{{ code|e }}"{% if language is defined and language == code %} selected{% endif %}>{{ name|e }}</option>
                     {% endfor %}

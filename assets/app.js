@@ -127,6 +127,13 @@ function initUploadForm() {
             return;
         }
 
+        const localeSelect = document.getElementById('locale');
+        if (localeSelect.value === '') {
+            showError('Please choose a roadbook language.');
+            localeSelect.focus();
+            return;
+        }
+
         const payload = {
             gpx: gpxContent,
             referenceCode,

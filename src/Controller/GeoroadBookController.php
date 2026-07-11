@@ -42,11 +42,12 @@ class GeoroadBookController extends AbstractController
     }
 
     #[Route('/', name: 'app_homepage', methods: ['GET'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $params = [
             'suffix_css_js' => 'aa',
             'locales'       => $this->locales,
+            'language'      => $this->detectBrowserLocale($request),
         ];
 
         $user = $this->getUser();
@@ -67,6 +68,18 @@ class GeoroadBookController extends AbstractController
         }
 
         return $this->render('index.html.twig', $params);
+    }
+
+    private function detectBrowserLocale(Request $request): ?string
+    {
+        foreach ($request->getLanguages() as $language) {
+            $code = strtolower(substr($language, 0, 2));
+            if (isset($this->locales[$code])) {
+                return $code;
+            }
+        }
+
+        return null;
     }
 
     #[Route('/upload', name: 'app_upload', methods: ['POST'])]
