@@ -15,6 +15,8 @@
     <text id="other">Annan</text>
     <text id="not_chosen">Ej vald</text>
     <text id="note">Privat anteckning om geocachen</text>
+    <text id="waypoints">Waypoints</text>
+    <text id="spoilers">Spoilers</text>
     <format id="date">%Y/%m/%d</format>
     <text id="toc_title">Sammanfattning</text>
     <text id="toc_name">Namn</text>

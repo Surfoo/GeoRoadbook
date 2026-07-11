@@ -15,6 +15,8 @@
     <text id="other">Andet</text>
     <text id="not_chosen">Ikke valgt</text>
     <text id="note">Personlig cache note</text>
+    <text id="waypoints">Waypoints</text>
+    <text id="spoilers">Spoilers</text>
     <format id="date">%d/%m-%Y</format>
     <text id="toc_title">Indholdsfortegnelse</text>
     <text id="toc_name">Cache navn</text>

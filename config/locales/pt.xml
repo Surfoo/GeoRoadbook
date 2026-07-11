@@ -15,6 +15,8 @@
     <text id="other">Outro</text>
     <text id="not_chosen">Nao identificado</text>
     <text id="note">Nota Pessoal</text>
+    <text id="waypoints">Waypoints</text>
+    <text id="spoilers">Spoilers</text>
     <format id="date">%Y/%m/%d</format>
     <text id="toc_title">Resumo</text>
     <text id="toc_name">Nome</text>
