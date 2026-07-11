@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Roadbook\GpxParser;
+use App\Roadbook\OwnerResolver;
 use App\Roadbook\RoadbookFactory;
 use App\Roadbook\RoadbookRenderer;
 use App\Security\User;
@@ -26,6 +27,7 @@ class GeoroadBookController extends AbstractController
         private readonly RoadbookFactory $roadbookFactory,
         private readonly GpxParser $gpxParser,
         private readonly RoadbookRenderer $renderer,
+        private readonly OwnerResolver $ownerResolver,
         #[Autowire('%app.locales%')]
         private readonly array $locales,
         #[Autowire('%app.available_sorts%')]
@@ -160,6 +162,23 @@ class GeoroadBookController extends AbstractController
         ];
 
         $caches = $this->gpxParser->sort($this->gpxParser->parse($gpx), $sortBy);
+
+        $user = $this->getUser();
+        if ($user instanceof User && $user->getCredentials()) {
+            try {
+                $owners = $this->ownerResolver->resolve(
+                    $this->createGeocachingSdk($user),
+                    array_map(static fn ($cache) => $cache->code, $caches),
+                );
+                $caches = array_map(
+                    static fn ($cache) => isset($owners[$cache->code]) ? $cache->withOwner($owners[$cache->code]) : $cache,
+                    $caches,
+                );
+            } catch (\Throwable) {
+                // Owner enrichment is optional — the roadbook falls back to GPX placed_by
+            }
+        }
+
         $roadbook->setContent($this->renderer->render($caches, $locale, $options), $locale)->cleanHtml();
 
         if ($displayToc) {
