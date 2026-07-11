@@ -3,7 +3,6 @@
 namespace App\Security;
 
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -12,19 +11,14 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class UserProvider implements UserProviderInterface
 {
-    /**
-     * Symfony calls this method if you use features like switch_user
-     * or remember_me. If you're not using these features, you do not
-     * need to implement this method.
-     *
-     * @throws UserNotFoundException if the user is not found
-     */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        // Load a User object from your data source or throw UserNotFoundException.
-        // The $identifier argument is whatever value is being returned by the
-        // getUserIdentifier() method in your User class.
-        throw new \Exception('TODO: fill in loadUserByIdentifier() inside ' . __FILE__);
+        // Fallback only — the real User is built by the OAuth authenticator
+        // and lives in the session; there is no user storage to load from.
+        $user = new User();
+        $user->setUsername($identifier);
+
+        return $user;
     }
 
     /**
@@ -44,31 +38,9 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', $user::class));
         }
 
-        // Return a User object after making sure its data is "fresh".
-        // Or throw a UsernameNotFoundException if the user no longer exists.
-        $user = $this->loadUserByIdentifier($user->getUserIdentifier());
-
-        // Le type de compte a été récupéré depuis la base de données,
-        // le role correspondant est set pour l'utilisateur connecté sur le site.
-        // switch ($user->getMembershipLevelId()) {
-        //     case MembershipType::getId('Premium'):
-        //         $user->setRoles(['ROLE_PREMIUM']);
-        //         break;
-        //     case MembershipType::getId('Basic'):
-        //         $user->setRoles(['ROLE_BASIC']);
-        //         break;
-        // }
-
-        // Si le token de l'utilisateur n'a pas expiré, rien n'est fait
-        // if (!$user->getCredentials()->hasExpired()) {
-        //     return $user;
-        // }
-
-        // Si on arrive là, c'est que le token a expiré
-        // Utilisation de token de l'utilisateur pour l'API et refresh du token
-        // $this->api->setUser($user)->refreshToken();
-
-        // Renvoie de l'objet User attendu, que le refresh ai fonctionné ou pas.
+        // No database: the session-stored User (populated by the OAuth
+        // authenticator) is the single source of truth. Rebuilding it here
+        // would drop the avatar, membership level and API credentials.
         return $user;
     }
 

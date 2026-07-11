@@ -13,10 +13,13 @@ class OAuthController extends AbstractController
     #[Route('/login', name: 'app_login')]
     public function login(ClientRegistry $clientRegistry, SessionInterface $session): Response
     {
-        $response = $clientRegistry->getClient('geocaching_main')->redirect([], []);
-        $pkceCode = $clientRegistry->getClient('geocaching_main')->getOAuth2Provider()->getPkceCode();
+        $client   = $clientRegistry->getClient('geocaching_main');
+        $response = $client->redirect([], []);
 
-        $session->set('oauth2_pkce_code', $pkceCode);
+        $provider = $client->getOAuth2Provider();
+        $session->set('oauth2_pkce_code', $provider->getPkceCode());
+        // Anti-CSRF (login CSRF / fixation): remember the generated state to revalidate it at the callback.
+        $session->set('oauth2_state', $provider->getState());
 
         return $response;
     }

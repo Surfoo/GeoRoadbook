@@ -7,13 +7,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
 {
-    private int $userId;
+    private ?int $userId = null;
     private string $username;
-    private string $referenceCode;
-    private ?string $avatarUrl = null;
-    private string $membershipLevelId;
+    private ?string $referenceCode     = null;
+    private ?string $avatarUrl         = null;
+    private ?string $membershipLevelId = null;
     private \DateTimeInterface $joinedDateUtc;
-    private AccessToken $credentials;
+    private ?AccessToken $credentials = null;
 
     /** @var list<string> */
     private array $roles = [];

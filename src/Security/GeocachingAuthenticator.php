@@ -5,6 +5,7 @@ namespace App\Security;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\Provider\GeocachingClient;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
+use League\OAuth2\Client\Provider\Geocaching as GeocachingProvider;
 use League\OAuth2\Client\Provider\GeocachingResourceOwner;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Log\LoggerInterface;
@@ -44,10 +45,33 @@ class GeocachingAuthenticator extends OAuth2Authenticator implements Authenticat
 
     public function authenticate(Request $request): Passport
     {
-        $session     = $this->requestStack->getSession();
-        $accessToken = $this->fetchAccessToken($this->getGeocachingClient(), [
-            'code'          => $request->query->get('code'),
-            'code_verifier' => $session->get('codeVerifier'),
+        $session = $this->requestStack->getSession();
+
+        // Anti-CSRF: the OAuth `state` must match the value stored in session at /login.
+        // KnpU validates it too, but this keeps the guarantee explicit and one-time-use.
+        $expectedState = $session->get('oauth2_state');
+        $session->remove('oauth2_state');
+        $actualState = $request->query->get('state');
+        if (!is_string($expectedState) || !is_string($actualState) || !hash_equals($expectedState, $actualState)) {
+            throw new AuthenticationException('Invalid OAuth state parameter.');
+        }
+
+        $client   = $this->getGeocachingClient();
+        $provider = $client->getOAuth2Provider();
+        if (!$provider instanceof GeocachingProvider) {
+            throw new \LogicException(sprintf('Expected a Geocaching OAuth provider, got "%s".', $provider::class));
+        }
+
+        // PKCE: hand the verifier stored at /login back to the provider so it is
+        // sent along with the authorization code during the token exchange.
+        $pkceCode = $session->get('oauth2_pkce_code');
+        $session->remove('oauth2_pkce_code');
+        if (is_string($pkceCode)) {
+            $provider->setPkceCode($pkceCode);
+        }
+
+        $accessToken = $this->fetchAccessToken($client, [
+            'code' => $request->query->get('code'),
         ]);
 
         return new SelfValidatingPassport(new UserBadge($accessToken->getToken(), fn () => $this->getUser($accessToken)));
@@ -90,11 +114,18 @@ class GeocachingAuthenticator extends OAuth2Authenticator implements Authenticat
 
     private function getUser(AccessToken $credentials): User
     {
-        $geocachingResourceOwner = $this->getGeocachingClient()->fetchUserFromToken($credentials);
+        $client   = $this->getGeocachingClient();
+        $provider = $client->getOAuth2Provider();
+        if ($provider instanceof GeocachingProvider) {
+            $provider->setResourceOwnerFields(
+                [...$provider->getResourceOwnerFields(), 'avatarUrl']
+            );
+        }
+
+        $geocachingResourceOwner = $client->fetchUserFromToken($credentials);
         if (!$geocachingResourceOwner instanceof GeocachingResourceOwner) {
             throw new \LogicException(sprintf('Expected a Geocaching resource owner, got "%s".', $geocachingResourceOwner::class));
         }
-
         $user = new User();
         $user->setUserId(\Geocaching\Utils::referenceCodeToId($geocachingResourceOwner->getId()))
              ->setReferenceCode($geocachingResourceOwner->getId())
