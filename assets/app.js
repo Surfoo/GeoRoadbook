@@ -174,7 +174,6 @@ function initUploadForm() {
             locale: document.getElementById('locale').value,
             toc: checked('toc'),
             note: checked('note'),
-            short_desc: checked('short_desc'),
             long_desc: checked('long_desc'),
             hint: checked('hint'),
             waypoints: checked('waypoints'),

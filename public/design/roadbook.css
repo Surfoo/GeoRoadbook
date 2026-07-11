@@ -124,7 +124,7 @@ h1 img, .finder_name img {
     page-break-after: always;
 }
 
-.short_description img, .long_description img {
+.long_description img {
     max-width: 100%;
     height: auto;
 }
@@ -240,7 +240,6 @@ h1 {
 }
 
 /* Constrain images to sane physical sizes */
-.short_description img,
 .long_description img,
 .cacheSpoilers img {
     max-width: 100%;

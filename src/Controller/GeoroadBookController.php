@@ -116,7 +116,6 @@ class GeoroadBookController extends AbstractController
         }
 
         $displayToc = $bool($payload->get('toc'));
-        $displayShortDesc = $bool($payload->get('short_desc'));
         $displayHint = $bool($payload->get('hint'));
         $displayLogs = $bool($payload->get('logs'));
         $displaySpoilers = $bool($payload->get('spoilers'));
@@ -132,7 +131,6 @@ class GeoroadBookController extends AbstractController
 
         $options = [
             'display_note' => $bool($payload->get('note')),
-            'display_short_desc' => $displayShortDesc,
             'display_long_desc' => $bool($payload->get('long_desc')),
             'display_hint' => $displayHint,
             'display_logs' => $displayLogs,
@@ -149,7 +147,7 @@ class GeoroadBookController extends AbstractController
         }
 
         if ($removeImages) {
-            $roadbook->removeImages($displayShortDesc);
+            $roadbook->removeImages();
         }
 
         if ($displayHint && $hintEncrypted) {

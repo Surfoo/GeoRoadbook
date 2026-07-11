@@ -357,23 +357,13 @@ class Roadbook
         }
     }
 
-    public function removeImages(bool $displayShortDesc): void
+    public function removeImages(): void
     {
         $dom = new \DOMDocument();
 
         libxml_use_internal_errors(true);
         $dom->loadHTML($this->html);
         libxml_clear_errors();
-
-        if ($displayShortDesc) {
-            $finder = new \DOMXPath($dom);
-            $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' short_description ')]");
-            foreach ($nodes as $node) {
-                $this->removeChildImages($node);
-            }
-
-            $this->html = $dom->saveHtml();
-        }
 
         $finder = new \DOMXPath($dom);
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' long_description ')]");

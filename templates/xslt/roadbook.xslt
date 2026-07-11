@@ -271,22 +271,6 @@
                 <p><xsl:value-of select="$locale/text[@id='note']" /></p>
               </div>
             </xsl:if>
-            <!-- short_description -->
-            <xsl:if test='$display_short_desc and normalize-space(grdspk:cache/grdspk:short_description)'>
-              <div class="short_description">
-                <xsl:choose>
-                  <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'True'">
-                    <xsl:value-of select="grdspk:cache/grdspk:short_description" disable-output-escaping="yes" />
-                  </xsl:when>
-                  <xsl:when test="grdspk:cache/grdspk:short_description/@html = 'False'">
-                    <xsl:call-template name="PreserveLineBreaks">
-                      <xsl:with-param name="text" select="grdspk:cache/grdspk:short_description"/>
-                    </xsl:call-template>
-                  </xsl:when>
-                </xsl:choose>
-              </div>
-            </xsl:if>
-
             <!-- long_description -->
             <xsl:if test='$display_long_desc and normalize-space(grdspk:cache/grdspk:long_description)'>
               <div class="long_description">
