@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Roadbook\GpxParser;
 use App\Roadbook\RoadbookFactory;
+use App\Roadbook\RoadbookRenderer;
 use App\Security\User;
 use Geocaching\GeocachingFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +18,8 @@ class GeoroadBookController extends AbstractController
 {
     public function __construct(
         private readonly RoadbookFactory $roadbookFactory,
+        private readonly GpxParser $gpxParser,
+        private readonly RoadbookRenderer $renderer,
         #[Autowire('%app.locales%')]
         private readonly array $locales,
         #[Autowire('%app.available_sorts%')]
@@ -136,11 +140,11 @@ class GeoroadBookController extends AbstractController
             'display_logs' => $displayLogs,
             'display_waypoints' => $displayWaypoints,
             'display_spoilers' => $displaySpoilers,
-            'sort_by' => $sortBy,
             'pagebreak' => $bool($payload->get('pagebreak')),
         ];
 
-        $roadbook->convertXmlToHtml($locale, $options)->cleanHtml();
+        $caches = $this->gpxParser->sort($this->gpxParser->parse($gpx), $sortBy);
+        $roadbook->setContent($this->renderer->render($caches, $locale, $options), $locale)->cleanHtml();
 
         if ($displayToc) {
             $roadbook->addToc();
@@ -152,14 +156,6 @@ class GeoroadBookController extends AbstractController
 
         if ($displayHint && $hintEncrypted) {
             $roadbook->encryptHints();
-        }
-
-        if ($displaySpoilers) {
-            $roadbook->addSpoilers();
-        }
-
-        if ($displayWaypoints) {
-            $roadbook->addWaypoints();
         }
 
         if ($displayLogs) {

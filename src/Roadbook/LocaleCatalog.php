@@ -24,6 +24,14 @@ class LocaleCatalog
     }
 
     /**
+     * @return array<string, string>
+     */
+    public function texts(string $locale): array
+    {
+        return $this->load($locale)['texts'];
+    }
+
+    /**
      * Formats a date with the locale's legacy pattern (%d, %m, %y, %Y, %%).
      */
     public function formatDate(string $locale, \DateTimeImmutable $date): string

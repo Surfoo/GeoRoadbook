@@ -57,9 +57,7 @@ class Roadbook
 
     public function __construct(
         private readonly string $roadbookDir,
-        private readonly string $xsltDir,
         private readonly string $localesDir,
-        private readonly string $iconCacheDir,
         private readonly Environment $twig,
         ?string $id = null,
     ) {
@@ -255,29 +253,14 @@ class Roadbook
         return file_put_contents($filename, $content) !== false;
     }
 
-    public function convertXmlToHtml(string $locale, array $options): static
+    /**
+     * Sets the rendered roadbook document (from RoadbookRenderer) and the
+     * locale used by later passes (table of contents).
+     */
+    public function setContent(string $html, string $locale): static
     {
+        $this->html = $html;
         $this->locale = $locale;
-
-        $xsldoc = new \DOMDocument();
-        $xsldoc->load($this->xsltDir . '/roadbook.xslt');
-        $xsl = new \XSLTProcessor();
-        $xsl->importStyleSheet($xsldoc);
-        $xsl->setParameter('', 'locale_filename', $this->getLocaleFile());
-        $xsl->setParameter('', 'icon_cache_dir', $this->iconCacheDir);
-        $xsl->setParameter('', $options);
-
-        $xml = new \DOMDocument();
-        $xml->loadXML($this->gpx);
-        $this->html = $xsl->transformToXML($xml);
-        $this->html = preg_replace('/<\?xml[^>]*\?>/i', '', $this->html);
-        $this->html = htmlspecialchars_decode($this->html);
-
-        // Remove comments
-        $this->html = preg_replace('#<!--.*-->#msU', '', $this->html);
-
-        // Remove waypoints
-        $this->html = preg_replace('#<p>Additional [Hidden\s]+?Waypoints</p>.*(</div>)#msU', '$1', $this->html);
 
         return $this;
     }
@@ -380,103 +363,6 @@ class Roadbook
         foreach ($toRemove as $img) {
             $img->parentNode->removeChild($img);
         }
-    }
-
-    public function addSpoilers(): void
-    {
-        $xml = new \DOMDocument();
-        $xml->loadXML($this->gpx);
-        $waypoints = $xml->getElementsByTagName('wpt');
-        $dom = new \DOMDocument();
-
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($this->html);
-        libxml_clear_errors();
-
-        $finder = new \DOMXPath($dom);
-        foreach ($waypoints as $waypoint) {
-            $longDescription = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
-            if (empty($longDescription->length)) {
-                continue;
-            }
-            if (preg_match_all('/<!-- Spoiler4Gpx \[([^]]*)\]\(([^)]*)\) -->/', $longDescription->item(0)->nodeValue, $spoilers, PREG_SET_ORDER)) {
-                $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
-                foreach ($spoilers as $spoiler) {
-                    $nodes = $finder->query("//div[@data-cache-id='" . $gccode . "']/div[@class='cacheSpoilers']");
-                    if (empty($nodes->length)) {
-                        continue;
-                    }
-                    $frag = $dom->createDocumentFragment();
-                    $frag->appendXML('<p>Spoilers</p>' . "\n");
-                    foreach ($nodes as $node) {
-                        $node->appendChild($frag);
-                        $frag = $dom->createDocumentFragment();
-                        $frag->appendXML('<![CDATA[<img src="' . $spoiler[2] . '" alt="' . $spoiler[1] . '"/><br />' . "\n]]>");
-                        $node->appendChild($frag);
-                    }
-                }
-            }
-        }
-        $this->html = $dom->saveHtml();
-    }
-
-    public function addWaypoints(): void
-    {
-        $xml = new \DOMDocument();
-        $xml->loadXML($this->gpx);
-        $waypoints = $xml->getElementsByTagName('wpt');
-        $dom = new \DOMDocument();
-
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($this->html);
-        libxml_clear_errors();
-
-        $finder = new \DOMXPath($dom);
-        foreach ($waypoints as $waypoint) {
-            $longDescription = $waypoint->getElementsByTagNameNS('http://www.groundspeak.com/cache/1/0/1', 'long_description');
-            if (empty($longDescription->length)) {
-                continue;
-            }
-
-            if (!preg_match('#<p>Additional [Hidden\s]+?Waypoints</p>#i', $longDescription->item(0)->nodeValue, $matches, PREG_OFFSET_CAPTURE)) {
-                continue;
-            }
-
-            $data = substr($longDescription->item(0)->nodeValue, $matches[0][1] + strlen($matches[0][0]));
-            if (!$data) {
-                continue;
-            }
-
-            $detailsWaypoints = explode('<br />', $data);
-            array_pop($detailsWaypoints);
-            $detailsWaypoints = array_chunk($detailsWaypoints, 3);
-
-            $gccode = $waypoint->getElementsByTagName('name')->item(0)->nodeValue;
-            $nodes = $finder->query("//div[@data-cache-id='" . $gccode . "']//*[@class='cacheWaypoints']");
-            $frag = $dom->createDocumentFragment();
-            $frag->appendXML('<p>Waypoints</p>' . "\n");
-
-            if (!empty($nodes->length)) {
-                $nodes->item(0)->appendChild($frag);
-            }
-
-            foreach ($detailsWaypoints as $wptData) {
-                $title = preg_replace('/ GC[\w]+/', ' ', $wptData[0]);
-                $coordinates = '';
-                if ($wptData[1] !== '' && strpos($wptData[1], 'N/S') !== 0) {
-                    $coordinates = ' - ' . trim(html_entity_decode($wptData[1]));
-                }
-                $comment = $wptData[2];
-
-                $fragWpt = $dom->createDocumentFragment();
-                $fragWpt->appendXML('<![CDATA[<p><strong>' . $title . $coordinates . '</strong><br />' . $comment . "</p>\n]]>");
-
-                if (!empty($nodes->length)) {
-                    $nodes->item(0)->appendChild($fragWpt);
-                }
-            }
-        }
-        $this->html = $dom->saveHtml();
     }
 
     public function encryptHints(): void
