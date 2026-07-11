@@ -1,0 +1,32 @@
+name: Deploy on production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v7
+
+    - name: Load .env file
+      id: dotenv
+      uses: xom9ikk/dotenv@v2.4.0
+
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        username: deploy
+        host: vaguelibre.net
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/georoadbook
+          ./server/deploy.sh \
+            --repo git@github.com:${{ github.repository }}.git \
+            --dir /var/www/georoadbook \
+            --ssh-key-file "$HOME/.ssh/georoadbook"
