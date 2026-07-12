@@ -306,7 +306,7 @@ class GeoroadBookController extends AbstractController
         $roadbook->saveOptions($options);
 
         try {
-            $roadbook->exportPdf($this->internalBaseUrl, $this->weasyprintUrl, $this->weasyprintBin);
+            $roadbook->exportPdf($this->internalBaseUrl, $this->weasyprintUrl, $this->weasyprintBin, $this->publicDir);
         } catch (\RuntimeException $e) {
             $this->appLogger->error('PDF export failed', [
                 'exception'   => $e,

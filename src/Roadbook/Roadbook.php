@@ -68,23 +68,28 @@ class Roadbook
 
     /**
      * Renders the raw roadbook page to PDF, either through the WeasyPrint
-     * HTTP sidecar (dev/Docker) or the standalone `weasyprint` binary
-     * (production, when $weasyprintUrl is "cli").
+     * HTTP sidecar (dev/Docker) or the standalone `weasyprint` binary reading
+     * the rendered HTML straight off disk (production, when $weasyprintUrl
+     * is "cli" — no network hop, so $internalBaseUrl/DNS don't matter there).
      *
      * @throws \RuntimeException when the conversion fails
      */
-    public function exportPdf(string $internalBaseUrl, string $weasyprintUrl, string $weasyprintBin = 'weasyprint'): void
+    public function exportPdf(string $internalBaseUrl, string $weasyprintUrl, string $weasyprintBin = 'weasyprint', ?string $publicDir = null): void
     {
         $pdfDir = dirname($this->getPdfFile());
         if (!is_dir($pdfDir)) {
             mkdir($pdfDir, 0775, true);
         }
 
-        $url = rtrim($internalBaseUrl, '/') . '/roadbook/' . $this->id . '/raw';
-
-        $body = $weasyprintUrl === 'cli'
-            ? $this->convertPdfViaCli($url, $weasyprintBin)
-            : $this->convertPdfViaHttp($url, $weasyprintUrl);
+        if ($weasyprintUrl === 'cli') {
+            if ($publicDir === null) {
+                throw new \RuntimeException('publicDir is required for CLI-mode PDF export.');
+            }
+            $body = $this->convertPdfViaCli($publicDir, $weasyprintBin);
+        } else {
+            $url  = rtrim($internalBaseUrl, '/') . '/roadbook/' . $this->id . '/raw';
+            $body = $this->convertPdfViaHttp($url, $weasyprintUrl);
+        }
 
         if (!$this->saveFile($this->getPdfFile(), $body)) {
             throw new \RuntimeException('Unable to write the PDF file.');
@@ -107,7 +112,7 @@ class Roadbook
 
         $body   = @file_get_contents($convertUrl, false, $context);
         $status = 0;
-        foreach (http_get_last_response_headers() as $header) {
+        foreach (http_get_last_response_headers() ?? [] as $header) {
             if (preg_match('#^HTTP/\S+\s+(\d{3})#', $header, $m)) {
                 $status = (int) $m[1];
             }
@@ -129,25 +134,39 @@ class Roadbook
         return $body;
     }
 
-    private function convertPdfViaCli(string $url, string $weasyprintBin): string
+    private function convertPdfViaCli(string $publicDir, string $weasyprintBin): string
     {
-        $outputFile = tempnam(sys_get_temp_dir(), 'weasyprint_');
+        $html = $this->twig->render('raw.twig.html', [
+            'suffix_css_js' => '',
+            'style'         => $this->getCustomCss(),
+            'content'       => (string) file_get_contents($this->getHtmlFile()),
+        ]);
+
+        $htmlFile   = tempnam(sys_get_temp_dir(), 'weasyprint_src_') . '.html';
+        $outputFile = tempnam(sys_get_temp_dir(), 'weasyprint_out_');
 
         try {
-            $process = new Process([$weasyprintBin, $url, $outputFile], timeout: 120);
+            file_put_contents($htmlFile, $html);
+
+            // Rendered from disk directly: relative/absolute asset paths (/design,
+            // /img, /images) resolve against the local filesystem, no HTTP round-trip.
+            $baseUrl = 'file://' . rtrim($publicDir, '/') . '/';
+
+            $process = new Process([$weasyprintBin, $htmlFile, $outputFile, '--base-url', $baseUrl], timeout: 120);
             $process->run();
 
             if (!$process->isSuccessful()) {
-                throw new \RuntimeException(sprintf('PDF conversion failed (weasyprint_bin=%s, raw_url=%s): %s', $weasyprintBin, $url, trim($process->getErrorOutput()) !== '' ? trim($process->getErrorOutput()) : trim($process->getOutput())), previous: new ProcessFailedException($process));
+                throw new \RuntimeException(sprintf('PDF conversion failed (weasyprint_bin=%s, roadbook_id=%s): %s', $weasyprintBin, $this->id, trim($process->getErrorOutput()) !== '' ? trim($process->getErrorOutput()) : trim($process->getOutput())), previous: new ProcessFailedException($process));
             }
 
             $body = file_get_contents($outputFile);
             if ($body === false || $body === '') {
-                throw new \RuntimeException(sprintf('PDF conversion produced an empty file (weasyprint_bin=%s, raw_url=%s)', $weasyprintBin, $url));
+                throw new \RuntimeException(sprintf('PDF conversion produced an empty file (weasyprint_bin=%s, roadbook_id=%s)', $weasyprintBin, $this->id));
             }
 
             return $body;
         } finally {
+            @unlink($htmlFile);
             @unlink($outputFile);
         }
     }
