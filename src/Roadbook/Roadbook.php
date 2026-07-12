@@ -13,6 +13,8 @@
 
 namespace App\Roadbook;
 
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use Twig\Environment;
 
 class Roadbook
@@ -65,11 +67,13 @@ class Roadbook
     }
 
     /**
-     * Renders the raw roadbook page to PDF through the WeasyPrint service.
+     * Renders the raw roadbook page to PDF, either through the WeasyPrint
+     * HTTP sidecar (dev/Docker) or the standalone `weasyprint` binary
+     * (production, when $weasyprintUrl is "cli").
      *
      * @throws \RuntimeException when the conversion fails
      */
-    public function exportPdf(string $internalBaseUrl, string $weasyprintUrl): void
+    public function exportPdf(string $internalBaseUrl, string $weasyprintUrl, string $weasyprintBin = 'weasyprint'): void
     {
         $pdfDir = dirname($this->getPdfFile());
         if (!is_dir($pdfDir)) {
@@ -77,6 +81,19 @@ class Roadbook
         }
 
         $url = rtrim($internalBaseUrl, '/') . '/roadbook/' . $this->id . '/raw';
+
+        $body = $weasyprintUrl === 'cli'
+            ? $this->convertPdfViaCli($url, $weasyprintBin)
+            : $this->convertPdfViaHttp($url, $weasyprintUrl);
+
+        if (!$this->saveFile($this->getPdfFile(), $body)) {
+            throw new \RuntimeException('Unable to write the PDF file.');
+        }
+    }
+
+    private function convertPdfViaHttp(string $url, string $weasyprintUrl): string
+    {
+        $convertUrl = rtrim($weasyprintUrl, '/') . '/convert';
 
         $context = stream_context_create([
             'http' => [
@@ -88,7 +105,7 @@ class Roadbook
             ],
         ]);
 
-        $body   = file_get_contents(rtrim($weasyprintUrl, '/') . '/convert', false, $context);
+        $body   = @file_get_contents($convertUrl, false, $context);
         $status = 0;
         foreach (http_get_last_response_headers() as $header) {
             if (preg_match('#^HTTP/\S+\s+(\d{3})#', $header, $m)) {
@@ -97,16 +114,41 @@ class Roadbook
         }
 
         if ($body === false || $status !== 200) {
-            $error = 'PDF conversion failed';
+            $detail = null;
             if (is_string($body) && ($decoded = json_decode($body, true)) && isset($decoded['error'])) {
-                $error .= ': ' . $decoded['error'];
+                $detail = $decoded['error'];
+            } elseif (is_string($body) && $body !== '') {
+                $detail = substr($body, 0, 500);
+            } elseif ($body === false) {
+                $detail = error_get_last()['message'] ?? 'no response from WeasyPrint';
             }
 
-            throw new \RuntimeException($error);
+            throw new \RuntimeException(sprintf('PDF conversion failed (weasyprint=%s, raw_url=%s, status=%d)%s', $convertUrl, $url, $status, $detail !== null ? ': ' . $detail : ''));
         }
 
-        if (!$this->saveFile($this->getPdfFile(), $body)) {
-            throw new \RuntimeException('Unable to write the PDF file.');
+        return $body;
+    }
+
+    private function convertPdfViaCli(string $url, string $weasyprintBin): string
+    {
+        $outputFile = tempnam(sys_get_temp_dir(), 'weasyprint_');
+
+        try {
+            $process = new Process([$weasyprintBin, $url, $outputFile], timeout: 120);
+            $process->run();
+
+            if (!$process->isSuccessful()) {
+                throw new \RuntimeException(sprintf('PDF conversion failed (weasyprint_bin=%s, raw_url=%s): %s', $weasyprintBin, $url, trim($process->getErrorOutput()) !== '' ? trim($process->getErrorOutput()) : trim($process->getOutput())), previous: new ProcessFailedException($process));
+            }
+
+            $body = file_get_contents($outputFile);
+            if ($body === false || $body === '') {
+                throw new \RuntimeException(sprintf('PDF conversion produced an empty file (weasyprint_bin=%s, raw_url=%s)', $weasyprintBin, $url));
+            }
+
+            return $body;
+        } finally {
+            @unlink($outputFile);
         }
     }
 

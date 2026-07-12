@@ -40,6 +40,8 @@ class GeoroadBookController extends AbstractController
         private readonly string $internalBaseUrl,
         #[Autowire('%app.weasyprint_url%')]
         private readonly string $weasyprintUrl,
+        #[Autowire('%app.weasyprint_bin%')]
+        private readonly string $weasyprintBin,
         #[Autowire('%kernel.project_dir%/public')]
         private readonly string $publicDir,
     ) {
@@ -120,7 +122,7 @@ class GeoroadBookController extends AbstractController
                     'reference_code' => $referenceCode,
                 ]);
 
-                return $this->json(['success' => false, 'message' => $e->getMessage()]);
+                return $this->json(['success' => false, 'message' => 'Unable to download the pocket query.']);
             }
         }
 
@@ -304,14 +306,14 @@ class GeoroadBookController extends AbstractController
         $roadbook->saveOptions($options);
 
         try {
-            $roadbook->exportPdf($this->internalBaseUrl, $this->weasyprintUrl);
+            $roadbook->exportPdf($this->internalBaseUrl, $this->weasyprintUrl, $this->weasyprintBin);
         } catch (\RuntimeException $e) {
             $this->appLogger->error('PDF export failed', [
                 'exception'   => $e,
                 'roadbook_id' => $id,
             ]);
 
-            return $this->json(['success' => false, 'message' => $e->getMessage()]);
+            return $this->json(['success' => false, 'message' => 'PDF conversion failed.']);
         }
 
         return $this->json([

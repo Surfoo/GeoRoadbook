@@ -13,9 +13,14 @@ parameters:
     # URL the WeasyPrint sidecar uses to reach the web server (raw roadbook view)
     app.internal_base_url: '%env(default:app.internal_base_url_default:INTERNAL_BASE_URL)%'
     app.internal_base_url_default: 'http://webserver'
-    # WeasyPrint sidecar converting the raw roadbook view to PDF
+    # WeasyPrint sidecar converting the raw roadbook view to PDF (dev: Docker HTTP
+    # sidecar). In production there is no sidecar — set WEASYPRINT_URL=cli in
+    # .env.local to invoke the standalone `weasyprint` binary instead.
     app.weasyprint_url: '%env(default:app.weasyprint_url_default:WEASYPRINT_URL)%'
     app.weasyprint_url_default: 'http://weasyprint:5001'
+    # Binary used when app.weasyprint_url is "cli"
+    app.weasyprint_bin: '%env(default:app.weasyprint_bin_default:WEASYPRINT_BIN)%'
+    app.weasyprint_bin_default: 'weasyprint'
     app.available_sorts: ['none', 'name', 'owner', 'difficulty', 'terrain']
     app.locales:
         cs: 'Čeština'
