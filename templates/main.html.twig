@@ -51,7 +51,7 @@
     </header>
 
     <main class="flex-shrink-0">
-        {% if exception is defined %}
+        {% if exception is defined and exception.statusCode is not same as(404) %}
             <div class="container">
                 <div class="alert alert-danger mt-4 d-flex align-items-center" role="alert">
                     <i class="bi bi-exclamation-circle-fill me-3 fs-4"></i>

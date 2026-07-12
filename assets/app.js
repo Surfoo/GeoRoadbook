@@ -138,6 +138,7 @@ function initUploadForm() {
             gpx: gpxContent,
             referenceCode,
             locale: document.getElementById('locale').value,
+            theme: document.getElementById('theme')?.value ?? '',
             toc: checked('toc'),
             note: checked('note'),
             long_desc: checked('long_desc'),

@@ -71,6 +71,17 @@
                     <span class="text-muted small">Controls headings and labels in the generated document, not your cache descriptions.</span>
                 </div>
             </div>
+
+            {% if themes is defined %}
+                <div class="mt-4">
+                    <label class="form-label form-label-mono" for="theme">Roadbook style</label>
+                    <select name="theme" class="form-select" id="theme">
+                        {% for key, theme in themes %}
+                            <option value="{{ key|e }}">{{ theme.label|e }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
         </div>
 
         {# Options Grid #}

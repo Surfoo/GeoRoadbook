@@ -138,6 +138,7 @@ class Roadbook
     {
         $html = $this->twig->render('raw.twig.html', [
             'suffix_css_js' => '',
+            'style_css'     => $this->getThemeCss(),
             'style'         => $this->getCustomCss(),
             'content'       => (string) file_get_contents($this->getHtmlFile()),
         ]);
@@ -193,14 +194,17 @@ class Roadbook
             (string) file_get_contents($this->getHtmlFile()),
         );
 
+        $themeCss = $this->getThemeCss();
+
         $html = $this->twig->render('raw.twig.html', [
             'suffix_css_js' => '',
             'asset_prefix'  => '..',
+            'style_css'     => $themeCss,
             'style'         => $this->getCustomCss(),
             'content'       => $content,
         ]);
         $zip->addFromString('roadbook/' . $this->id . '.html', $html);
-        $zip->addFile($publicDir . '/design/roadbook.css', 'design/roadbook.css');
+        $zip->addFile($publicDir . '/design/' . $themeCss, 'design/' . $themeCss);
 
         foreach (['img', 'images'] as $imageDir) {
             $dir = $publicDir . '/' . $imageDir;
@@ -241,6 +245,18 @@ class Roadbook
     public function getLastSavedDate(): string
     {
         return date('Y-m-d H:i:s', filemtime($this->getHtmlFile()));
+    }
+
+    public function getThemeCss(): string
+    {
+        if (!is_readable($this->getJsonFile())) {
+            return 'roadbook.css';
+        }
+        $options = json_decode((string) file_get_contents($this->getJsonFile()), true);
+
+        return is_array($options) && isset($options['theme_css']) && is_string($options['theme_css'])
+            ? $options['theme_css']
+            : 'roadbook.css';
     }
 
     public function getCustomCss(): string

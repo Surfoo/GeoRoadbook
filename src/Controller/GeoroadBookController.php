@@ -21,8 +21,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class GeoroadBookController extends AbstractController
 {
     /**
-     * @param array<string, string> $locales
-     * @param list<string>          $availableSorts
+     * @param array<string, string>                            $locales
+     * @param list<string>                                     $availableSorts
+     * @param array<string, array{label: string, css: string}> $themes
      */
     public function __construct(
         private readonly RoadbookFactory $roadbookFactory,
@@ -34,6 +35,8 @@ class GeoroadBookController extends AbstractController
         private readonly array $locales,
         #[Autowire('%app.available_sorts%')]
         private readonly array $availableSorts,
+        #[Autowire('%app.roadbook_themes%')]
+        private readonly array $themes,
         #[Autowire('%env(GEOCACHING_ENV)%')]
         private readonly string $geocachingEnvironment,
         #[Autowire('%app.internal_base_url%')]
@@ -54,6 +57,7 @@ class GeoroadBookController extends AbstractController
             'suffix_css_js' => 'aa',
             'locales'       => $this->locales,
             'language'      => $this->detectBrowserLocale($request),
+            'themes'        => $this->themes,
         ];
 
         $user = $this->getUser();
@@ -100,6 +104,7 @@ class GeoroadBookController extends AbstractController
         $gpx           = (string) $payload->get('gpx', '');
         $referenceCode = (string) $payload->get('referenceCode', '');
         $locale        = $payload->get('locale');
+        $themeKey      = (string) $payload->get('theme', array_key_first($this->themes));
 
         if ($gpx === '' && $referenceCode === '') {
             return $this->json(['success' => false, 'message' => 'A GPX file or a Pocket Query is missing.']);
@@ -111,6 +116,10 @@ class GeoroadBookController extends AbstractController
 
         if (!array_key_exists($locale, $this->locales)) {
             return $this->json(['success' => false, 'message' => 'Roadbook language is invalid.']);
+        }
+
+        if (!array_key_exists($themeKey, $this->themes)) {
+            $themeKey = array_key_first($this->themes);
         }
 
         if ($referenceCode !== '') {
@@ -214,7 +223,7 @@ class GeoroadBookController extends AbstractController
         $roadbook->getOnlyBody();
 
         $roadbook->saveFile($roadbook->getHtmlFile(), $roadbook->html);
-        $roadbook->saveFile($roadbook->getJsonFile());
+        $roadbook->saveOptions(['theme_css' => $this->themes[$themeKey]['css']]);
 
         return $this->json(['success' => true, 'redirect' => '/roadbook/' . $roadbook->id]);
     }
@@ -246,6 +255,7 @@ class GeoroadBookController extends AbstractController
 
         return $this->render('raw.twig.html', [
             'suffix_css_js' => 'aa',
+            'style_css'     => $roadbook->getThemeCss(),
             'style'         => $roadbook->getCustomCss(),
             'content'       => file_get_contents($roadbook->getHtmlFile()),
         ]);
@@ -303,7 +313,8 @@ class GeoroadBookController extends AbstractController
             'footer_pagination' => (bool) $payload->get('footer_pagination', false),
         ];
 
-        $roadbook->saveOptions($options);
+        // Preserve theme_css: this endpoint only carries PDF page-layout options.
+        $roadbook->saveOptions(['theme_css' => $roadbook->getThemeCss()] + $options);
 
         try {
             $roadbook->exportPdf($this->internalBaseUrl, $this->weasyprintUrl, $this->weasyprintBin, $this->publicDir);

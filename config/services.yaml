@@ -22,6 +22,9 @@ parameters:
     app.weasyprint_bin: '%env(default:app.weasyprint_bin_default:WEASYPRINT_BIN)%'
     app.weasyprint_bin_default: 'weasyprint'
     app.available_sorts: ['none', 'name', 'owner', 'difficulty', 'terrain']
+    app.roadbook_themes:
+        classic: { label: 'Classic', css: 'roadbook.css' }
+        modern:  { label: 'Modern', css: 'roadbook-modern.css' }
     app.locales:
         cs: 'Čeština'
         da: 'Dansk'

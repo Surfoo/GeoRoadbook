@@ -1,7 +1,24 @@
+/* ── Roadbook "Modern" theme ──────────────────────────────
+   Same class names/structure as roadbook.css (Jodit editor and
+   WeasyPrint export both target these classes), different look:
+   a warmer, editorial palette instead of pure black-on-white,
+   a serif/sans pairing for a printed-document feel, more
+   breathing room between blocks. */
+
+:root {
+    --ink: #1f2933;
+    --ink-soft: #52606d;
+    --accent: #1f5f6b;
+    --accent-soft: #e4eff0;
+    --rule: #cbd2d9;
+    --rule-light: #e7ebee;
+}
+
 body, td, pre {
-    color: #000;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
     font-size: 10pt;
+    line-height: 1.45;
     margin: 8px;
 }
 
@@ -10,14 +27,17 @@ body, td, pre {
     height: 0;
 }
 .separator {
-    margin: 0.5cm 0;
-    border: 0.5mm solid #000;
+    margin: 0.7cm 0;
+    border: 0;
+    border-top: 0.5mm solid var(--rule);
 }
 .containers {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 2mm;
+    gap: 4mm;
+    padding-bottom: 2mm;
+    border-bottom: 0.4mm solid var(--accent);
 }
 .container1 {
     min-width: 0;
@@ -27,11 +47,15 @@ body, td, pre {
     flex-shrink: 0;
 }
 .container1 p, .container2 p {
-    margin: 0.5mm 0;
+    margin: 0.7mm 0;
+    color: var(--ink-soft);
 }
 h1 {
-    font-size: 12pt;
-    margin: 0;
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size: 13pt;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 1mm 0;
     overflow-wrap: break-word;
 }
 h1 img {
@@ -45,11 +69,14 @@ h1 img, .finder_name img {
     vertical-align: middle;
 }
 .cacheGCode {
-    font-size: 12pt;
-    font-weight: bold;
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 0.3pt;
+    color: var(--accent);
 }
 .cacheAttributes {
-    margin: 1mm 0 1mm 0;
+    margin: 2mm 0;
     padding: 0;
     height: 30px;
 }
@@ -63,13 +90,18 @@ h1 img, .finder_name img {
 }
 .cacheNote {
     min-height: 3cm;
-    border: 1px solid #000;
-    margin: 1mm 0;
+    border: 0.4mm solid var(--rule);
+    border-radius: 1mm;
+    margin: 2mm 0;
 }
 .cacheNote p {
     margin: 0;
-    border-bottom: 1px solid #000;
-    background-color: #ddd;
+    padding: 1mm 2mm;
+    border-bottom: 0.4mm solid var(--rule);
+    background-color: var(--accent-soft);
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    color: var(--accent);
 }
 .cacheHint {
     margin-bottom: 2mm;
@@ -93,29 +125,32 @@ h1 img, .finder_name img {
 .cacheLogDate {
     width: 30mm;
     text-align: right;
+    color: var(--ink-soft);
 }
 .cacheLogText {
     overflow: hidden;
-    /*text-overflow: ellipsis;*/
 }
 
 .cacheLogs tr:nth-child(odd) {
-    background: #eee;
+    background: var(--accent-soft);
     font-weight: bold;
 }
 .cacheLogs tr:nth-child(even) {
     background: #fff;
-    border-bottom: 1px solid #000;
+    border-bottom: 0.3mm solid var(--rule-light);
 }
 
 .cacheHint p:first-child,
 .cacheSpoilers p:first-child,
 .cacheLogs p:first-child,
 .cacheWaypoints p:first-child {
-    font-size: 12pt;
-    font-weight: bold;
-    border-bottom: 1pt solid black;
-    margin: 0 0 1pt 0;
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--accent);
+    border-bottom: 0.4mm solid var(--accent);
+    margin: 0 0 1.5mm 0;
+    padding-bottom: 0.5mm;
 }
 .pagebreak {
     display: block;
@@ -137,15 +172,17 @@ h1 img, .finder_name img {
 
 .cacheWaypoints p:not(first-child) {
     margin: 0;
-    padding: 0.5mm;
-    border-bottom: 1px solid gray;
+    padding: 1mm;
+    border-bottom: 0.3mm solid var(--rule-light);
 }
 .cacheWaypoints p:not(first-child):nth-child(even) {
-    background-color: #efefef;
+    background-color: var(--rule-light);
 }
 /* Table of Content */
 #tocTitle {
     text-align: center;
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    color: var(--accent);
 }
 #toc {
     border-spacing: 0px;
@@ -156,6 +193,7 @@ h1 img, .finder_name img {
 #toc th {
     text-align: center;
     vertical-align: middle;
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
 }
 #tocHeadNumber {
     width: 0.8cm;
@@ -167,26 +205,28 @@ h1 img, .finder_name img {
     width: 1cm;
 }
 #toc thead {
-    border: 1px solid #000;
-    background-color: #eee;
+    border: 0.4mm solid var(--accent);
+    background-color: var(--accent-soft);
     display: table-header-group;
 }
 #toc thead th {
     height: 0.7cm;
+    color: var(--accent);
 }
 #toc tr {
-    border-left: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-left: 0.3mm solid var(--rule);
+    border-bottom: 0.3mm solid var(--rule);
     page-break-inside: avoid;
     page-break-after: auto;
 }
 
 #tocHeadNumber, #tocHeadName, #tocHeadFound, #tocHeadDnf,
 .tocNumber, .tocGccode, .tocName, .tocFound, .tocDnf, .tocPage {
-    border-right: 1px solid #000;
+    border-right: 0.3mm solid var(--rule);
 }
 .tocNumber {
     text-align: center;
+    color: var(--ink-soft);
 }
 .tocIcon {
     width: 0.5cm;
@@ -197,7 +237,9 @@ h1 img, .finder_name img {
 }
 .tocGccode {
     width: 2cm;
-    font-weight: bold;
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    color: var(--accent);
 }
 .tocPage {
     text-align: right;
@@ -253,11 +295,12 @@ h1 {
 
 /* Table of contents: real page numbers via target-counter */
 .tocPageRef {
-    color: #000;
+    color: var(--ink);
     text-decoration: none;
 }
 .tocPageRef::after {
     content: target-counter(attr(href), page);
+    color: var(--accent);
 }
 
 /* Never render the Symfony dev toolbar (raw view is used for PDF export) */

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
     <title>My roadbook</title>
-    <link type="text/css" rel="stylesheet" href="{{ asset_prefix|default('') }}/design/roadbook.css{% if suffix_css_js %}?{{ suffix_css_js }}{% endif %}" media="all">
+    <link type="text/css" rel="stylesheet" href="{{ asset_prefix|default('') }}/design/{{ style_css|default('roadbook.css') }}{% if suffix_css_js %}?{{ suffix_css_js }}{% endif %}" media="all">
     <style type="text/css">{{ style|raw }}</style>
 </head>
 <body>

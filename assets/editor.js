@@ -18,6 +18,7 @@ function initEditorPage(root) {
         pdf: root.dataset.pdfUrl,
     };
     const savedOptions = JSON.parse(root.dataset.options || '{}');
+    const themeCss = savedOptions.theme_css || 'roadbook.css';
 
     const saveBtn = document.getElementById('btn_save');
     const deleteBtn = document.getElementById('btn_delete');
@@ -31,7 +32,7 @@ function initEditorPage(root) {
     const editor = Jodit.make('#editable', {
         height: 900,
         iframe: true,
-        iframeCSSLinks: ['/design/roadbook.css'],
+        iframeCSSLinks: [`/design/${themeCss}`],
         toolbarAdaptive: false,
         showCharsCounter: false,
         showWordsCounter: false,
