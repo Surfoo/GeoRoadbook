@@ -69,26 +69,26 @@ class GeoroadBookController extends AbstractController
             'themes'        => $this->themes,
         ];
 
-        $user = $this->getUser();
-        if ($user instanceof User && $user->getCredentials()) {
-            try {
-                $response = $this->createGeocachingSdk($user)->getUserLists('me', [
-                    'types'  => 'pq',
-                    'take'   => 50,
-                    'fields' => 'referenceCode,name',
-                ]);
-                /** @var list<object{referenceCode: string, name: string}> $pocketQueryList */
-                $pocketQueryList = json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
-                usort($pocketQueryList, fn ($a, $b) => $a->name <=> $b->name);
-                $params['pocketqueryList'] = $pocketQueryList;
-            } catch (\Throwable $e) {
-                // Pocket queries are optional — the upload form still works without them
-                $this->appLogger->error('Failed to fetch pocket query list', [
-                    'exception' => $e,
-                    'user'      => $user->getUserIdentifier(),
-                ]);
-            }
-        }
+        // $user = $this->getUser();
+        // if ($user instanceof User && $user->getCredentials()) {
+        //     try {
+        //         $response = $this->createGeocachingSdk($user)->getUserLists('me', [
+        //             'types'  => 'pq',
+        //             'take'   => 50,
+        //             'fields' => 'referenceCode,name',
+        //         ]);
+        //         /** @var list<object{referenceCode: string, name: string}> $pocketQueryList */
+        //         $pocketQueryList = json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+        //         usort($pocketQueryList, fn ($a, $b) => $a->name <=> $b->name);
+        //         $params['pocketqueryList'] = $pocketQueryList;
+        //     } catch (\Throwable $e) {
+        //         // Pocket queries are optional — the upload form still works without them
+        //         $this->appLogger->error('Failed to fetch pocket query list', [
+        //             'exception' => $e,
+        //             'user'      => $user->getUserIdentifier(),
+        //         ]);
+        //     }
+        // }
 
         return $this->render('index.html.twig', $params);
     }
