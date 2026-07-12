@@ -90,7 +90,7 @@ class Roadbook
 
         $body   = file_get_contents(rtrim($weasyprintUrl, '/') . '/convert', false, $context);
         $status = 0;
-        foreach ($http_response_header as $header) {
+        foreach (http_get_last_response_headers() as $header) {
             if (preg_match('#^HTTP/\S+\s+(\d{3})#', $header, $m)) {
                 $status = (int) $m[1];
             }

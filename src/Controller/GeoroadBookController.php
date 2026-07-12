@@ -10,6 +10,7 @@ use App\Security\User;
 use Geocaching\Enum\Environment;
 use Geocaching\GeocachingSdk;
 use Geocaching\Options;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,6 +29,7 @@ class GeoroadBookController extends AbstractController
         private readonly GpxParser $gpxParser,
         private readonly RoadbookRenderer $renderer,
         private readonly OwnerResolver $ownerResolver,
+        private readonly LoggerInterface $appLogger,
         #[Autowire('%app.locales%')]
         private readonly array $locales,
         #[Autowire('%app.available_sorts%')]
@@ -64,8 +66,12 @@ class GeoroadBookController extends AbstractController
                 $pocketQueryList = json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
                 usort($pocketQueryList, fn ($a, $b) => $a->name <=> $b->name);
                 $params['pocketqueryList'] = $pocketQueryList;
-            } catch (\Throwable) {
+            } catch (\Throwable $e) {
                 // Pocket queries are optional — the upload form still works without them
+                $this->appLogger->error('Failed to fetch pocket query list', [
+                    'exception' => $e,
+                    'user'      => $user->getUserIdentifier(),
+                ]);
             }
         }
 
@@ -109,6 +115,11 @@ class GeoroadBookController extends AbstractController
             try {
                 $gpx = $this->downloadPocketQuery($referenceCode);
             } catch (\Throwable $e) {
+                $this->appLogger->error('Failed to download pocket query', [
+                    'exception'      => $e,
+                    'reference_code' => $referenceCode,
+                ]);
+
                 return $this->json(['success' => false, 'message' => $e->getMessage()]);
             }
         }
@@ -174,8 +185,13 @@ class GeoroadBookController extends AbstractController
                     static fn ($cache) => isset($owners[$cache->code]) ? $cache->withOwner($owners[$cache->code]) : $cache,
                     $caches,
                 );
-            } catch (\Throwable) {
+            } catch (\Throwable $e) {
                 // Owner enrichment is optional — the roadbook falls back to GPX placed_by
+                $this->appLogger->error('Owner enrichment failed', [
+                    'exception'   => $e,
+                    'user'        => $user->getUserIdentifier(),
+                    'cache_count' => count($caches),
+                ]);
             }
         }
 
@@ -290,6 +306,11 @@ class GeoroadBookController extends AbstractController
         try {
             $roadbook->exportPdf($this->internalBaseUrl, $this->weasyprintUrl);
         } catch (\RuntimeException $e) {
+            $this->appLogger->error('PDF export failed', [
+                'exception'   => $e,
+                'roadbook_id' => $id,
+            ]);
+
             return $this->json(['success' => false, 'message' => $e->getMessage()]);
         }
 
