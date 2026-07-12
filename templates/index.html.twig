@@ -22,7 +22,6 @@
     {% endfor %}
 
     <form action="#" method="post" data-roadbook-form>
-        <div id="error" class="alert alert-warning d-none" role="alert"></div>
 
         {# Source Card #}
         <div class="card-glass mb-5">
@@ -206,11 +205,11 @@
             </div>
         </div>
 
-        {# Generate CTA #}
-        <div class="d-flex justify-content-center mt-5">
+        <div class="d-flex flex-column align-items-center mt-4">
             <button type="submit" id="create" name="send" class="btn btn-primary btn-lg btn-primary-action">
                 Generate your roadbook
             </button>
+            <div id="error" class="alert alert-warning d-none mt-3" role="alert"></div>
         </div>
 
     </form>
