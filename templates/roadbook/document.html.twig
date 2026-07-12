@@ -4,6 +4,9 @@
 <meta charset="utf-8"/>
 </head>
 <body>
+{% if cover is defined and cover %}
+    {{- include('roadbook/_cover.html.twig') }}
+{% endif %}
 {% for item in items %}
     {%- if not loop.first %}
         {%- if options.pagebreak %}<p class="pagebreak"></p>{% else %}<hr class="separator"/>{% endif %}

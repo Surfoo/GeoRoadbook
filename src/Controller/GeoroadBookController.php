@@ -20,6 +20,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class GeoroadBookController extends AbstractController
 {
+    private const int COVER_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+
+    /** @var array<string, string> */
+    private const array COVER_IMAGE_MIME_EXTENSIONS = [
+        'image/jpeg' => 'jpg',
+        'image/png'  => 'png',
+        'image/webp' => 'webp',
+    ];
+
     /**
      * @param array<string, string>                            $locales
      * @param list<string>                                     $availableSorts
@@ -101,10 +110,13 @@ class GeoroadBookController extends AbstractController
     {
         $payload = $request->getPayload();
 
-        $gpx           = (string) $payload->get('gpx', '');
-        $referenceCode = (string) $payload->get('referenceCode', '');
-        $locale        = $payload->get('locale');
-        $themeKey      = (string) $payload->get('theme', array_key_first($this->themes));
+        $gpx               = (string) $payload->get('gpx', '');
+        $referenceCode     = (string) $payload->get('referenceCode', '');
+        $locale            = $payload->get('locale');
+        $themeKey          = (string) $payload->get('theme', array_key_first($this->themes));
+        $coverTitle        = trim((string) $payload->get('cover_title', ''));
+        $coverDescription  = trim((string) $payload->get('cover_description', ''));
+        $coverImageDataUrl = trim((string) $payload->get('cover_image', ''));
 
         if ($gpx === '' && $referenceCode === '') {
             return $this->json(['success' => false, 'message' => 'A GPX file or a Pocket Query is missing.']);
@@ -120,6 +132,18 @@ class GeoroadBookController extends AbstractController
 
         if (!array_key_exists($themeKey, $this->themes)) {
             $themeKey = array_key_first($this->themes);
+        }
+
+        $coverImage = null;
+        if ($coverImageDataUrl !== '') {
+            if (!preg_match('#^data:(image/(?:jpeg|png|webp));base64,(.+)$#s', $coverImageDataUrl, $m)) {
+                return $this->json(['success' => false, 'message' => 'Cover image format is not supported. Use JPEG, PNG or WebP.']);
+            }
+            $binary = base64_decode($m[2], true);
+            if ($binary === false || $binary === '' || strlen($binary) > self::COVER_IMAGE_MAX_BYTES) {
+                return $this->json(['success' => false, 'message' => 'Cover image is invalid or exceeds the 5 MB limit.']);
+            }
+            $coverImage = ['binary' => $binary, 'extension' => self::COVER_IMAGE_MIME_EXTENSIONS[$m[1]]];
         }
 
         if ($referenceCode !== '') {
@@ -173,6 +197,15 @@ class GeoroadBookController extends AbstractController
             return $this->json(['success' => false, 'message' => 'Unable to save the GPX file.']);
         }
 
+        $cover = null;
+        if ($coverTitle !== '') {
+            $cover = [
+                'title'       => $coverTitle,
+                'description' => $coverDescription !== '' ? $coverDescription : null,
+                'image'       => $coverImage       !== null ? $roadbook->saveCoverImage($coverImage['binary'], $coverImage['extension']) : null,
+            ];
+        }
+
         $options = [
             'display_note'      => $bool($payload->get('note')),
             'display_long_desc' => $bool($payload->get('long_desc')),
@@ -206,7 +239,7 @@ class GeoroadBookController extends AbstractController
             }
         }
 
-        $roadbook->setContent($this->renderer->render($caches, $locale, $options), $locale)->cleanHtml();
+        $roadbook->setContent($this->renderer->render($caches, $locale, $options, $cover), $locale)->cleanHtml();
 
         if ($displayToc) {
             $roadbook->addToc();

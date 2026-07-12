@@ -27,11 +27,12 @@ class RoadbookRenderer
     }
 
     /**
-     * @param list<Geocache>             $caches
-     * @param array<string, bool|string> $options display_note, display_long_desc, display_hint,
-     *                                            display_waypoints, display_spoilers, display_logs, pagebreak
+     * @param list<Geocache>                                                  $caches
+     * @param array<string, bool|string>                                      $options display_note, display_long_desc, display_hint,
+     *                                                                                 display_waypoints, display_spoilers, display_logs, pagebreak
+     * @param array{title: string, description: ?string, image: ?string}|null $cover   optional cover page (event title, description, flyer image)
      */
-    public function render(array $caches, string $locale, array $options): string
+    public function render(array $caches, string $locale, array $options, ?array $cover = null): string
     {
         $items = [];
         foreach ($caches as $cache) {
@@ -58,6 +59,7 @@ class RoadbookRenderer
             'options' => $options,
             't'       => $this->locales->texts($locale),
             'icons'   => $this->icons,
+            'cover'   => $cover,
         ]);
     }
 

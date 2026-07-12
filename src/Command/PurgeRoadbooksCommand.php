@@ -41,6 +41,7 @@ class PurgeRoadbooksCommand extends Command
 
         $files = array_merge(
             glob($this->roadbookDir . '/*.{gpx,html,json}', GLOB_BRACE) ?: [],
+            glob($this->roadbookDir . '/*-cover.*') ?: [],
             glob($this->roadbookDir . '/pdf/*.pdf') ?: [],
         );
 

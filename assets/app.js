@@ -4,6 +4,16 @@ import './styles/app.css';
 import 'bootstrap';
 
 const MAX_FILE_SIZE = 8 * 1024 * 1024; // 8 MB, matches server-side limit
+const MAX_COVER_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB, matches server-side limit
+
+function readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error(`Unable to read "${file.name}".`));
+        reader.readAsDataURL(file);
+    });
+}
 
 /* ── Theme toggle ───────────────────────────────────────────── */
 function initTheme() {
@@ -134,6 +144,20 @@ function initUploadForm() {
             return;
         }
 
+        const coverImageFile = document.getElementById('cover_image')?.files?.[0] ?? null;
+        if (coverImageFile && coverImageFile.size > MAX_COVER_IMAGE_SIZE) {
+            showError(`"${coverImageFile.name}" exceeds the 5 MB limit for the cover image.`);
+            return;
+        }
+
+        let coverImage = '';
+        try {
+            coverImage = coverImageFile ? await readFileAsDataUrl(coverImageFile) : '';
+        } catch (err) {
+            showError(err.message);
+            return;
+        }
+
         const payload = {
             gpx: gpxContent,
             referenceCode,
@@ -149,6 +173,9 @@ function initUploadForm() {
             pagebreak: checked('pagebreak'),
             images: checked('images'),
             sort_by: checked('sort') ? (form.querySelector('input[name="sort_by"]:checked')?.value ?? '') : '',
+            cover_title: document.getElementById('cover_title')?.value ?? '',
+            cover_description: document.getElementById('cover_description')?.value ?? '',
+            cover_image: coverImage,
         };
 
         const originalLabel = createBtn.textContent;

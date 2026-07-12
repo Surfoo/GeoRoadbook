@@ -151,6 +151,28 @@
             </div>
         </div>
 
+        {# Cover Page #}
+        <div class="option-group-card mt-4" style="max-width: 960px; margin-left: auto; margin-right: auto;">
+            <div class="option-group-title mb-3">
+                <i class="bi bi-image"></i> Cover page <span class="text-muted small fw-normal">(optional, e.g. for an upcoming event)</span>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label form-label-mono" for="cover_title">Title</label>
+                    <input type="text" class="form-control" name="cover_title" id="cover_title" maxlength="120" placeholder="e.g. Summer Geocaching Meetup 2026">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label form-label-mono" for="cover_image">Image</label>
+                    <input type="file" class="form-control" name="cover_image" id="cover_image" accept="image/jpeg,image/png,image/webp">
+                    <div class="small text-muted mt-1">JPEG, PNG or WebP, 5 MB max.</div>
+                </div>
+                <div class="col-12">
+                    <label class="form-label form-label-mono" for="cover_description">Description</label>
+                    <textarea class="form-control" name="cover_description" id="cover_description" rows="3" maxlength="500" placeholder="Date, meeting point, anything you'd like your guests to know…"></textarea>
+                </div>
+            </div>
+        </div>
+
         {# Advanced Options #}
         <div class="option-group-card mt-4" style="max-width: 960px; margin-left: auto; margin-right: auto;">
             <div class="d-flex align-items-center justify-content-between">

@@ -1,0 +1,6 @@
+<section class="coverPage">
+{% if cover.image %}<img src="{{ cover.image }}" alt="" class="coverImage"/>{% endif %}
+<h1 class="coverTitle">{{ cover.title }}</h1>
+{% if cover.description %}<p class="coverDescription">{{ cover.description|nl2br }}</p>{% endif %}
+</section>
+<p class="pagebreak"></p>

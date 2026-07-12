@@ -67,6 +67,30 @@ class Roadbook
     }
 
     /**
+     * Saves the cover page image (event flyer, logo, etc.) and returns its
+     * web-accessible path. public/roadbook is served directly by nginx, so
+     * no dedicated route is needed to display it (raw view, PDF export,
+     * zip export all reach it the same way as /img and /images assets).
+     */
+    public function saveCoverImage(string $binary, string $extension): string
+    {
+        $filename = sprintf('%s-cover.%s', $this->id, $extension);
+        $this->saveFile($this->roadbookDir . '/' . $filename, $binary);
+
+        return '/roadbook/' . $filename;
+    }
+
+    /**
+     * Finds the cover image previously saved by saveCoverImage(), if any.
+     */
+    private function findCoverImageFile(): ?string
+    {
+        $matches = glob($this->roadbookDir . '/' . $this->id . '-cover.*');
+
+        return $matches !== false && $matches !== [] ? $matches[0] : null;
+    }
+
+    /**
      * Renders the raw roadbook page to PDF, either through the WeasyPrint
      * HTTP sidecar (dev/Docker) or the standalone `weasyprint` binary reading
      * the rendered HTML straight off disk (production, when $weasyprintUrl
@@ -186,11 +210,11 @@ class Roadbook
             throw new \RuntimeException('Unable to create the zip archive.');
         }
 
-        // The generated HTML uses absolute asset paths (/img, /images); the
-        // archive is self-contained, so rewrite them relative to its layout.
+        // The generated HTML uses absolute asset paths (/img, /images, /roadbook);
+        // the archive is self-contained, so rewrite them relative to its layout.
         $content = str_replace(
-            ['src="/img/', 'src="/images/'],
-            ['src="../img/', 'src="../images/'],
+            ['src="/img/', 'src="/images/', 'src="/roadbook/'],
+            ['src="../img/', 'src="../images/', 'src="'],
             (string) file_get_contents($this->getHtmlFile()),
         );
 
@@ -205,6 +229,11 @@ class Roadbook
         ]);
         $zip->addFromString('roadbook/' . $this->id . '.html', $html);
         $zip->addFile($publicDir . '/design/' . $themeCss, 'design/' . $themeCss);
+
+        $coverImage = $this->findCoverImageFile();
+        if ($coverImage !== null) {
+            $zip->addFile($coverImage, 'roadbook/' . basename($coverImage));
+        }
 
         foreach (['img', 'images'] as $imageDir) {
             $dir = $publicDir . '/' . $imageDir;
@@ -235,6 +264,11 @@ class Roadbook
 
         foreach (glob($pattern) as $file) {
             @unlink($file);
+        }
+
+        $coverImage = $this->findCoverImageFile();
+        if ($coverImage !== null) {
+            @unlink($coverImage);
         }
 
         @unlink($this->getPdfFile());
